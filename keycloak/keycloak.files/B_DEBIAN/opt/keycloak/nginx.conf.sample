@@ -1,0 +1,22 @@
+server {
+  listen 443 ssl;
+  ssl_certificate /etc/ssl/certs/ssl-cert-snakeoil.pem;
+  ssl_certificate_key /etc/ssl/private/ssl-cert-snakeoil.key;
+  add_header Strict-Transport-Security "max-age=31536000; includeSubdomains";
+  access_log on;
+  error_log on;
+
+  location / {
+      proxy_pass http://localhost:8080;
+      proxy_set_header Host               $host;
+      proxy_set_header X-Real-IP          $remote_addr;
+      proxy_set_header X-Forwarded-For    $proxy_add_x_forwarded_for;
+      proxy_set_header X-Forwarded-Proto  $scheme;
+  }
+}
+
+server {
+    listen      80;
+    rewrite     ^   https://$server_name$request_uri? permanent;
+}
+

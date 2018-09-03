@@ -1,0 +1,34 @@
+[VERSION]
+B_GITVER https://github.com/tinyproxy/tinyproxy.git
+
+[REQUIRED]
+asciidoc xmlto flex bison autogen automake
+
+[BUILD]
+B_GET git https://github.com/tinyproxy/tinyproxy.git tinyproxy
+cd tinyproxy
+git checkout $B_VERSION
+
+bash autogen.sh
+./configure
+make
+make install DESTDIR=$B_INSTALLDIR
+
+[PKG]
+
+type=deb
+torepo=y
+
+[DEB]
+Package: tinyproxy
+Version: B_VERSION
+Section: web
+Priority: optional
+Architecture: B_ARCH
+Maintainer: it.support@element-networks.nl
+Description:  A lightweight, non-caching, optionally anonymizing HTTP proxy
+ An anonymizing HTTP proxy which is very light on system resources, ideal for
+ smaller networks and similar situations where other proxies (such as Squid) may
+ be overkill and/or a security risk. Tinyproxy can also be configured to
+ anonymize HTTP requests (allowing for exceptions on a per-header basis).
+Homepage: https://banu.com/tinyproxy/

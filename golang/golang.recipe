@@ -1,0 +1,32 @@
+[INFO]
+arch=amd64
+
+[VERSION]
+B_GITVER -a https://go.googlesource.com/go "rc\|weekly\|beta" | sed "s/go//"
+
+[REQUIRED]
+golang-go
+
+[BUILD]
+B_GET git https://go.googlesource.com/go go
+cd go
+git checkout go${B_VERSION}
+cd src
+./all.bash
+cd ../..
+mkdir -p $B_INSTALLDIR/opt
+tar cfB - go | ( cd $B_INSTALLDIR/opt ; tar xfB - )
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: golang-custom
+Version: B_VERSION
+Section: golang
+Priority: optional
+Architecture: B_ARCH
+Maintainer: it.support@element-networks.nl
+Homepage: https://go.googlesource.com/go
+Description: Golang custom build

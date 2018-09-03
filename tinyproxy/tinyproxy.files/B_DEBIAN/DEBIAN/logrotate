@@ -1,0 +1,10 @@
+/opt/tinyproxy/var/log/tinyproxy/tinyproxy.log {
+	rotate 14
+	daily
+	compress
+	missingok
+	postrotate
+		invoke-rc.d --quiet tinyproxy reload > /dev/null
+	endscript
+	notifempty
+}

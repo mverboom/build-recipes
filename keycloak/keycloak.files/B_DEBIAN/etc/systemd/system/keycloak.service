@@ -1,0 +1,20 @@
+[Unit]
+Description=Keycloak Authentication
+After=syslog.target network.target
+Before=nginx.service
+
+[Service]
+# Run the prestart with root permissions
+PermissionsStartOnly=true
+ExecStartPre=/usr/bin/install -m 755 -o keycloak -g keycloak -d /var/run/keycloak
+
+Environment=LAUNCH_JBOSS_IN_BACKGROUND=1
+EnvironmentFile=-/etc/default/keycloak
+User=keycloak
+LimitNOFILE=102642
+PIDFile=/var/run/keycloak/keycloak.pid
+ExecStart=/opt/keycloak/bin/launch.sh $KEYCLOAK_MODE $KEYCLOAK_CONFIG $KEYCLOAK_BIND
+StandardOutput=null
+
+[Install]
+WantedBy=multi-user.target

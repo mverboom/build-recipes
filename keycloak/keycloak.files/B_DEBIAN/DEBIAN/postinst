@@ -1,0 +1,14 @@
+#!/bin/bash
+# Post-install tasks for Keycloak
+
+# create the user to run the server
+adduser --system keycloak --home /opt/keycloak --group --no-create-home --shell /bin/false
+chown -R keycloak:keycloak /opt/keycloak
+
+# reload systemd
+systemctl daemon-reload
+
+# tell user to config nginx before using webinterface
+whiptail --msgbox "If Keycloak has been installed for the first time, make sure to configure NginX.
+
+A sample configuration can be found in /etc/keycloak/nginx.conf.sample" 0 0 --title 'Keycloak installation'

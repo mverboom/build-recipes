@@ -1,0 +1,14 @@
+Problem with using MySQL with Gogs version up to (at least) 0.11.34.
+
+When selecting MySQL in the configuration screen it can show the following error:
+
+Database setting is not correct: Error 1709: Index column size too large. The maximum column size is 767 bytes.
+
+To work around this, itterate the following until the configuration page no longer
+shows an error.
+
+1. Run on the database server:
+  mysql -u<username> -p<password> -h<database server> <databasename> < gogs.sql
+2. Submit the configuration page
+3. If error is still there, go to step 1.
+

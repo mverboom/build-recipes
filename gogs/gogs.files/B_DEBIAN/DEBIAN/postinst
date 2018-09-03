@@ -1,0 +1,29 @@
+#!/bin/sh
+
+set -e
+
+case "$1" in
+  configure)
+    if ! getent passwd git > /dev/null; then
+       adduser --disabled-password --quiet --system --group \
+          --home /var/git --no-create-home \
+          --gecos "git user" --shell /bin/bash git 
+    fi
+    if ! test -d /var/git
+    then
+       mkdir /var/git
+    fi
+    chown git:git /var/git
+    chown git:git /etc/gogs/app.ini
+    if ! test -d /var/log/gogs
+    then
+       mkdir /var/log/gogs
+    fi
+    chown git:git /var/log/gogs
+    chown git:git /etc/gogs/app.ini /etc/gogs
+    systemctl enable gogs
+    systemctl start gogs
+  ;;
+esac
+
+exit 0

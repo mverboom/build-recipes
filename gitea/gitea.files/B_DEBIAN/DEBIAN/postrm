@@ -1,0 +1,12 @@
+#!/bin/sh
+
+set -e
+
+systemctl stop gitea > /dev/null || true
+
+if test "$1" = "purge"; then
+   deluser --quiet --system git > /dev/null || true
+   delgroup --quiet git > /dev/null || true
+fi
+
+exit 0

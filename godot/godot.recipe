@@ -1,0 +1,31 @@
+[VERSION]
+B_GITVER -a https://github.com/godotengine/godot
+
+[REQUIRED]
+scons pkg-config libx11-dev libxcursor-dev libxinerama-dev libgl1-mesa-dev libglu-dev libasound2-dev libpulse-dev libfreetype6-dev libssl-dev libudev-dev libxi-dev libxrandr-dev
+
+[BUILD]
+B_GET git https://github.com/godotengine/godot godot
+cd godot
+git checkout $B_VERSION
+
+scons platform=x11
+mkdir -p $B_INSTALLDIR/opt/godot
+mv bin/* $B_INSTALLDIR/opt/godot
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: godot
+Version: B_VERSION
+Section: development
+Priority: optional
+Architecture: B_ARCH
+Conflicts: godot-master
+Maintainer: support@godotengine.org
+Description:  Godot provides a huge set of common tools, so you can just focus
+  on making your game without reinventing the wheel.
+  Godot is completely free and open source under the very permissive MIT license.
+  No strings attached, no royalties, nothing. Your game is yours, down to the last line of engine code.

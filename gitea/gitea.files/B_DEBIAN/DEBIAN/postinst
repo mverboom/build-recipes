@@ -1,0 +1,29 @@
+#!/bin/sh
+
+set -e
+
+case "$1" in
+  configure)
+    if ! getent passwd git > /dev/null; then
+       adduser --disabled-password --quiet --system --group \
+          --home /var/git --no-create-home \
+          --gecos "git user" --shell /bin/bash git
+    fi
+    if ! test -d /var/git/data
+    then
+       mkdir -p /var/git/data
+    fi
+    chown -R git:git /var/git
+    chown git:git /etc/gitea/app.ini
+    if ! test -d /var/log/gitea
+    then
+       mkdir /var/log/gitea
+    fi
+    chown git:git /var/log/gitea
+    chown git:git /etc/gitea/app.ini /etc/gitea
+    systemctl enable gitea
+    systemctl start gitea
+  ;;
+esac
+
+exit 0

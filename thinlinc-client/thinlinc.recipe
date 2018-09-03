@@ -1,0 +1,9 @@
+[VERSION]
+echo $( wget -q -O - https://www.cendio.com/thinlinc/download | grep "thinlinc-client" | grep $B_ARCH\.deb | awk '{ a=substr($0, index($0, "thinlinc-client_") + 16); print substr(a,0);}' | cut -d_ -f1 )
+[BUILD]
+B_GET http https://www.cendio.com/downloads/clients/thinlinc-client_${B_VERSION}_${B_ARCH}.deb thinlinc-client_${B_VERSION}_${B_ARCH}.deb
+mv thinlinc-client_${B_VERSION}_${B_ARCH}.deb ${B_INSTALLDIR}
+[PKG]
+type=deb
+pkgready=y
+torepo=y

@@ -1,0 +1,6 @@
+[Desktop Entry]
+Name=Godot Engine
+Comment=Develop your game with no strings attached!
+Exec=/opt/godot/godot.x11.tools.64
+Icon=godot
+Categories=GTK;Development;

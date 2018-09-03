@@ -1,0 +1,23 @@
+diff --git a/src/reqs.c b/src/reqs.c
+index d0f296f..86e1487 100644
+--- a/src/reqs.c
++++ b/src/reqs.c
+@@ -369,12 +369,15 @@ BAD_REQUEST_ERROR:
+ 
+                 reverse_url = reverse_rewrite_url (connptr, hashofheaders, url);
+ 
+-                if (!reverse_url) {
++                if (!reverse_url && config.reverseonly) {
+                         goto fail;
+                 }
+ 
+-                safefree (url);
+-                url = reverse_url;
++                /* if not reverse only and a mapping was found.. */
++                if(reverse_url) {
++                        safefree (url);
++                        url = reverse_url;
++                }
+         }
+ #endif
+ 

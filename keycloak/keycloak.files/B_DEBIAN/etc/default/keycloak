@@ -1,0 +1,8 @@
+# The configuration you want to run
+KEYCLOAK_CONFIG=standalone.xml
+
+# The mode you want to run
+KEYCLOAK_MODE=standalone
+
+# The address to bind to
+KEYCLOAK_BIND=127.0.0.1

@@ -1,0 +1,37 @@
+[INFO]
+arch=amd64
+
+[VERSION]
+B_GITVER https://github.com/go-gitea/gitea.git dev
+
+[REQUIRED]
+golang-custom libpam0g-dev gcc go-bindata
+
+[BUILD]
+export GOROOT=/opt/go
+export PATH=${PATH}:${GOROOT}/bin
+export GOPATH=$(pwd)
+
+mkdir -p src/code.gitea.io/
+cd src/code.gitea.io/
+B_GET git https://github.com/go-gitea/gitea.git gitea
+cd gitea
+git checkout v$B_VERSION
+TAGS="bindata sqlite pam" make generate build
+mkdir -p $B_INSTALLDIR/opt/gitea/
+tar cfB - public templates scripts gitea | ( cd $B_INSTALLDIR/opt/gitea ; tar xfB - )
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: gitea
+Version: B_VERSION
+Section: gitea
+Priority: optional
+Architecture: B_ARCH
+Maintainer: it.support@element-networks.nl
+Homepage: https://gitea.io
+Description: Gitea custom build
+Depends: git

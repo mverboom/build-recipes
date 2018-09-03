@@ -1,0 +1,35 @@
+[VERSION]
+B_GITVER https://github.com/jimsalterjrs/sanoid.git
+
+[REQUIRED]
+
+[BUILD]
+B_GET git https://github.com/jimsalterjrs/sanoid.git sanoid
+cd sanoid
+git checkout tags/$B_VERSION
+
+mkdir -p $B_INSTALLDIR/bin
+mkdir -p $B_INSTALLDIR/etc/$B_NAME
+cp syncoid sanoid findoid $B_INSTALLDIR/bin
+cp sanoid.defaults.conf $B_INSTALLDIR/etc/$B_NAME
+cp sanoid.conf $B_INSTALLDIR/etc/$B_NAME/sanoid.conf.example
+
+[PKG]
+
+type=deb
+torepo=y
+
+[DEB]
+Package: sanoid
+Version: B_VERSION
+Section: system
+Priority: optional
+Architecture: B_ARCH
+Conflicts: sanoid
+Depends: pv, lzop, mbuffer, libconfig-inifiles-perl
+Maintainer: jim@openoid.net
+Description:  Policy-driven snapshot management and replication tools.
+  Currently using ZFS for underlying next-gen storage, with explicit plans to 
+  support btrfs when btrfs becomes more reliable. Primarily intended for Linux,
+  but BSD use is supported and reasonably frequently tested.
+Homepage: http://www.openoid.net/products/

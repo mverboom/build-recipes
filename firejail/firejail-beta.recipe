@@ -1,0 +1,26 @@
+[VERSION]
+B_GITVER -a https://github.com/netblue30/firejail
+
+[BUILD]
+B_GET git https://github.com/netblue30/firejail firejail
+cd firejail
+git checkout tags/$B_VERSION
+./configure
+make
+make install DESTDIR=$B_INSTALLDIR
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: firejail-beta
+Version: B_VERSION
+Section: firejail
+Conflicts: firejail
+Priority: optional
+Architecture: B_ARCH
+Maintainer: it.support@element-networks.nl
+Homepage: https://l3net.wordpress.com/projects/firejail/
+Description: Firejail custom build
+
