@@ -1,12 +1,18 @@
+[INFO]
+arch=amd64
+
 [VERSION]
 wget -O - -q http://ftp.mozilla.org/pub/firefox/releases/ | grep releases | cut -d '>' -f3 | cut -d'/' -f1 | grep -E '^[0-9\.]+$' | sort -n | tail -1
+
 [BUILD]
 B_GET http http://ftp.mozilla.org/pub/mozilla.org/firefox/releases/$B_VERSION/linux-$(uname -m)/en-US/firefox-$B_VERSION.tar.bz2 firefox-$B_VERSION.tar.bz2
 mkdir -p $B_INSTALLDIR/opt/firefox
 tar xjf firefox-$B_VERSION.tar.bz2 -C $B_INSTALLDIR/opt/firefox --strip-components 1
+
 [PKG]
 type=deb
 torepo=y
+
 [DEB]
 Package: firefox
 Version: B_VERSION
@@ -15,5 +21,6 @@ Provides: gnome-www-browser, www-browser
 Section: firefox
 Priority: optional
 Architecture: B_ARCH
-Maintainer: it.support@element-networks.nl
-Description: Firefox custom build
+Maintainer: B_MAIL
+Description: Firefox custom B_ORG build
+Depends: libgtk-3-0,libdbus-glib-1-2
