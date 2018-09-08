@@ -1,0 +1,39 @@
+#!/bin/sh
+
+set -e
+
+# Create a seccubus system group
+if ! getent group seccubus > /dev/null; then
+    addgroup --quiet --system seccubus
+fi
+
+# Create a seccubus system user
+if ! getent passwd seccubus > /dev/null; then
+    adduser --quiet --system \
+        --ingroup seccubus \
+        --home /opt/seccubus \
+        --no-create-home \
+        --disabled-password --shell /bin/bash \
+        seccubus
+    usermod -c "Seccubus daemon" seccubus
+fi
+
+# Certificates
+if test ! -e "/etc/seccubus/seccubus.key" && test ! -e "/etc/seccubus/seccubus.crt"
+then
+   openssl genrsa -des3 -passout pass:x12345 -out /etc/seccubus/seccubus.pass.key \
+      4096
+   openssl rsa -passin pass:x12345 -in /etc/seccubus/seccubus.pass.key \
+      -out /etc/seccubus/seccubus.key
+   rm -f /etc/seccubus/seccubus.pass.key
+   openssl req -new -key /etc/seccubus/seccubus.key -out /etc/seccubus/seccubus.csr\
+      -subj "/CN=Seccubus"
+   openssl x509 -req -days 365 -in /etc/seccubus/seccubus.csr \
+      -signkey /etc/seccubus/seccubus.key -out /etc/seccubus/seccubus.crt
+   rm -f /etc/seccubus/seccubus.csr
+fi
+
+chmod 600 /etc/seccubus/*
+chown -R seccubus:seccubus /opt/seccubus /etc/seccubus /var/log/seccubus
+
+systemctl enable seccubus.service

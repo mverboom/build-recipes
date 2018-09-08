@@ -1,0 +1,15 @@
+#!/bin/sh
+
+set -e
+
+if [ "$1" = "purge" ] ; then
+    if getent passwd seccubus >/dev/null; then
+        if which deluser >/dev/null 2>&1; then
+            deluser --quiet --system seccubus || echo "Could not remove seccubus user."
+        fi
+    fi
+fi
+
+if [ -d /run/systemd/system ] ; then
+	systemctl --system daemon-reload >/dev/null || true
+fi

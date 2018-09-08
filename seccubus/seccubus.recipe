@@ -1,0 +1,54 @@
+[INFO]
+arch=amd64
+
+[VERSION]
+B_GITVER https://github.com/schubergphilis/Seccubus.git
+
+[REQUIRED]
+make openjdk-8-jre-headless
+[BUILD]
+B_GET git https://github.com/schubergphilis/Seccubus.git seccubus
+cd seccubus
+git checkout $B_VERSION
+./build_all
+cd build
+./install.pl --stageonly --basedir=/opt/seccubus --stage_dir=$B_INSTALLDIR/opt/seccubus --createdirs --confdir=/etc/seccubus
+
+mkdir -p $B_INSTALLDIR/etc/seccubus
+mv $B_INSTALLDIR/opt/seccubus/etc/config.xml.mysql.example $B_INSTALLDIR/etc/seccubus/config.xml
+cp $B_INSTALLDIR/opt/seccubus/etc/v2.seccubus.com.bundle $B_INSTALLDIR/etc/seccubus/
+rm -rf $B_INSTALLDIR/opt/seccubus/etc
+sed -i 's/testdata/\/etc\/seccubus/' $B_INSTALLDIR/etc/seccubus/config.xml
+sed -i 's/<server>.*<\/server>/<server><\/server>/' $B_INSTALLDIR/etc/seccubus/config.xml
+sed -i 's/<from>.*<\/from>/<from><\/from>/' $B_INSTALLDIR/etc/seccubus/config.xml
+
+ln -s /var/log/seccubus $B_INSTALLDIR/opt/seccubus/log
+
+cat - > $B_INSTALLDIR/opt/seccubus/.environment <<EOF
+PERL5LIB=/opt/seccubus:/opt/seccubus/lib
+HYPNOTOAD_APP="/opt/seccubus/seccubus.pl"
+PATH=$PATH:/opt/seccubus/bin
+EOF
+
+cat - > $B_INSTALLDIR/opt/seccubus/.bashrc <<EOF
+source ~/.environment
+export PERL5LIB
+EOF
+
+cp $B_FILES/loaddb.sh $B_INSTALLDIR/opt/seccubus/bin
+
+echo ". ~/.bashrc" > $B_INSTALLDIR/opt/seccubus/.bash_profile
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: seccubus
+Version: B_VERSION
+Section: seccubus
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Homepage: https://www.seccubus.com
+Description: Seccubus custom B_ORG build
+Depends: libnet-ip-perl,libalgorithm-diff-perl,libcrypt-pbkdf2-perl,libdbd-mysql-perl,libtimedate-perl,libhtml-tree-perl,libjson-perl,libmojolicious-perl,libterm-readkey-perl,libxml-simple-perl,libperl-critic-perl,mysql-client

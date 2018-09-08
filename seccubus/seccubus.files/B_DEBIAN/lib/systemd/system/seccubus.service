@@ -1,0 +1,18 @@
+[Unit]
+Description=Seccubus
+Documentation=https://www.seccubus.com
+Requires=network.target
+After=network.target
+
+[Service]
+EnvironmentFile=/opt/seccubus/.environment
+Type=forking
+User=seccubus
+RemainAfterExit=yes
+WorkingDirectory=/opt/seccubus
+PIDFile=/opt/seccubus/hypnotoad.pid
+ExecStart=/usr/bin/hypnotoad seccubus.pl
+ExecStop=/usr/bin/hypnotoad -s seccubus.pl
+
+[Install]
+WantedBy=multi-user.target
