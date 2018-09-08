@@ -1,0 +1,45 @@
+[INFO]
+arch=amd64
+excludefromall=1
+
+[VERSION]
+B_GITHUBVER https://github.com/sullo/nikto
+
+[BUILD]
+B_GET git https://github.com/sullo/nikto nikto
+cd nikto/program
+I=$B_INSTALLDIR/opt/nikto
+mkdir -p $I/bin
+cp nikto.pl $I/bin/nikto
+cp replay.pl $I/bin/replay
+tar cf - docs | ( cd $I ; tar xf -)
+tar cf - plugins | ( cd $I ; tar xf -)
+tar cf - databases | ( cd $I ; tar xf -)
+tar cf - templates | ( cd $I ; tar xf -)
+
+mkdir $B_INSTALLDIR/etc
+sed -i 's#NIKTODTD=docs/nikto.dtd#NIKTODTD=/opt/nikto/docs/nikto.dtd#' nikto.conf
+echo "EXECDIR=/opt/nikto" >> nikto.conf
+echo "PLUGINDIR=/opt/nikto/plugins" >> nikto.conf
+echo "DBDIR=/opt/nikto/databases" >> nikto.conf
+echo "TEMPLATEDIR=/opt/nikto/templates" >> nikto.conf
+echo "DOCDIR=/opt/nikto/docs" >> nikto.conf
+cp nikto.conf $B_INSTALLDIR/etc
+
+B_LINKFILES /opt/nikto/bin /usr/bin
+B_LINKFILE /opt/nikto/docs/nikto.1 /usr/man/man1
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: nikto
+Version: B_VERSION
+Section: nikto
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: Nikto custom B_ORG build
+Homepage: https://cirt.net/nikto2
+Depends: perl, libwhisker2-perl (>= 2.5), libjson-pp-perl, libnet-ssleay-perl
