@@ -24,17 +24,21 @@ To get a working seccubus installation, do the following:
 and (optionally) mailserver configuration.
 * Populate the database and set the administartor account pasword
 
+```
 su - seccubus
 loaddb.sh
 exit
+```
 
 * Start seccubus
 
+```
 systemctl start seccubus
+```
 
 * Connect to the webinterface
 
-https://<hostname>:8443
+[https://<hostname>:8443](https://hostname:8443/)
 
 In order for seccubus to be able to run specific scans that require root provileges,
 setup sudo for the seccubus user.
@@ -55,7 +59,7 @@ Example local nmap scan
 * Select New scan
   * Name: nmap scan
   * Scanner: Nmap
-  * Parameters: -o "-sS -sV -sC -T4 -p 1-65535" --sudo --hosts @HOSTS
+  * Parameters: `-o "-sS -sV -sC -T4 -p 1-65535" --sudo --hosts @HOSTS`
   * Hosts: 192.168.1.0/24
 * Choose: Create scan
 * Choose: Edit scan
@@ -69,8 +73,10 @@ Example local nmap scan
 
 Running a scan
 
+```
 su - seccubus
 do-scan -w Example -s "nmap scan" -v
+```
 
 Viewing scan result
 
