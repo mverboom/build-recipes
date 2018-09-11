@@ -1,0 +1,12 @@
+#!/bin/sh
+
+set -e
+
+current=`grep -m1 'microcode' /proc/cpuinfo | sed 's/.*0x//'`
+avail=`iucode_tool -q -tb -lS /lib/firmware/intel-ucode-local/ | grep rev | sed 's/.*rev 0x0*\([0-9a-z]\+\),.*/\1/'`
+
+if test "$avail" != "" -a "$current" != "$avail"
+then
+   iucode_tool --overwrite -tb -S -K/lib/firmware/intel-ucode /lib/firmware/intel-ucode-local
+   update-initramfs -u
+fi

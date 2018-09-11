@@ -1,0 +1,28 @@
+[INFO]
+arch=amd64
+
+[VERSION]
+wget -q -O - https://downloadcenter.intel.com/download/28087/Linux-Processor-Microcode-Data-File | grep -A10 "Available Downloads" | grep downloadmirror | sed 's/.*title="microcode-\(.*\).tgz".*/\1/'
+
+[BUILD]
+URL=$(wget -q -O - https://downloadcenter.intel.com/download/28087/Linux-Processor-Microcode-Data-File | grep $B_VERSION | sed 's/.*download="\(.*\)" title.*/\1/')
+B_GET http $URL microcode
+tar xzf microcode
+mkdir -p $B_INSTALLDIR/lib/firmware/intel-ucode-local
+cd intel-ucode
+cp * $B_INSTALLDIR/lib/firmware/intel-ucode-local
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: iucode
+Version: B_VERSION
+Section: iucode
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: iucode custom B_ORG build
+Homepage: https://downloadcenter.intel.com/download/28087/Linux-Processor-Microcode-Data-File
+Depends: iucode-tool
