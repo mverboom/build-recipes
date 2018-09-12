@@ -20,6 +20,6 @@ Section: system
 Priority: optional
 Architecture: B_ARCH
 Conflicts: NAME
-Maintainer: MAINTAINER
+Maintainer: B_MAIL
 Description: A modern take on the Debian archive.
 Homepage: https://github.com/freight-team/freight

@@ -25,7 +25,7 @@ Version: B_VERSION
 Section: web
 Priority: optional
 Architecture: B_ARCH
-Maintainer: it.support@element-networks.nl
+Maintainer: B_MAIL
 Description:  A lightweight, non-caching, optionally anonymizing HTTP proxy
  An anonymizing HTTP proxy which is very light on system resources, ideal for
  smaller networks and similar situations where other proxies (such as Squid) may

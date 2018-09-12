@@ -24,7 +24,7 @@ Section: development
 Priority: optional
 Architecture: B_ARCH
 Conflicts: godot-master
-Maintainer: support@godotengine.org
+Maintainer: B_MAIL
 Description:  Godot provides a huge set of common tools, so you can just focus
   on making your game without reinventing the wheel.
   Godot is completely free and open source under the very permissive MIT license.
