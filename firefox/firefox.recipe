@@ -16,7 +16,6 @@ torepo=y
 [DEB]
 Package: firefox
 Version: B_VERSION
-Recommends: firejail
 Provides: gnome-www-browser, www-browser
 Section: firefox
 Priority: optional
