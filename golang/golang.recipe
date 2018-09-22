@@ -27,6 +27,6 @@ Version: B_VERSION
 Section: golang
 Priority: optional
 Architecture: B_ARCH
-Maintainer: it.support@element-networks.nl
+Maintainer: B_MAIL
 Homepage: https://go.googlesource.com/go
-Description: Golang custom build
+Description: Golang B_ORG custom build

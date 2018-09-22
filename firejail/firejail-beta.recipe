@@ -20,7 +20,7 @@ Section: firejail
 Conflicts: firejail
 Priority: optional
 Architecture: B_ARCH
-Maintainer: it.support@element-networks.nl
+Maintainer: B_MAIL
 Homepage: https://l3net.wordpress.com/projects/firejail/
-Description: Firejail custom build
+Description: Firejail B_ORG custom build
 

@@ -32,7 +32,7 @@ Version: B_VERSION
 Section: gogs
 Priority: optional
 Architecture: B_ARCH
-Maintainer: it.support@element-networks.nl
+Maintainer: B_MAIL
 Homepage: https://gogs.io
-Description: Gogs custom build
+Description: Gogs B_ORG custom build
 Depends: git

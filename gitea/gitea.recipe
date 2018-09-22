@@ -31,7 +31,7 @@ Version: B_VERSION
 Section: gitea
 Priority: optional
 Architecture: B_ARCH
-Maintainer: it.support@element-networks.nl
+Maintainer: B_MAIL
 Homepage: https://gitea.io
-Description: Gitea custom build
+Description: Gitea B_MAIL custom build
 Depends: git

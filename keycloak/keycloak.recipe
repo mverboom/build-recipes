@@ -24,8 +24,8 @@ Version: B_VERSION
 Section: system
 Priority: optional
 Architecture: B_ARCH
-Depends: openjdk-8-jre-headless, nginx-light
-Maintainer: it.support@element-networks.nl
+Depends: openjdk-8-jre-headless, nginx-light | nginx-full | nginx-extras
+Maintainer: B_MAIL
 Description: Add authentication to applications and secure services with minimum fuss.
   No need to deal with storing users or authenticating users.
   It is all available out of the box.

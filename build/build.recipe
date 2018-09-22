@@ -17,7 +17,7 @@ Version: B_VERSION
 Section: nbu
 Priority: optional
 Architecture: all
-Maintainer: mark@verboom.net
+Maintainer: B_MAIL
 Description: Scripts to build and create software packages
 Homepage: https://github.com/mverboom/build
 Depends: git,bzip2,hgsubversion,wget,grep,awk,subversion,gawk,fakeroot
