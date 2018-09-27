@@ -8,6 +8,7 @@ openjdk-8-jdk maven
 B_GET git https://github.com/keycloak/keycloak keycloak
 
 cd keycloak
+git checkout $B_VERSION
 mvn -Pdistribution -pl distribution/server-dist -am -Dmaven.test.skip clean install
 
 mkdir -p $B_INSTALLDIR/opt/keycloak
