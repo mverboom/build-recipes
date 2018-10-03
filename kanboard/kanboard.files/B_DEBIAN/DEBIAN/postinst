@@ -1,0 +1,6 @@
+#!/bin/sh
+ 
+if test "$1" = "configure"; then
+   chown -R www-data.www-data /var/lib/kanboard/plugins /var/lib/kanboard/data /etc/kanboard/config.php
+   chmod 755 /etc/cron.daily/kanboard
+fi

@@ -1,0 +1,40 @@
+[INFO]
+arch=all
+
+[VERSION]
+B_GITVER https://github.com/kanboard/kanboard/
+
+[BUILD]
+mkdir -p opt var/lib/kanboard etc/kanboard
+touch etc/kanboard/config.php
+cd opt
+B_GET git https://github.com/kanboard/kanboard/ kanboard
+cd kanboard
+git checkout v$B_VERSION
+for p in $B_FILES/*.diff
+do
+   patch -p0 < $p
+done
+rm -rf .git
+mv data plugins ../../var/lib/kanboard
+touch ../../var/lib/kanboard/data/db.sqlite
+mv config.default.php ../../etc/kanboard
+ln -s ../../etc/kanboard/config.php config.php
+ln -s ../../var/lib/kanboard/data data
+ln -s ../../var/lib/kanboard/plugins plugins
+cd ../..
+tar cf - . | (cd $B_INSTALLDIR ; tar xf - )
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: kanboard
+Version: B_VERSION
+Section: kanboard
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: Kanboard custom B_ORG build
+Homepage: https://www.kanboard.org

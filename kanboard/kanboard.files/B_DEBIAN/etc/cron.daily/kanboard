@@ -1,0 +1,2 @@
+#!/bin/sh
+cd /opt/kanboard && ./cli cronjob >/dev/null 2>&1

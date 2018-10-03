@@ -1,0 +1,56 @@
+--- app/Model/TaskRecurrenceModel.php	2018-04-30 11:38:23.000000000 +0200
++++ /root/TaskRecurrenceModel.php	2018-06-14 17:05:03.253635358 +0200
+@@ -86,6 +86,10 @@
+             $values['recurrence_parent'] = $task_id;
+             $values['column_id'] = $this->columnModel->getFirstColumnId($values['project_id']);
+             $this->calculateRecurringTaskDueDate($values);
++            /* 20180614 MV: first try for recurrence */
++            $task = $this->taskFinderModel->getById($task_id);
++            $values['date_started'] = $task['date_started'];
++            $this->calculateRecurringTaskStartDate($values);
+ 
+             $recurring_task_id = $this->save($task_id, $values);
+ 
+@@ -110,6 +114,42 @@
+     }
+ 
+     /**
++     * Calculate new start date for new recurrence task
++     *
++     * @access public
++     * @param  array   $values   Task fields
++     */
++    public function calculateRecurringTaskStartDate(array &$values)
++    {
++        if (! empty($values['date_started']) && $values['recurrence_factor'] != 0) {
++            if ($values['recurrence_basedate'] == TaskModel::RECURRING_BASEDATE_TRIGGERDATE) {
++                $values['date_started'] = time();
++            }
++
++            $factor = abs($values['recurrence_factor']);
++            $subtract = $values['recurrence_factor'] < 0;
++
++            switch ($values['recurrence_timeframe']) {
++                case TaskModel::RECURRING_TIMEFRAME_MONTHS:
++                    $interval = 'P' . $factor . 'M';
++                    break;
++                case TaskModel::RECURRING_TIMEFRAME_YEARS:
++                    $interval = 'P' . $factor . 'Y';
++                    break;
++                default:
++                    $interval = 'P' . $factor . 'D';
++            }
++
++            $date_started = new DateTime();
++            $date_started->setTimestamp($values['date_started']);
++
++            $subtract ? $date_started->sub(new DateInterval($interval)) : $date_started->add(new DateInterval($interval));
++
++            $values['date_started'] = $date_started->getTimestamp();
++        }
++    }
++
++    /**
+      * Calculate new due date for new recurrence task
+      *
+      * @access public

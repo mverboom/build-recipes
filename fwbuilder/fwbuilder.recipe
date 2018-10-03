@@ -1,0 +1,33 @@
+[INFO]
+arch=amd64
+
+[VERSION]
+B_GITVER https://github.com/fwbuilder/fwbuilder
+
+[REQUIRED]
+make g++ automake autoconf libtool libxml2-dev libxslt-dev libsnmp-dev qt5-default qttools5-dev-tools
+
+[BUILD]
+B_GET git https://github.com/fwbuilder/fwbuilder fwbuilder
+cd fwbuilder
+git checkout tags/v$B_VERSION
+./autogen.sh
+./configure --prefix=/opt/fwbuilder
+make
+make install INSTALL_ROOT=$B_INSTALLDIR
+B_LINKFILES /opt/fwbuilder/bin /usr/bin
+B_LINKFILES /opt/fwbuilder/share/man/man1 /usr/share/man/man1
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: fwbuilder
+Version: B_VERSION
+Section: fwbuilder
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: FWBuilder custom B_ORG build
+Homepage: https://github.com/fwbuilder
