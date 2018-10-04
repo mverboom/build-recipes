@@ -12,7 +12,7 @@ B_GET git https://go.googlesource.com/go go
 cd go
 git checkout go${B_VERSION}
 cd src
-./all.bash
+./make.bash
 cd ../..
 mkdir -p $B_INSTALLDIR/opt
 tar cfB - go | ( cd $B_INSTALLDIR/opt ; tar xfB - )
@@ -22,7 +22,7 @@ type=deb
 torepo=y
 
 [DEB]
-Package: golang-custom
+Package: golang
 Version: B_VERSION
 Section: golang
 Priority: optional
