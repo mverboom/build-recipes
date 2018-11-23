@@ -17,7 +17,7 @@ cp -r distribution/server-dist/target/keycloak-*/* $B_INSTALLDIR/opt/keycloak
 
 [PKG]
 type=deb
-torepo=n
+torepo=y
 
 [DEB]
 Package: keycloak
