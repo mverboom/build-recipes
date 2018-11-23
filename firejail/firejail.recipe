@@ -1,5 +1,5 @@
 [VERSION]
-B_GITVER https://github.com/netblue30/firejail
+B_GITVER https://github.com/netblue30/firejail LTS
 
 [BUILD]
 B_GET git https://github.com/netblue30/firejail firejail
