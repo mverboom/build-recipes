@@ -27,6 +27,7 @@ Package: fwbuilder
 Version: B_VERSION
 Section: fwbuilder
 Priority: optional
+Depends: libc6 (>= 2.14), libgcc1 (>= 1:3.0), libqt4-network (>= 4:4.5.3), libqtcore4 (>= 4:4.7.0~beta1), libqtgui4 (>= 4:4.8.0), libsnmp30 (>= 5.7.3+dfsg-1.7~dfsg), libstdc++6 (>= 5.2), libxml2 (>= 2.7.4), libxslt1.1 (>= 1.1.25), zlib1g (>= 1:1.1.4)
 Architecture: B_ARCH
 Maintainer: B_MAIL
 Description: FWBuilder custom B_ORG build
