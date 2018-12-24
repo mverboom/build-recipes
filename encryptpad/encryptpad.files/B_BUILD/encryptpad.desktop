@@ -1,0 +1,11 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=Encryptpad
+Comment=Encrypt data
+GenericName=Encryption
+X-GNOME-FullName=Encryptpad
+Exec=encryptpad %u
+Terminal=false
+X-MultipleArgs=false
+Type=Application
+Icon=encryptpad.png

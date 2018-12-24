@@ -1,0 +1,42 @@
+[INFO]
+arch=amd64
+
+[VERSION]
+B_GITVER https://github.com/evpo/EncryptPad
+
+[REQUIRED]
+qtbase5-dev qt5-default gcc g++ make python zlib1g-dev pkg-config
+
+[BUILD]
+B_GET git https://github.com/evpo/EncryptPad encryptpad
+cd encryptpad
+git checkout v${B_VERSION}
+./configure.sh --all
+mkdir -p $B_INSTALLDIR/opt/encryptpad/bin
+cd bin/release
+tar cfB - . | ( cd $B_INSTALLDIR/opt/encryptpad/bin; tar xfB - )
+B_LINKFILES /opt/encryptpad/bin /usr/bin
+cd ../..
+
+for res in 16 32 128
+do
+   IC=$B_INSTALLDIR/usr/share/icons/hicolor/${res}x${res}/apps
+   mkdir -p $IC
+   cp images/icns.iconset/icon_${res}x${res}.png $IC/encryptpad.png
+done
+mkdir -p $B_INSTALLDIR/usr/share/applications
+cp $B_FILES/encryptpad.desktop $B_INSTALLDIR/usr/share/applications
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: encryptpad
+Version: B_VERSION
+Section: encryptpad
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: Encryptpad custom B_ORG build
+Homepage: https://evpo.net/encryptpad/
