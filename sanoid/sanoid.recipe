@@ -6,7 +6,7 @@ B_GITVER https://github.com/jimsalterjrs/sanoid.git
 [BUILD]
 B_GET git https://github.com/jimsalterjrs/sanoid.git sanoid
 cd sanoid
-git checkout tags/$B_VERSION
+git checkout tags/v$B_VERSION
 
 mkdir -p $B_INSTALLDIR/bin
 mkdir -p $B_INSTALLDIR/etc/$B_NAME
