@@ -10,7 +10,7 @@ cd keepassxc
 git checkout tags/$B_VERSION
 mkdir build
 cd build
-cmake -DWITH_XC_ALL=ON -DCMAKE_INSTALL_PREFIX=/usr/local ..
+cmake -DWITH_XC_ALL=ON -DCMAKE_INSTALL_PREFIX=/opt/keepassxc ..
 make install DESTDIR=$B_INSTALLDIR
 make test
 
