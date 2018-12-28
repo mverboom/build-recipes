@@ -2,7 +2,7 @@
 B_GITVER https://github.com/tinyproxy/tinyproxy.git
 
 [REQUIRED]
-asciidoc xmlto flex bison autogen automake
+make asciidoc xmlto flex bison autogen automake
 
 [BUILD]
 B_GET git https://github.com/tinyproxy/tinyproxy.git tinyproxy
