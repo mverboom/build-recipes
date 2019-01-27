@@ -1,0 +1,1 @@
+* * * * * www-data /usr/bin/php /opt/snipe-it/artisan schedule:run >> /dev/null 2>&1

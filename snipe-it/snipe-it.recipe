@@ -1,0 +1,45 @@
+[INFO]
+arch=all
+
+[VERSION]
+B_GITVER https://github.com/snipe/snipe-it
+
+[REQUIRED]
+php-cli
+
+[BUILD]
+B_GET git https://github.com/snipe/snipe-it snipe-it
+cd snipe-it
+git checkout v$B_VERSION
+wget -O composer-setup.php https://getcomposer.org/installer
+mkdir bin
+export HTTP_PROXY=wwwproxy:8080
+export HTTPS_PROXY=wwwproxy:8080
+php composer-setup.php --install-dir=bin --filename=composer
+rm composer-setup.php
+bin/composer install --ignore-platform-reqs --no-dev --prefer-source --working-dir .
+rm -rf bin
+mkdir -p $B_INSTALLDIR/opt/snipe-it $B_INSTALLDIR/etc/snipe-it $B_INSTALLDIR/var/lib/snipe-it
+cp .env.example $B_INSTALLDIR/etc/snipe-it/config
+mv public/.htaccess $B_INSTALLDIR/etc/snipe-it/htaccess
+ln -s /etc/snipe-it/config .env
+ln -s /etc/snipe-it/htaccess public/.htaccess
+mv storage $B_INSTALLDIR/var/lib/snipe-it
+ln -s /var/lib/snipe-it/storage storage
+mv bootstrap/cache $B_INSTALLDIR/var/lib/snipe-it
+ln -s /var/lib/snipe-it/cache bootstrap/cache
+tar cf - . | (cd $B_INSTALLDIR/opt/snipe-it ; tar xf - )
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: snipe-it
+Version: B_VERSION
+Section: snipe-it
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: Snipe-it custom B_ORG build
+Homepage: https://snipeitapp.com/

@@ -1,0 +1,3 @@
+After changing the configuration file, flush the cached version:
+
+php /opt/snipe-it/artisan config:clear
