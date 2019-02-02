@@ -14,9 +14,14 @@ cmake -DWITH_XC_ALL=ON -DCMAKE_INSTALL_PREFIX=/opt/keepassxc ..
 make install DESTDIR=$B_INSTALLDIR
 make test
 
+B_LINKFILES /opt/keepassxc/bin/ /usr/bin/
+B_LINKFILES /opt/keepassxc/lib/ /usr/lib/
+B_LINKFILES /opt/keepassxc/share/ /usr/share/
+
 [PKG]
 type=deb
 torepo=y
+
 [DEB]
 Package: keepassxc
 Version: B_VERSION
