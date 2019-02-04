@@ -1,0 +1,47 @@
+[VERSION]
+B_GITVER https://github.com/nextcloud/desktop
+
+[REQUIRED]
+qt5-default openssl libssl-dev libzip-dev qtdeclarative5-dev qtwebengine5-dev qt5keychain-dev qttools5-dev sqlite3 libsqlite3-dev libqt5svg5-dev zlib1g-dev libkf5kjs-dev doxygen python-nautilus libkf5config-dev kio-dev extra-cmake-modules libqt5webkit5-dev
+
+[BUILD]
+B_GET git https://github.com/nextcloud/desktop nextcloud
+
+cd nextcloud
+git checkout tags/v$B_VERSION
+mkdir build
+cd build
+cmake .. -DCMAKE_INSTALL_PREFIX=/opt/nextcloud-desktop
+make install DESTDIR=$B_INSTALLDIR
+
+B_LINKFILES /opt/nextcloud-desktop/bin /usr/bin
+B_LINKFILES /opt/nextcloud-desktop/etc /etc
+B_LINKFILES /opt/nextcloud-desktop/include /usr/include
+B_LINKFILES /opt/nextcloud-desktop/lib/x86_64-linux-gnu /usr/lib/x86_64-linux-gnu
+B_LINKFILES /opt/nextcloud-desktop/share/applications /usr/share/applications
+
+B_LINKFILES /opt/nextcloud-desktop/share/icons/hicolor/16x16/apps /usr/share/icons/hicolor/16x16/apps
+B_LINKFILES /opt/nextcloud-desktop/share/icons/hicolor/22x22/apps /usr/share/icons/hicolor/22x22/apps
+B_LINKFILES /opt/nextcloud-desktop/share/icons/hicolor/32x32/apps /usr/share/icons/hicolor/32x32/apps
+B_LINKFILES /opt/nextcloud-desktop/share/icons/hicolor/48x48/apps /usr/share/icons/hicolor/48x48/apps
+B_LINKFILES /opt/nextcloud-desktop/share/icons/hicolor/64x64/apps /usr/share/icons/hicolor/64x64/apps
+B_LINKFILES /opt/nextcloud-desktop/share/icons/hicolor/72x72/apps /usr/share/icons/hicolor/72x72/apps
+B_LINKFILES /opt/nextcloud-desktop/share/icons/hicolor/128x128/apps /usr/share/icons/hicolor/128x128/apps
+B_LINKFILES /opt/nextcloud-desktop/share/icons/hicolor/256x256/apps /usr/share/icons/hicolor/256x256/apps
+B_LINKFILES /opt/nextcloud-desktop/share/icons/hicolor/512x512/apps /usr/share/icons/hicolor/512x512/apps
+B_LINKFILES /opt/nextcloud-desktop/share/icons/hicolor/1024x1024/apps /usr/share/icons/hicolor/1024x1024/apps
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: nextcloud-desktop
+Version: B_VERSION
+Section: system
+Priority: optional
+Architecture: all
+Depends: libqt5webkit5, libqt5xml5, libqt5concurrent5, libqt5keychain1, libqt5webchannel5, libqt5webenginewidgets5, libqt5webenginecore5
+Maintainer: B_MAIL
+Description: nextCloud - Building self-hosted products that allow you to be productive without losing control
+Homepage: https://nextcloud.com
