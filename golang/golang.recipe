@@ -2,7 +2,7 @@
 arch=amd64
 
 [VERSION]
-B_GITVER -a https://go.googlesource.com/go "rc\|weekly\|beta" | sed "s/go//"
+B_GITVER  -f weekly https://go.googlesource.com/go | sed "s/go//"
 
 [REQUIRED]
 golang-go
