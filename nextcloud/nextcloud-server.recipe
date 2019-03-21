@@ -1,0 +1,28 @@
+[VERSION]
+B_GITVER https://github.com/nextcloud/server
+
+[BUILD]
+B_GET git https://github.com/nextcloud/server nextcloud
+
+cd nextcloud
+git checkout tags/v$B_VERSION
+mkdir -p $B_INSTALLDIR/var/www/nextcloud
+git submodule init
+git submodule update
+rm -rf .bowerrc bower.json .jshintrc composer.json .drone.yml .scrutinizer.yml .codecov.yml .git* .idea .mailmap .tag .tx  AUTHORS COPYING COPYING-README *.md *.sh 3rdparty/.git* 3rdparty/.drone.yml 3rdparty/LICENSE\ INFO 3rdparty/README.md 3rdparty/patches.txt
+cp -r . $B_INSTALLDIR/var/www/nextcloud
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: nextcloud-server
+Version: B_VERSION
+Section: system
+Priority: optional
+Architecture: all
+Depends: php, php-common, php-gd, php-intl, php-mcrypt, php-curl, php-json, php-mysqlnd | php-mysql, php-sqlite3, php-pgsql, php-cgi | php-fpm | libapache2-mod-php, apache2 (>= 2.4.0), php-xml, php-mbstring, php-zip, php-imagick, php-ldap
+Maintainer: B_MAIL
+Description: nextCloud - Building self-hosted products that allow you to be productive without losing control
+Homepage: https://nextcloud.com
