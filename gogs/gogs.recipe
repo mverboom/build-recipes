@@ -5,7 +5,7 @@ arch=amd64
 B_GITVER https://github.com/gogits/gogs
 
 [REQUIRED]
-golang-custom libpam0g-dev gcc
+golang-B_PF libpam0g-dev gcc
 
 [BUILD]
 export GOROOT=/opt/go
@@ -34,5 +34,5 @@ Priority: optional
 Architecture: B_ARCH
 Maintainer: B_MAIL
 Homepage: https://gogs.io
-Description: Gogs B_ORG custom build
+Description: Gogs B_PF custom build
 Depends: git

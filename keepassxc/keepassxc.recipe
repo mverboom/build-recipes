@@ -2,7 +2,7 @@
 B_GITVER https://github.com/keepassxreboot/keepassxc
 
 [REQUIRED]
-build-essential cmake g++ qtbase5-dev qttools5-dev qttools5-dev-tools libgcrypt20-dev libargon2-0-dev zlib1g-dev libxi-dev libxtst-dev libqt5x11extras5-dev libyubikey-dev libykpers-1-dev libsodium-dev libcurl4-openssl-dev libqt5svg5-dev libghc-qrencode-dev
+build-essential cmake g++ qtbase5-dev qttools5-dev qttools5-dev-tools libgcrypt20-dev libargon2-0-dev zlib1g-dev libxi-dev libxtst-dev libqt5x11extras5-dev libyubikey-dev libykpers-1-dev libsodium-dev libcurl4-openssl-dev libqt5svg5-dev libqrencode-dev
 
 [BUILD]
 B_GET git https://github.com/keepassxreboot/keepassxc keepassxc
@@ -16,7 +16,27 @@ make test
 
 B_LINKFILES /opt/keepassxc/bin/ /usr/bin/
 B_LINKFILES /opt/keepassxc/lib/ /usr/lib/
-B_LINKFILES /opt/keepassxc/share/ /usr/share/
+B_LINKFILES /opt/keepassxc/share/applications /usr/share/applications
+B_LINKFILES /opt/keepassxc/share/icons/hicolor/128x128/apps /usr/share/icons/hicolor/128x128/apps
+B_LINKFILES /opt/keepassxc/share/icons/hicolor/128x128/mimetypes /usr/share/icons/hicolor/128x128/mimetypes
+B_LINKFILES /opt/keepassxc/share/icons/hicolor/48x48/apps /usr/share/icons/hicolor/48x48/apps
+B_LINKFILES /opt/keepassxc/share/icons/hicolor/64x64/mimetypes /usr/share/icons/hicolor/64x64/mimetypes
+B_LINKFILES /opt/keepassxc/share/icons/hicolor/64x64/apps /usr/share/icons/hicolor/64x64/apps
+B_LINKFILES /opt/keepassxc/share/icons/hicolor/24x24/apps /usr/share/icons/hicolor/24x24/apps
+B_LINKFILES /opt/keepassxc/share/icons/hicolor/256x256/apps /usr/share/icons/hicolor/256x256/apps
+B_LINKFILES /opt/keepassxc/share/icons/hicolor/32x32/apps /usr/share/icons/hicolor/32x32/apps
+B_LINKFILES /opt/keepassxc/share/icons/hicolor/32x32/mimetypes /usr/share/icons/hicolor/32x32/mimetypes
+B_LINKFILES /opt/keepassxc/share/icons/hicolor/scalable/mimetypes /usr/share/icons/hicolor/scalable/mimetypes
+B_LINKFILES /opt/keepassxc/share/icons/hicolor/scalable/apps /usr/share/icons/hicolor/scalable/apps
+B_LINKFILES /opt/keepassxc/share/icons/hicolor/22x22/mimetypes /usr/share/icons/hicolor/22x22/mimetypes
+B_LINKFILES /opt/keepassxc/share/icons/hicolor/16x16/mimetypes /usr/share/icons/hicolor/16x16/mimetypes
+B_LINKFILES /opt/keepassxc/share/icons/hicolor/16x16/apps /usr/share/icons/hicolor/16x16/apps
+B_LINKFILES /opt/keepassxc/share/keepassxc/ /usr/share/keepassxc
+B_LINKFILES /opt/keepassxc/share/man/man1 /usr/share/man/man1
+B_LINKFILES /opt/keepassxc/share/metainfo /usr/share/metainfo
+B_LINKFILES /opt/keepassxc/share/mime/packages /usr/share/mime/packages
+
+
 
 [PKG]
 type=deb
@@ -31,4 +51,4 @@ Architecture: B_ARCH
 Maintainer: B_MAIL
 Description: Cross Platform Password Manager
 Homepage: https://keepassxc.org
-Depends: libargon2-0 (>= 0~20160406~), libc6 (>= 2.14), libgcrypt20 (>= 1.7.0), libqt5core5a (>= 5.7.0), libqt5dbus5 (>= 5.0.2), libqt5gui5 (>= 5.7.0), libqt5network5 (>= 5.0.2), libqt5widgets5 (>= 5.6.0~beta), libqt5x11extras5 (>= 5.6.0), libsodium18 (>= 1.0.8), libstdc++6 (>= 5.2), libx11-6, libxi6, libxtst6, libykpers-1-1 (>= 1.12.0), libzxcvbn0 (>= 0.20150103), zlib1g (>= 1:1.1.4), libqrencode3, libqt5concurrent5
+Depends: libargon2-0 (>= 0~20160406~), libc6 (>= 2.14), libgcrypt20 (>= 1.7.0), libqt5core5a (>= 5.7.0), libqt5dbus5 (>= 5.0.2), libqt5gui5 (>= 5.7.0), libqt5network5 (>= 5.0.2), libqt5widgets5 (>= 5.6.0~beta), libqt5x11extras5 (>= 5.6.0), libsodium18 (>= 1.0.8), libstdc++6 (>= 5.2), libx11-6, libxi6, libxtst6, libykpers-1-1 (>= 1.12.0), libzxcvbn0 (>= 0.20150103), zlib1g (>= 1:1.1.4), libqrencode3 (>=3.4.4-1), libqt5concurrent5 (>=5.7.1)
