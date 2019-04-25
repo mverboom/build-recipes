@@ -1,0 +1,29 @@
+[INFO]
+arch=all
+
+[VERSION]
+git ls-remote --tags https://github.com/major/MySQLTuner-perl | grep -v '{}' | cut -d'/' -f 3 | sed "s/^v//" | sort -t. -k 1,1n -k 2,2n -k 3,3n -k 4,4n | tail -1
+
+[BUILD]
+B_GET git https://github.com/major/MySQLTuner-perl mysqltuner
+cd mysqltuner
+git checkout tags/$B_VERSION
+sed -i 's_/usr/share/mysqltuner_/opt/mysqltuner_' mysqltuner.pl
+mkdir -p $B_INSTALLDIR/opt/mysqltuner/bin
+cp mysqltuner.pl $B_INSTALLDIR/opt/mysqltuner/bin/mysqltuner
+cp basic_passwords.txt vulnerabilities.csv $B_INSTALLDIR/opt/mysqltuner
+B_LINKFILES /opt/mysqltuner/bin /usr/bin
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: mysqltuner
+Version: B_VERSION
+Section: mysqltuner
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: Mysqltuner custom B_ORG build
+Homepage: https://github.com/major/MySQLTuner-perl
