@@ -1,0 +1,36 @@
+[INFO]
+arch=all
+
+[VERSION]
+B_GITVER https://github.com/cederberg/mibble
+
+[REQUIRED]
+ant openjdk-8-jdk
+
+[BUILD]
+B_GET git https://github.com/cederberg/mibble mibble
+cd mibble
+git checkout v${B_VERSION}
+ant
+
+mkdir -p ${B_INSTALLDIR}/opt/mibble
+rm bin/*.bat
+sed -i '/^#!/ aMIBBLE_HOME=/opt/mibble' bin/setenv.sh
+tar cf - bin classes lib doc | ( cd ${B_INSTALLDIR}/opt/mibble; tar xf - )
+B_LINKFILES /opt/mibble/bin /usr/bin
+#rm ${B_INSTALLDIR}/usr/bin/setenv.* ${B_INSTALLDIR}/usr/bin/*.bat
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: mibble
+Version: B_VERSION
+Section: mibble
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: Mibble custom B_ORG build
+Homepage: https://www.mibble.org
+Dependancies: default-jre
