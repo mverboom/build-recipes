@@ -1,0 +1,7 @@
+[Desktop Entry]
+Comment=Voice chat software
+Terminal=false
+Name=Teamspeak 3
+Exec=/opt/teamspeak/ts3client_runscript.sh
+Type=Application
+Icon=/opt/teamspeak/styles/default/logo-128x128.png

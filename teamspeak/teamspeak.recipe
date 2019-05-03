@@ -1,0 +1,29 @@
+[VERSION]
+curl -Ssq https://files.teamspeak-services.com/releases/client/ | egrep 'a href="[0-9]' | tail -1 | cut -d\" -f2
+
+[REQUIRED]
+
+[BUILD]
+B_GET http https://files.teamspeak-services.com/releases/client/$B_VERSION/TeamSpeak3-Client-linux_amd64-$B_VERSION.run teamspeak.run
+
+mkdir -p $B_INSTALLDIR/opt/teamspeak
+head -2000 teamspeak.run | egrep '^filesize|^offset' | sed 's/$0/teamspeak.run/' > buildenv
+. buildenv
+scriptoffset=$(( $(grep offset buildenv | grep -ho [0-9]*) + 1 ))
+tail +$scriptoffset teamspeak.run | head -c $filesizes | tar xz -C $B_INSTALLDIR/opt/teamspeak
+
+[PKG]
+
+type=deb
+torepo=r
+
+[DEB]
+Package: teamspeak
+Version: B_VERSION
+Section: communication
+Priority: optional
+Architecture: B_ARCH
+Conflicts: teamspeak
+Maintainer: B_MAIL
+Description: Use crystal clear sound to communicate with your team mates cross-platform with military-grade security, lag-free performance & unparalleled reliability and uptime.
+Homepage: https://www.teamspeak.com/
