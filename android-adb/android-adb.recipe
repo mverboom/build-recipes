@@ -1,0 +1,25 @@
+[INFO]
+arch=amd64
+
+[VERSION]
+wget -O - -q https://developer.android.com/studio/releases/platform-tools.html | sed '/<h4/!d; s/<h4 .*>\([0-9.]\+\) .*<\/h4>/\1/' | sort -t. -k 1,1n -k 2,2n -k 3,3n -k 4,4n | tail -1
+
+[BUILD]
+B_GET http https://dl.google.com/android/repository/platform-tools_r${B_VERSION}-linux.zip adb.zip
+unzip adb.zip platform-tools/adb platform-tools/fastboot
+mkdir -p $B_INSTALLDIR/usr/bin/
+cp platform-tools/* $B_INSTALLDIR/usr/bin
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: android-adb
+Version: B_VERSION
+Section: android-adb
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: Android-adb custom B_ORG build
+Homepage: https://developer.android.com/studio/releases/platform-tools.html
