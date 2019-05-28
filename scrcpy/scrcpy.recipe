@@ -31,4 +31,4 @@ Architecture: B_ARCH
 Maintainer: B_MAIL
 Description: scrcpy custom B_ORG buildscrcpy
 Homepage: https://github.com/Genymobile/scrcpy/
-Depends: ffmpeg,libsdl2-2.0-0
+Depends: ffmpeg,libsdl2-2.0-0,android-adb-B_PF
