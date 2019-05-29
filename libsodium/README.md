@@ -1,0 +1,3 @@
+# libsodium
+
+Libsodium build recipe.
