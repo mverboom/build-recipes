@@ -1,0 +1,34 @@
+[INFO]
+arch=amd64
+
+[VERSION]
+B_GITVER https://github.com/shadowsocks/shadowsocks-libev
+
+[REQUIRED]
+gettext build-essential autoconf libtool libpcre3-dev asciidoc libmbedtls-dev libsodium-B_PF
+make gcc autoconf libtool libpcre3-dev asciidoc libmbedtls-dev libsodium-B_PF libc-ares-dev libev-dev
+
+[BUILD]
+B_GET git https://github.com/shadowsocks/shadowsocks-libev shadowsocks-libev
+cd shadowsocks-libev
+git checkout v$B_VERSION
+git submodule update --init --recursive
+./autogen.sh
+./configure --with-sodium=/opt/libsodium --prefix=/opt/shadowsocks-libev
+make
+make install DESTDIR=$B_INSTALLDIR
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: shadowsocks-libev
+Version: B_VERSION
+Section: shadowsocks-libev
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: Shadowsocks-libev custom B_ORG build
+Homepage: https://shadowsocks.org
+Depends: libev4,libmbedcrypto0,libc-ares2,libsodium-B_PF
