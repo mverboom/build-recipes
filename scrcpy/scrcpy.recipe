@@ -11,11 +11,12 @@ make gcc pkg-config meson ninja-build libavcodec-dev libavformat-dev libavutil-d
 B_GET git https://github.com/Genymobile/scrcpy scrcpy
 cd scrcpy
 git checkout v$B_VERSION
-wget -O scrcpy-server.jar -q https://github.com/Genymobile/scrcpy/releases/download/v1.8/scrcpy-server-v1.8.jar
-meson x --buildtype release --strip -Db_lto=true -Dprebuilt_server=./scrcpy-server.jar --prefix=/opt/scrcpy
+wget -O server/scrcpy-server.jar -q https://github.com/Genymobile/scrcpy/releases/download/v${B_VERSION}/scrcpy-server-v${B_VERSION}.jar
+meson x --buildtype release --strip -Db_lto=true --prefix=/opt/scrcpy -Dprebuilt_server=server/scrcpy-server.jar
 cd x
 ninja
 DESTDIR=$B_INSTALLDIR ninja install
+ln -s /opt/scrcpy/share/scrcpy/scrcpy-server.jar $B_INSTALLDIR/opt/scrcpy/bin/
 B_LINKFILES /opt/scrcpy/bin /usr/bin
 
 [PKG]
