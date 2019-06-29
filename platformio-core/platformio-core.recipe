@@ -1,0 +1,29 @@
+[INFO]
+arch=all
+
+[VERSION]
+B_GITVER https://github.com/platformio/platformio-core
+
+[REQUIRED]
+python-pip
+
+[BUILD]
+pip install --system --prefix=$B_INSTALLDIR/opt/platformio-core platformio==$B_VERSION
+B_LINKFILES -r /opt/platformio-core/lib/python2.7/site-packages /usr/local/lib/python2.7/dist-packages
+B_LINKFILE /opt/platformio-core/bin/pio /usr/bin
+B_LINKFILE /opt/platformio-core/bin/piodebuggdb /usr/bin
+B_LINKFILE /opt/platformio-core/bin/platformio /usr/bin
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: platformio-core
+Version: B_VERSION
+Section: platformio-core
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: Platformio-core custom B_ORG build
+Homepage: https://platformio.org/
