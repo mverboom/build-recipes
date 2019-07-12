@@ -1,0 +1,56 @@
+#!/bin/sh
+# postinst script for grafana
+#
+
+set -e
+
+case "$1" in
+    configure|reconfigure)
+    # create an grafana group and user
+        if ! grep -q "^grafana:" /etc/passwd; then
+        adduser --system --home /var/lib/grafana --no-create-home grafana
+        addgroup --system grafana
+        adduser grafana grafana
+        fi
+
+    if [ -d /var/lib/grafana ]; then
+        chown -R grafana:grafana /var/lib/grafana
+    fi
+
+    if [ -d /var/log/grafana ]; then
+        chown -R grafana:grafana /var/log/grafana
+    fi
+
+    if [ -d /etc/grafana ]; then
+        chgrp -R grafana /etc/grafana
+    fi
+
+    # create rundir
+    mkdir -p /var/run/grafana
+    chown -R grafana:grafana /var/run/grafana
+    ;;
+
+    abort-upgrade|abort-remove|abort-deconfigure)
+    ;;
+
+    *)
+        echo "postinst called with unknown argument \`$1'" >&2
+        exit 1
+    ;;
+esac
+
+deb-systemd-helper unmask grafana.service >/dev/null || true
+
+# was-enabled defaults to true, so new installations run enable.
+if deb-systemd-helper --quiet was-enabled grafana.service; then
+	# Enables the unit on first installation, creates new
+	# symlinks on upgrades if the unit file has changed.
+	deb-systemd-helper enable grafana.service >/dev/null || true
+else
+	# Update the statefile to add new symlinks (if any), which need to be
+	# cleaned up on purge. Also remove old symlinks.
+	deb-systemd-helper update-state grafana.service >/dev/null || true
+fi
+# End automatically added section
+
+exit 0

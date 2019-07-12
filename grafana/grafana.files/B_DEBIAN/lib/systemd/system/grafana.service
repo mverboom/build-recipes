@@ -1,0 +1,26 @@
+[Unit]
+Description=Grafana
+Documentation=http://docs.grafana.org
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+EnvironmentFile=/etc/default/grafana
+User=grafana
+Group=grafana
+Type=simple
+Restart=on-failure
+WorkingDirectory=/opt/grafana
+ExecStart=/opt/grafana/bin/grafana-server                                           \
+                            --pidfile=${PID_FILE_DIR}/grafana-server.pid            \
+                            --packaging=deb                                         \
+                            cfg:default.paths.logs=${LOG_DIR}                       \
+                            cfg:default.paths.data=${DATA_DIR}                      \
+                            cfg:default.paths.plugins=${PLUGINS_DIR}                \
+                            cfg:default.paths.provisioning=${PROVISIONING_CFG_DIR}  
+LimitNOFILE=10000
+TimeoutStopSec=20
+UMask=0027
+
+[Install]
+WantedBy=multi-user.target

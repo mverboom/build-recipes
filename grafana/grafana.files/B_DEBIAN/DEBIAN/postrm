@@ -1,0 +1,43 @@
+#!/bin/sh
+# postrm script for grafana
+
+set -e
+
+
+case "$1" in
+    purge|remove|upgrade|failed-upgrade|abort-install|abort-upgrade|disappear)
+      # Only remove /var/lib/grafana and /var/log/grafana on purge
+      if [ "${1}" = "purge" ] ; then
+          rm -rf /var/lib/grafana
+          rm -rf /var/log/grafana
+      fi
+    ;;
+    *)
+        echo "postrm called with unknown argument \`$1'" >&2
+        exit 1
+    ;;
+esac
+
+if [ "$1" = "purge" ] ; then
+	update-rc.d grafana remove >/dev/null
+fi
+
+
+if [ -d /run/systemd/system ] ; then
+	systemctl --system daemon-reload >/dev/null || true
+fi
+
+if [ "$1" = "remove" ]; then
+	if [ -x "/usr/bin/deb-systemd-helper" ]; then
+		deb-systemd-helper mask grafana.service >/dev/null
+	fi
+fi
+
+if [ "$1" = "purge" ]; then
+	if [ -x "/usr/bin/deb-systemd-helper" ]; then
+		deb-systemd-helper purge grafana.service >/dev/null
+		deb-systemd-helper unmask grafana.service >/dev/null
+	fi
+fi
+
+exit 0

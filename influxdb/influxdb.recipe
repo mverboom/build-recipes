@@ -1,0 +1,45 @@
+[INFO]
+arch=amd64
+
+[VERSION]
+B_GITVER https://github.com/influxdata/influxdb
+
+[REQUIRED]
+golang-B_PF make dep-B_PF asciidoc
+
+[BUILD]
+export GOROOT=/opt/go
+export PATH=${PATH}:${GOROOT}/bin
+export GOPATH=$(pwd)
+
+mkdir -p src/github.com/influxdata
+cd src/github.com/influxdata
+B_GET git https://github.com/influxdata/influxdb influxdb
+cd influxdb
+git checkout v$B_VERSION
+sed -i 's/run("{}/run("\/usr/' build.py 
+./build.py
+mkdir -p $B_INSTALLDIR/opt/influxdb/bin
+cp build/* $B_INSTALLDIR/opt/influxdb/bin
+B_LINKFILES /opt/influxdb/bin /usr/bin
+pushd man
+make
+popd
+mkdir -p $B_INSTALLDIR/opt/influxdb/man/man1
+cp man/*.1 $B_INSTALLDIR/opt/influxdb/man/man1
+gzip $B_INSTALLDIR/opt/influxdb/man/man1/*.1
+B_LINKFILES /opt/influxdb/man/man1 /usr/share/man/man1
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: influxdb
+Version: B_VERSION
+Section: influxdb
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: Influxdb custom B_ORG build
+Homepage: https://www.influxdata.com/

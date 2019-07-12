@@ -1,0 +1,52 @@
+#!/bin/sh
+# postinst script for influxdb
+#
+
+set -e
+
+case "$1" in
+    configure|reconfigure)
+    # create an influxdb group and user
+        if ! grep -q "^influxdb:" /etc/passwd; then
+        adduser --system --home /var/lib/influxdb --no-create-home influxdb
+        addgroup --system influxdb
+        adduser influxdb influxdb
+        fi
+
+    if [ -d /var/lib/influxdb ]; then
+        chown -R influxdb:influxdb /var/lib/influxdb
+    fi
+
+    if [ -d /var/log/influxdb ]; then
+        chown -R influxdb:influxdb /var/log/influxdb
+    fi
+
+    # create rundir
+    mkdir -p /var/run/influxdb
+    chown -R influxdb:influxdb /var/run/influxdb
+    ;;
+
+    abort-upgrade|abort-remove|abort-deconfigure)
+    ;;
+
+    *)
+        echo "postinst called with unknown argument \`$1'" >&2
+        exit 1
+    ;;
+esac
+
+deb-systemd-helper unmask influxdb.service >/dev/null || true
+
+# was-enabled defaults to true, so new installations run enable.
+if deb-systemd-helper --quiet was-enabled influxdb.service; then
+	# Enables the unit on first installation, creates new
+	# symlinks on upgrades if the unit file has changed.
+	deb-systemd-helper enable influxdb.service >/dev/null || true
+else
+	# Update the statefile to add new symlinks (if any), which need to be
+	# cleaned up on purge. Also remove old symlinks.
+	deb-systemd-helper update-state influxdb.service >/dev/null || true
+fi
+# End automatically added section
+
+exit 0

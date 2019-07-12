@@ -1,0 +1,42 @@
+[INFO]
+arch=amd64
+
+[VERSION]
+B_GITVER https://github.com/grafana/grafana
+
+[REQUIRED]
+golang-B_PF gcc nodejs-lts-B_PF yarn-B_PF g++
+
+[BUILD]
+export GOROOT=/opt/go
+export PATH=${PATH}:${GOROOT}/bin
+export GOPATH=$(pwd)
+
+mkdir -p src/github.com/grafana
+cd src/github.com/grafana
+B_GET git https://github.com/grafana/grafana grafana
+cd grafana
+git checkout v$B_VERSION
+go run build.go setup
+go run build.go build
+yarn install --pure-lockfile
+yarn dev
+
+mkdir -p $B_INSTALLDIR/opt/grafana/bin
+cp bin/linux-amd64/grafana-server bin/linux-amd64/grafana-cli $B_INSTALLDIR/opt/grafana/bin
+tar cfB - public | (cd $B_INSTALLDIR/opt/grafana ; tar xfB - )
+ln -s /etc/grafana $B_INSTALLDIR/opt/grafana/conf
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: grafana
+Version: B_VERSION
+Section: grafana
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: Grafana custom B_ORG build
+Homepage: https://grafana.com
