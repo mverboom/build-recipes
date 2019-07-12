@@ -1,0 +1,47 @@
+#!/bin/sh
+# postrm script for telegraf
+
+set -e
+
+
+case "$1" in
+    purge|remove|upgrade|failed-upgrade|abort-install|abort-upgrade|disappear)
+      # Always remove /var/run/telegraf
+      rm -rf /var/run/telegraf
+
+      # Only remove /var/lib/telegraf and /var/log/telegraf on purge
+      if [ "${1}" = "purge" ] ; then
+          rm -rf /var/lib/telegraf
+          rm -rf /var/log/telegraf
+      fi
+    ;;
+
+    *)
+        echo "postrm called with unknown argument \`$1'" >&2
+        exit 1
+    ;;
+esac
+
+if [ "$1" = "purge" ] ; then
+	update-rc.d telegraf remove >/dev/null
+fi
+
+
+if [ -d /run/systemd/system ] ; then
+	systemctl --system daemon-reload >/dev/null || true
+fi
+
+if [ "$1" = "remove" ]; then
+	if [ -x "/usr/bin/deb-systemd-helper" ]; then
+		deb-systemd-helper mask telegraf.service >/dev/null
+	fi
+fi
+
+if [ "$1" = "purge" ]; then
+	if [ -x "/usr/bin/deb-systemd-helper" ]; then
+		deb-systemd-helper purge telegraf.service >/dev/null
+		deb-systemd-helper unmask telegraf.service >/dev/null
+	fi
+fi
+
+exit 0

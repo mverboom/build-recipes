@@ -1,0 +1,52 @@
+#!/bin/sh
+# postinst script for telegraf
+#
+
+set -e
+
+case "$1" in
+    configure|reconfigure)
+    # create an telegraf group and user
+        if ! grep -q "^telegraf:" /etc/passwd; then
+        adduser --system --home /var/lib/telegraf --no-create-home telegraf
+        addgroup --system telegraf
+        adduser telegraf telegraf
+        fi
+
+    if [ -d /var/lib/telegraf ]; then
+        chown -R telegraf:telegraf /var/lib/telegraf
+    fi
+
+    if [ -d /var/log/telegraf ]; then
+        chown -R telegraf:telegraf /var/log/telegraf
+    fi
+
+    # create rundir
+    mkdir -p /var/run/telegraf
+    chown -R telegraf:telegraf /var/run/telegraf
+    ;;
+
+    abort-upgrade|abort-remove|abort-deconfigure)
+    ;;
+
+    *)
+        echo "postinst called with unknown argument \`$1'" >&2
+        exit 1
+    ;;
+esac
+
+deb-systemd-helper unmask telegraf.service >/dev/null || true
+
+# was-enabled defaults to true, so new installations run enable.
+if deb-systemd-helper --quiet was-enabled telegraf.service; then
+	# Enables the unit on first installation, creates new
+	# symlinks on upgrades if the unit file has changed.
+	deb-systemd-helper enable telegraf.service >/dev/null || true
+else
+	# Update the statefile to add new symlinks (if any), which need to be
+	# cleaned up on purge. Also remove old symlinks.
+	deb-systemd-helper update-state telegraf.service >/dev/null || true
+fi
+# End automatically added section
+
+exit 0
