@@ -22,6 +22,17 @@ make install DESTDIR=$B_INSTALLDIR
 type=deb
 torepo=y
 
+[DEB BUSTER]
+Package: shadowsocks-libev
+Version: B_VERSION
+Section: shadowsocks-libev
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: Shadowsocks-libev custom B_ORG build
+Homepage: https://shadowsocks.org
+Depends: libev4,libmbedcrypto3,libc-ares2,libsodium-B_PF
+
 [DEB]
 Package: shadowsocks-libev
 Version: B_VERSION
