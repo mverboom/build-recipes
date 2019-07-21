@@ -5,7 +5,7 @@ arch=all
 B_GITVER https://github.com/cederberg/mibble
 
 [REQUIRED]
-ant openjdk-8-jdk
+ant default-jdk-headless
 
 [BUILD]
 B_GET git https://github.com/cederberg/mibble mibble
@@ -33,4 +33,4 @@ Architecture: B_ARCH
 Maintainer: B_MAIL
 Description: Mibble custom B_ORG build
 Homepage: https://www.mibble.org
-Dependancies: default-jre
+Dependancies: default-jre-headless
