@@ -1,0 +1,38 @@
+[INFO]
+arch=amd64
+
+[VERSION]
+B_GITVER https://github.com/AsamK/signal-cli
+
+[REQUIRED]
+gradle default-jdk-headless make asciidoc
+
+[BUILD]
+B_GET git https://github.com/AsamK/signal-cli signal-cli
+cd signal-cli
+./gradlew build
+./gradlew installDist
+cd man
+make
+cd ..
+mkdir -p ${B_INSTALLDIR}/opt
+tar xf build/distributions/signal-cli-$B_VERSION.tar -C ${B_INSTALLDIR}/opt
+mv ${B_INSTALLDIR}/opt/signal* ${B_INSTALLDIR}/opt/signal-cli
+mkdir -p ${B_INSTALLDIR}/usr/bin ${B_INSTALLDIR}/usr/share/man/man1
+cp man/signal-cli.1 ${B_INSTALLDIR}/usr/share/man/man1
+B_LINKFILES /opt/signal-cli/bin /usr/bin
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: signal-cli
+Version: B_VERSION
+Section: signal-cli
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: signal-cli custom B_ORG build
+Homepage: https://github.com/AsamK/signal-cli
+Depends: default-jre-headless
