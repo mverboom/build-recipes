@@ -2,7 +2,7 @@
 arch=amd64
 
 [VERSION]
-B_GITVER -d weekly -f "^go" https://go.googlesource.com/go
+B_GITVER -e weekly -f "^go" https://go.googlesource.com/go
 
 [REQUIRED]
 golang-go
