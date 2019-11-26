@@ -1,0 +1,36 @@
+[INFO]
+arch=amd64
+
+[VERSION]
+B_GITVER https://github.com/apache/guacamole-server
+
+[REQUIRED]
+autoconf libtool make libpng-dev libjpeg-dev libcairo2-dev uuid-dev libossp-uuid-dev gcc libssl-dev libssh2-1-dev libwebp-dev libpulse-dev libvncserver-dev libtelnet-dev freerdp2-dev libpango1.0-dev libavutil-dev libswscale-dev libvorbis-dev
+
+[BUILD]
+B_GET git https://github.com/apache/guacamole-server guacamole-server
+cd guacamole-server
+git checkout ${B_VERSION}
+
+autoreconf -fi
+./configure --with-systemd-dir=/lib/systemd/system --prefix=/opt/guacamole --with-ssh --with-rdp --with-vnc --with-terminal --with-telnet --with-webp
+make
+make install DESTDIR=$B_INSTALLDIR
+mkdir -p $B_INSTALLDIR/var/lib/guacamole
+B_GET http "http://apache.org/dyn/closer.cgi?action=download&filename=guacamole/${B_VERSION}/binary/guacamole-${B_VERSION}.war" guacamole.war
+mv guacamole.war $B_INSTALLDIR/var/lib/guacamole/guacamole.war
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: guacamole-server
+Version: B_VERSION
+Section: guacamole
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: Guacamole server custom B_ORG build
+Homepage: https://guacamole.apache.org/
+Depends: libpng16-16,libpango1.0-0,libtelnet2,libssh2-1,libwebp6
