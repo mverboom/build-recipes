@@ -5,7 +5,7 @@ arch=amd64
 maven default-jdk
 
 [VERSION]
-B_GITHUBVER https://github.com/apache/guacamole-client
+B_GITVER https://github.com/apache/guacamole-client
 
 [BUILD]
 B_GET git https://github.com/apache/guacamole-client guacamole-client
