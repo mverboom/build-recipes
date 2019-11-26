@@ -1,13 +1,22 @@
+[INFO]
+arch=amd64
+
 [VERSION]
 B_GITVER -a https://github.com/netblue30/firejail
+
+[REQUIRED]
+gcc make
 
 [BUILD]
 B_GET git https://github.com/netblue30/firejail firejail
 cd firejail
 git checkout tags/$B_VERSION
-./configure
+./configure --prefix=/opt/firejail
 make
 make install DESTDIR=$B_INSTALLDIR
+B_LINKFILES /opt/firejail/bin /usr/bin
+B_LINKFILES /opt/firejail/share/man/man1 /usr/share/man/man1
+B_LINKFILES /opt/firejail/share/man/man5 /usr/share/man/man5
 
 [PKG]
 type=deb
