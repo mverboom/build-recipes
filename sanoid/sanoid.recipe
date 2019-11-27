@@ -26,7 +26,7 @@ Section: system
 Priority: optional
 Architecture: B_ARCH
 Conflicts: sanoid
-Depends: pv, lzop, mbuffer, libconfig-inifiles-perl
+Depends: pv, lzop, mbuffer, libconfig-inifiles-perl, libcapture-tiny-perl
 Maintainer: B_MAIL
 Description:  Policy-driven snapshot management and replication tools.
   Currently using ZFS for underlying next-gen storage, with explicit plans to 
