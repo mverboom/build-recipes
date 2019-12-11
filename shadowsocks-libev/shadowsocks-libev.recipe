@@ -17,6 +17,9 @@ git submodule update --init --recursive
 ./configure --with-sodium=/opt/libsodium --prefix=/opt/shadowsocks-libev
 make
 make install DESTDIR=$B_INSTALLDIR
+B_LINKFILES /opt/shadowsocks-libev/share/man/man1 /usr/share/man/man1
+B_LINKFILES /opt/shadowsocks-libev/share/man/man8 /usr/share/man/man8
+B_LINKFILES /opt/shadowsocks-libev/bin /usr/bin
 
 [PKG]
 type=deb
