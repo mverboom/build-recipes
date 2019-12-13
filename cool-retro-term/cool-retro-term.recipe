@@ -1,0 +1,31 @@
+[INFO]
+arch=amd64
+
+[VERSION]
+B_GITVER https://github.com/Swordfish90/cool-retro-term
+
+[REQUIRED]
+build-essential qmlscene qt5-qmake qt5-default qtdeclarative5-dev qml-module-qtquick-controls qml-module-qtgraphicaleffects qml-module-qtquick-dialogs qml-module-qtquick-localstorage qml-module-qtquick-window2 qml-module-qt-labs-settings qml-module-qt-labs-folderlistmodel
+
+[BUILD]
+B_GET git -s https://github.com/Swordfish90/cool-retro-term crt
+cd crt
+git checkout $B_VERSION
+qmake
+make
+make INSTALL_ROOT=$B_INSTALLDIR install
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: cool-retro-term
+Version: B_VERSION
+Section: cool-retro-term
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: Cool retro term custom B_ORG build
+Homepage: https://github.com/Swordfish90/cool-retro-term
+Depends: libqt5quick5,libqt5widgets5,libqt5gui5,libqt5network5,libqt5sql5,libqt5core5a,qml-module-qtquick-localstorage
