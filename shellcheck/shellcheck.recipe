@@ -1,0 +1,37 @@
+[INFO]
+arch=amd64
+
+[VERSION]
+B_GITVER https://github.com/koalaman/shellcheck
+
+[REQUIRED]
+cabal-install libghc-quickcheck-instances-dev libghc-mtl-dev libghc-regex-tdfa-dev libghc-aeson-dev pandoc libghc-diff-dev
+
+[BUILD]
+B_GET git https://github.com/koalaman/shellcheck shellcheck
+cd shellcheck
+git checkout tags/v$B_VERSION
+cabal build
+pandoc -s -t man shellcheck.1.md -o shellcheck.1
+gzip shellcheck.1
+
+mkdir -p $B_INSTALLDIR/opt/shellcheck/bin $B_INSTALLDIR/opt/shellcheck/share/man1
+cp dist/build/shellcheck/shellcheck $B_INSTALLDIR/opt/shellcheck/bin
+cp shellcheck.1.gz $B_INSTALLDIR/opt/shellcheck/share/man1
+
+B_LINKFILES /opt/shellcheck/share/man1 /usr/share/man/man1
+B_LINKFILES /opt/shellcheck/bin /usr/bin
+
+[PKG]
+type=deb
+
+[DEB]
+Package: shellcheck
+Version: B_VERSION
+Section: shellcheck
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: Shellcheck custom B_ORG build
+Homepage: https://www.shellcheck.net/
+Depends: libatomic1
