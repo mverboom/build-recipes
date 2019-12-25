@@ -1,0 +1,29 @@
+[VERSION]
+B_GITDATE http://git.enyo.de/fw/debian/debsecan.git
+
+[INFO]
+arch=amd64
+excludefromall=1
+
+[REQUIRED]
+make python-apt-dev
+
+[BUILD DEBIAN BUSTER]
+B_GET git http://git.enyo.de/fw/debian/debsecan.git debsecan
+cd debsecan
+make
+make DESTDIR=$B_INSTALLDIR install
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: debsecan
+Version: B_VERSION
+Section: debsecan
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: Debsecan custom B_ORG build
+Homepage: http://www.enyo.de/fw/software/debsecan/
