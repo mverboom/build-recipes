@@ -40,7 +40,7 @@ B_LINKFILES /opt/keepassxc/share/mime/packages /usr/share/mime/packages
 type=deb
 torepo=y
 
-[DEB jessie]
+[DEB STRETCH]
 Package: keepassxc
 Version: B_VERSION
 Section: utils

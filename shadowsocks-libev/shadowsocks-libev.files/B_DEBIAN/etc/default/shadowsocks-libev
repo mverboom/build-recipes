@@ -1,25 +1,8 @@
-# Defaults for shadowsocks initscript
-# sourced by /etc/init.d/shadowsocks-libev
-# installed at /etc/default/shadowsocks-libev by the maintainer scripts
-
-#
-# This is a POSIX shell fragment
-#
-# Note: `START', `GROUP' and `MAXFD' options are not recognized by systemd.
-# Please change those settings in the corresponding systemd unit file.
-
-# Enable during startup?
-START=yes
-
 # Configuration file
-CONFFILE="/etc/shadowsocks/config.json"
+CONFFILE="/etc/shadowsocks/ss-manager.json"
 
-# Extra command line arguments
-DAEMON_ARGS="-u"
+# Daemon arguments
+DAEMON_ARGS=""
 
-# User and group to run the server as
-USER=nobody
-GROUP=nogroup
-
-# Number of maximum file descriptors
-MAXFD=32768
+# Daemon arguemnt for use with shadowsocks-manager
+#DAEMON_ARGS="-u --manager-address 127.0.0.1:6001"
