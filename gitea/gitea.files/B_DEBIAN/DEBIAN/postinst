@@ -21,6 +21,11 @@ case "$1" in
     fi
     chown git:git /var/log/gitea
     chown git:git /etc/gitea/app.ini /etc/gitea
+    sed -i "s/127.0.0.1/$(hostname --fqdn)/" /etc/gitea/app.ini
+    if ! test -e /etc/gitea/cert.pem; then
+       cd /etc/gitea
+       su -s /bin/bash -c "/opt/gitea/gitea cert --host $(hostname --fqdn)" git
+    fi
     systemctl enable gitea
     systemctl start gitea
   ;;
