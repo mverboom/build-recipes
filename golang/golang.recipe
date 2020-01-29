@@ -10,7 +10,7 @@ golang-go
 [BUILD]
 B_GET git https://go.googlesource.com/go go
 cd go
-git checkout go${B_VERSION}
+git checkout -b go${B_VERSION}
 cd src
 ./make.bash
 cd ../..

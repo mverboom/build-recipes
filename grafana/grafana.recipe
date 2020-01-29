@@ -5,7 +5,7 @@ arch=amd64
 B_GITVER https://github.com/grafana/grafana
 
 [REQUIRED]
-golang-B_PF gcc nodejs-10-B_PF yarn-B_PF g++
+golang-B_PF gcc nodejs-lts-B_PF yarn-B_PF g++
 
 [BUILD]
 export GOROOT=/opt/go

@@ -1,0 +1,30 @@
+[INFO]
+arch=amd64
+
+[VERSION]
+B_GITVER -r 's/-release//' https://github.com/huntergregal/mimipenguin
+
+[REQUIRED]
+gcc make gcc-multilib
+
+[BUILD]
+B_GET git https://github.com/huntergregal/mimipenguin mimipenguin
+cd mimipenguin
+git checkout ${B_VERSION}-release
+make
+mkdir -p $B_INSTALLDIR/usr/bin
+cp mimipenguin mimipenguin.py mimipenguin.sh $B_INSTALLDIR/usr/bin
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: mimipenguin
+Version: B_VERSION
+Section: mimipenguin
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Homepage: https://github.com/huntergregal/mimipenguin
+Description: mimipenguin B_PF custom build
