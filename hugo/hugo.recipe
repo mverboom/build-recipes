@@ -1,0 +1,34 @@
+[INFO]
+arch=amd64
+
+[VERSION]
+B_GITVER https://github.com/gohugoio/hugo
+
+[REQUIRED]
+golang-B_PF gcc g++
+
+[BUILD]
+B_GET go github.com/gohugoio/hugo hugo
+cd src/github.com/gohugoio/hugo
+git checkout v$B_VERSION
+go build --tags extended
+mkdir -p $B_INSTALLDIR/opt/hugo/bin
+cp hugo $B_INSTALLDIR/opt/hugo/bin
+B_LINKFILES /opt/hugo/bin /usr/bin
+mkdir -p $B_INSTALLDIR/opt/hugo/share/man/man1
+./hugo gen man --dir $B_INSTALLDIR/opt/hugo/share/man/man1
+B_LINKFILES /opt/hugo/share/man/man1 /usr/share/man/man1
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: hugo
+Version: B_VERSION
+Section: hugo
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Homepage: https://gohugo.io
+Description: hugo B_PF custom build
