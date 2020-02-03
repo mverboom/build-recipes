@@ -53,4 +53,6 @@ else
 fi
 # End automatically added section
 
+systemctl restart grafana
+
 exit 0
