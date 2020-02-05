@@ -1,0 +1,9 @@
+DocumentRoot /opt/privatebin/htdocs
+
+php_admin_value open_basedir /opt/privatebin:/var/lib/privatebin:/etc/privatebin/conf.php
+
+<Directory /opt/privatebin/htdocs>
+   Require all granted
+</Directory>
+
+SetEnv CONFIG_PATH /etc/privatebin

@@ -1,0 +1,3 @@
+# privatebin
+
+Privatebin build recipe

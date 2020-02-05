@@ -1,0 +1,32 @@
+[INFO]
+arch=all
+
+[VERSION]
+B_GITVER https://github.com/PrivateBin/PrivateBin
+
+[BUILD]
+B_GET git https://github.com/PrivateBin/PrivateBin privatebin
+cd privatebin
+git checkout $B_VERSION
+mkdir -p $B_INSTALLDIR/opt/privatebin/htdocs
+mkdir -p $B_INSTALLDIR/opt/privatebin/privatebin
+mkdir -p $B_INSTALLDIR/var/lib/privatebin
+mv doc lib tpl tst vendor $B_INSTALLDIR/opt/privatebin/privatebin
+sed -i "s/'PATH', ''/'PATH', '\/opt\/privatebin\/privatebin\/\/'/" index.php
+mv css i18n img js index.php $B_INSTALLDIR/opt/privatebin/htdocs
+mkdir -p $B_INSTALLDIR/etc/privatebin
+cat cfg/conf.sample.php | sed 's/dir = PATH "data"/dir = "\/var\/lib\/privatebin"/' > $B_INSTALLDIR/etc/privatebin/conf.php
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: privatebin
+Version: B_VERSION
+Section: privatebin
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Homepage: https://privatebin.info/
+Description: privatebin B_PF custom build
