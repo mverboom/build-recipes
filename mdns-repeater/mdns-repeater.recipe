@@ -1,0 +1,29 @@
+[INFO]
+arch=amd64
+
+[VERSION]
+B_GITVER https://github.com/kennylevinsen/mdns-repeater
+
+[REQUIRED]
+gcc make
+
+[BUILD]
+B_GET git https://github.com/kennylevinsen/mdns-repeater mdns-repeater
+cd mdns-repeater
+git checkout $B_VERSION
+make
+mkdir -p $B_INSTALLDIR/usr/bin
+cp mdns-repeater $B_INSTALLDIR/usr/bin
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: mdns-repeater
+Version: B_VERSION
+Section: mdns-repeater
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: Mdns-repeater custom B_ORG build

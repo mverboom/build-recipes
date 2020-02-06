@@ -1,0 +1,14 @@
+[Unit]
+Description=mdns-repeater
+After=network.target
+
+[Service]
+EnvironmentFile=/etc/default/mdns-repeater
+Type=simple
+WorkingDirectory=/tmp
+ExecStart=/usr/bin/mdns-repeater -f $INTERFACES
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+
