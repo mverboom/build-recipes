@@ -1,0 +1,48 @@
+# Split config where posting is authenticated through basic authentication
+server {
+    server_name example.com;
+
+    access_log  /var/log/nginx/example.com-access.log;
+    error_log  /var/log/nginx/example.com-error.log;
+
+    # privatebin on /p
+    location /p {
+       alias /opt/privatebin/htdocs;
+   
+       location ~* \.(jpg|jpeg|gif|css|png|js|map|woff|woff2|ttf|svg|eot)$ {
+          expires 30d;
+          access_log off;
+       }
+   
+       location ~ ^/(data|cfg|tmp) {                                        
+          deny all;                                                        
+       }                                                                    
+                                                                                
+       location ~* /(.*)\.(?:markdown|md|twig|yaml|yml|ht|htaccess|ini)$ {  
+          deny all;                                                        
+       } 
+       
+       location ~ /\. {
+          deny all;
+       }
+   
+       location /p {
+          index index.php;
+          alias /opt/privatebin/htdocs;
+          limit_except GET HEAD {
+             auth_basic 'Restricted';
+             auth_basic_user_file /etc/nginx/htpasswd;
+          }
+   
+          try_files $uri $uri/ /index.php;
+       }
+   
+       location ~ ^/p/(.+\.php)$ {
+          alias /opt/privatebin/htdocs/$1;
+          fastcgi_index index.php;
+          fastcgi_pass unix:/run/php/php7.3-fpm.sock;
+          fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+          include /etc/nginx/fastcgi_params;
+       }
+    }
+}
