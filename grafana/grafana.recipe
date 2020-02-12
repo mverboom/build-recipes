@@ -8,6 +8,9 @@ B_GITVER https://github.com/grafana/grafana
 golang-B_PF gcc nodejs-lts-B_PF yarn-B_PF g++
 
 [BUILD]
+# 20200207 MV: Prevent memory debug error
+GODEBUG=asyncpreemptoff=1
+
 export GOROOT=/opt/go
 export PATH=${PATH}:${GOROOT}/bin
 export GOPATH=$(pwd)
