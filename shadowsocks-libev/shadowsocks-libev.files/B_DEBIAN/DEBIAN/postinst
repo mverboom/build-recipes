@@ -1,0 +1,21 @@
+#!/bin/sh
+
+if test "$1" = "configure"; then
+  # Create a shadowsocks system group
+  if ! getent group shadowsocks > /dev/null; then
+      addgroup --quiet --system shadowsocks
+  fi
+
+  # Create a shadowsocks system user
+  if ! getent passwd shadowsocks > /dev/null; then
+      adduser --quiet --system \
+          --ingroup shadowsocks \
+          --home /var/lib/shadowsocks \
+          --no-create-home \
+          --disabled-password --shell /bin/bash \
+          shadowsocks
+      usermod -c "Shadowsocks user" shadowsocks
+  fi
+
+  chown -R shadowsocks:shadowsocks /var/lib/shadowsocks
+fi
