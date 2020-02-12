@@ -5,9 +5,12 @@ arch=amd64
 B_GITVER -e 'dev' https://github.com/go-gitea/gitea.git
 
 [REQUIRED]
-golang-B_PF libpam0g-dev gcc go-bindata
+golang-B_PF libpam0g-dev gcc go-bindata nodejs-B_PF
 
 [BUILD]
+# 20200207 MV: Prevent memory debug error
+GODEBUG=asyncpreemptoff=1
+
 B_GET go code.gitea.io/gitea gitea
 cd src/code.gitea.io/gitea
 git checkout v$B_VERSION
