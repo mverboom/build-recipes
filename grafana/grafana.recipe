@@ -20,7 +20,6 @@ cd src/github.com/grafana
 B_GET git https://github.com/grafana/grafana grafana
 cd grafana
 git checkout v$B_VERSION
-go get -u golang.org/x/xerrors # required in 6.4.1
 go run build.go setup
 go run build.go build
 yarn install --pure-lockfile
