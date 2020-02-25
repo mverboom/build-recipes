@@ -29,7 +29,7 @@ sed -i "/^raddbdir/d" Make.inc
 mv Make.inc.new Make.inc
 make install
 # Post install fixups
-mv $B_INSTALLDIR/etc/freeradius/raddb $B_INSTALLDIR/opt/freeradius/share/doc/example-config
+mv $B_INSTALLDIR/etc/freeradius $B_INSTALLDIR/opt/freeradius/share/doc/example-config
 mkdir -p $B_INSTALLDIR/var/lib/freeradius
 B_LINKFILES /opt/freeradius/share/man/man1 /usr/share/man/man1
 B_LINKFILES /opt/freeradius/share/man/man5 /usr/share/man/man5
