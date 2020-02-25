@@ -16,10 +16,12 @@ make
 sed -i "/^prefix/d" Make.inc
 sed -i "/^sysconfdir/d" Make.inc
 sed -i "/^localstatedir/d" Make.inc
+sed -i "/^logdir/d" Make.inc
 (
 	echo "prefix = $B_INSTALLDIR/opt/freeradius" 
 	echo "sysconfdir = $B_INSTALLDIR/etc/freeradius"
 	echo "localstatedir = $B_INSTALLDIR/var"
+	echo "logdir = $B_INSTALLDIR/var/log/freeradius"
 	cat Make.inc 
 ) > Make.inc.new
 mv Make.inc.new Make.inc
