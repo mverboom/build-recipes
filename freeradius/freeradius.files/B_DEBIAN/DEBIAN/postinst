@@ -1,0 +1,23 @@
+#!/bin/sh
+
+if test "$1" = "configure"; then
+  # Create a radius system group
+  if ! getent group radius > /dev/null; then
+      addgroup --quiet --system radius
+  fi
+  
+  # Create a radius system user
+  if ! getent passwd gvm > /dev/null; then
+      adduser --quiet --system \
+          --ingroup radius \
+          --home /opt/freeradius \
+          --no-create-home \
+          --disabled-password --shell /bin/bash \
+          radius
+      usermod -c "Radius user" radius
+  fi
+
+  chown -R radius:radius /var/log/radius /var/lib/radius
+
+  systemctl enable freeradius
+fi

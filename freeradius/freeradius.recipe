@@ -1,0 +1,49 @@
+[INFO]
+arch=amd64
+
+[VERSION]
+B_GITVER -D -F release_ -R "s/_/\./g" https://github.com/FreeRADIUS/freeradius-server
+
+[REQUIRED]
+cmake libtalloc-dev libssl-dev gcc libtalloc-dev
+
+[BUILD]
+B_GET git https://github.com/FreeRADIUS/freeradius-server freeradius
+cd freeradius
+git checkout tags/release_${B_VERSION//./_}
+./configure --prefix=/opt/freeradius --sysconfdir=/etc/freeradius --localstatedir=/var
+make
+sed -i "/^prefix/d" Make.inc
+sed -i "/^sysconfdir/d" Make.inc
+sed -i "/^localstatedir/d" Make.inc
+(
+	echo "prefix = $B_INSTALLDIR/opt/freeradius" 
+	echo "sysconfdir = $B_INSTALLDIR/etc/freeradius"
+	echo "localstatedir = $B_INSTALLDIR/var"
+	cat Make.inc 
+) > Make.inc.new
+mv Make.inc.new Make.inc
+make install
+# Post install fixups
+mv $B_INSTALLDIR/etc/freeradius/raddb $B_INSTALLDIR/opt/freeradius/share/doc/example-config
+mkdir -p $B_INSTALLDIR/var/lib/radius
+B_LINKFILES /opt/freeradius/share/man/man1 /usr/share/man/man1
+B_LINKFILES /opt/freeradius/share/man/man5 /usr/share/man/man5
+B_LINKFILES /opt/freeradius/share/man/man8 /usr/share/man/man8
+B_LINKFILES /opt/freeradius/bin /usr/bin
+B_LINKFILES /opt/freeradius/sbin /usr/sbin
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: freeradius
+Version: B_VERSION-deb10
+Section: freeradius
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Homepage: http://freeradius.org
+Description: freeradius
+Depends: libtalloc2,libssl1.0.0

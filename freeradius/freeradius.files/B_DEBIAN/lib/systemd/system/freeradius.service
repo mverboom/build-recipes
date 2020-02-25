@@ -1,0 +1,12 @@
+[Unit]
+Description=FreeRADIUS Server
+After=network.target
+
+[Service]
+ExecStartPre=/opt/freeradius/sbin/radiusd -C -d /etc/freeradius
+ExecStart=/opt/freeradius/sbin/radiusd -f -d /etc/freeradius
+ExecReload=/opt/freeradius/sbin/radiusd -C -d /etc/freeradius
+ExecReload=/bin/kill -HUP $MAINPID
+
+[Install]
+WantedBy=multi-user.target

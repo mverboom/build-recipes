@@ -1,0 +1,21 @@
+#!/bin/sh
+
+set -e
+
+if [ "$1" = "purge" ] ; then
+    if getent passwd radius >/dev/null; then
+        if which deluser >/dev/null 2>&1; then
+            deluser --quiet --system radius || echo "Could not remove radius user."
+        fi
+    fi
+    if getent group radius >/dev/null; then
+        if which delgroup >/dev/null 2>&1; then
+            delgroup --quiet --system radius || echo "Could not remove radius group."
+        fi
+    fi
+
+fi
+
+if [ -d /run/systemd/system ] ; then
+	systemctl --system daemon-reload >/dev/null || true
+fi
