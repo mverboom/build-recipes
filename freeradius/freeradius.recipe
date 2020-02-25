@@ -43,7 +43,7 @@ torepo=y
 
 [DEB]
 Package: freeradius
-Version: B_VERSION-deb10
+Version: B_VERSION
 Section: freeradius
 Priority: optional
 Architecture: B_ARCH
