@@ -11,17 +11,19 @@ cmake libtalloc-dev libssl-dev gcc libtalloc-dev
 B_GET git https://github.com/FreeRADIUS/freeradius-server freeradius
 cd freeradius
 git checkout tags/release_${B_VERSION//./_}
-./configure --prefix=/opt/freeradius --sysconfdir=/etc/freeradius --localstatedir=/var --with-logdir=/var/log/freeradius
+./configure --prefix=/opt/freeradius --sysconfdir=/etc/freeradius --localstatedir=/var --with-logdir=/var/log/freeradius --with-raddbdir=/etc/freeradius
 make
 sed -i "/^prefix/d" Make.inc
 sed -i "/^sysconfdir/d" Make.inc
 sed -i "/^localstatedir/d" Make.inc
 sed -i "/^logdir/d" Make.inc
+sed -i "/^raddbdir/d" Make.inc
 (
 	echo "prefix = $B_INSTALLDIR/opt/freeradius" 
 	echo "sysconfdir = $B_INSTALLDIR/etc/freeradius"
 	echo "localstatedir = $B_INSTALLDIR/var"
 	echo "logdir = $B_INSTALLDIR/var/log/freeradius"
+	echo "raddbdir = $B_INSTALLDIR/etc/freeradius"
 	cat Make.inc 
 ) > Make.inc.new
 mv Make.inc.new Make.inc
