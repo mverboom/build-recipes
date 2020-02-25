@@ -17,7 +17,8 @@ if test "$1" = "configure"; then
       usermod -c "Radius user" radius
   fi
 
-  chown -R radius:radius /var/log/radius /var/lib/radius
+  chown -R radius:radius /var/log/radius /var/lib/radius /etc/freeradius
+  chmod 750 /var/log/radius /var/lib/radius /etc/freeradius
 
   systemctl enable freeradius
 fi
