@@ -50,4 +50,4 @@ Architecture: B_ARCH
 Maintainer: B_MAIL
 Homepage: http://freeradius.org
 Description: freeradius
-Depends: libtalloc2,libssl1.0.0,libatomic1
+Depends: libtalloc2,libssl1.1,libatomic1,libpcap0.8
