@@ -8,19 +8,25 @@ B_GITVER https://github.com/influxdata/influxdb
 golang-B_PF make dep-B_PF asciidoc
 
 [BUILD]
-export GOROOT=/opt/go
-export PATH=${PATH}:${GOROOT}/bin
-export GOPATH=$(pwd)
+#export GOROOT=/opt/go
+#export PATH=${PATH}:${GOROOT}/bin
+#export GOPATH=$(pwd)
 
-mkdir -p src/github.com/influxdata
-cd src/github.com/influxdata
-B_GET git https://github.com/influxdata/influxdb influxdb
-cd influxdb
+#mkdir -p src/github.com/influxdata
+#cd src/github.com/influxdata
+#B_GET git https://github.com/influxdata/influxdb influxdb
+#cd influxdb
+
+B_GET go github.com/influxdata/influxdb influxdb
+cd src/github.com/influxdata/influxdb
+
 git checkout v$B_VERSION
-sed -i 's/run("{}/run("\/usr/' build.py 
-./build.py
+go get ./...
+go install ./...
+#sed -i 's/run("{}/run("\/usr/' build.py 
+#python3 ./build.py
 mkdir -p $B_INSTALLDIR/opt/influxdb/bin
-cp build/* $B_INSTALLDIR/opt/influxdb/bin
+cp $GOPATH/bin/* $B_INSTALLDIR/opt/influxdb/bin
 B_LINKFILES /opt/influxdb/bin /usr/bin
 pushd man
 make
