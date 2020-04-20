@@ -1,5 +1,5 @@
 [VERSION]
-wget -q  https://archive.apache.org/dist/directory/studio/dist/ -O - | cut -d '>' -f3 | cut -d'/' -f1 | grep -E '^[0-9\.v]+$' | sort -n | tail -1
+wget -q  https://archive.apache.org/dist/directory/studio/ -O - | cut -d '>' -f3 | cut -d'/' -f1 | grep -E '^[0-9\.vM-]+$' | sort -n | tail -1
 
 [REQUIRED]
 
