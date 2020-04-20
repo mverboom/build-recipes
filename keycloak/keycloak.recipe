@@ -2,7 +2,7 @@
 B_GITVER -a https://github.com/keycloak/keycloak
 
 [REQUIRED]
-openjdk-8-jdk maven
+openjdk-11-jdk maven
 
 [BUILD]
 B_GET git https://github.com/keycloak/keycloak keycloak
