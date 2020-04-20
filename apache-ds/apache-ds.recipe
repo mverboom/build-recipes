@@ -4,7 +4,7 @@ wget -q  https://archive.apache.org/dist/directory/studio/ -O - | cut -d '>' -f3
 [REQUIRED]
 
 [BUILD]
-B_GET http https://archive.apache.org/dist/directory/studio/dist/$B_VERSION/ApacheDirectoryStudio-linux-x86_64-${B_VERSION}.tar.gz apache-ds.tgz
+B_GET http https://archive.apache.org/dist/directory/studio/$B_VERSION/ApacheDirectoryStudio-${B_VERSION}-linux.gtk.x86_64.tar.gz apache-ds.tgz
 mkdir -p $B_INSTALLDIR/opt/apache-ds
 tar xzf apache-ds.tgz -C $B_INSTALLDIR/opt/apache-ds --strip-components 1
 
