@@ -1,0 +1,30 @@
+[INFO]
+arch=all
+
+[VERSION]
+B_GITVER https://github.com/vrana/adminer/
+
+[REQUIRED]
+php-cli
+
+[BUILD]
+B_GET git -s https://github.com/vrana/adminer adminer
+cd adminer
+git checkout v$B_VERSION
+./compile.php
+mkdir -p $B_INSTALLDIR/opt/adminer
+mv adminer-*.php $B_INSTALLDIR/opt/adminer/adminer.php
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: adminer
+Version: B_VERSION
+Section: adminer
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: Adminer custom B_ORG build
+Homepage: https://www.adminer.org/
