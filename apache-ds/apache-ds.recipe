@@ -1,10 +1,10 @@
 [VERSION]
-wget -q  https://archive.apache.org/dist/directory/studio/dist/ -O - | cut -d '>' -f3 | cut -d'/' -f1 | grep -E '^[0-9\.v]+$' | sort -n | tail -1
+wget -q  https://archive.apache.org/dist/directory/studio/ -O - | cut -d '>' -f3 | cut -d'/' -f1 | grep -E '^[0-9\.vM-]+$' | sort -n | tail -1
 
 [REQUIRED]
 
 [BUILD]
-B_GET http https://archive.apache.org/dist/directory/studio/dist/$B_VERSION/ApacheDirectoryStudio-linux-x86_64-${B_VERSION}.tar.gz apache-ds.tgz
+B_GET http https://archive.apache.org/dist/directory/studio/$B_VERSION/ApacheDirectoryStudio-${B_VERSION}-linux.gtk.x86_64.tar.gz apache-ds.tgz
 mkdir -p $B_INSTALLDIR/opt/apache-ds
 tar xzf apache-ds.tgz -C $B_INSTALLDIR/opt/apache-ds --strip-components 1
 
@@ -19,5 +19,6 @@ Section: apache-ds
 Priority: optional
 Architecture: B_ARCH
 Maintainer: B_MAIL
+Depends: openjdk-8-jre
 Description: Apache Directory Studio - Graphical LDAP Editor
  Apache Directory Studio is a complete directory tooling platform intended to be used with any LDAP server however it is particularly designed for use with ApacheDS. It is an Eclipse RCP application, composed of several Eclipse (OSGi) plugins, that can be easily upgraded with additional ones. 
