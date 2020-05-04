@@ -62,7 +62,7 @@ To deploy a remote OSPD-OpenVAS scanner the following steps need to be taken.
 
 * From your workstation copy over the required certficates and push to the remote
 
-``
+```
 CLIENT=remotescanner.example.com
 SERVER=gvm.example.com
 cd /tmp
@@ -70,11 +70,11 @@ scp $SERVER:/var/lib/gvm/private/CA/clientkey.pem .
 scp $SERVER:/var/lib/gvm/CA/clientcert.pem .
 scp $SERVER:/var/lib/gvm/CA/cacert.pem .
 scp clientkey.pem clientcert.pem cacert.pem $CLIENT:/tmp
-``
+```
 
 * Install and configure ospd-openvas on the remote
 
-``
+```
 ssh $CLIENT
 apt install ospd-openvas-lnw
 cd /etc/gvm
@@ -96,7 +96,7 @@ openvas-feed-update
 exit
 tail -f /var/log/gvm/ospd-openvas.log
 exit
-``
+```
 
 * Add the scanner from the GSA webinterface on the server:
 
@@ -120,11 +120,11 @@ exit
 
 * The scanner is now created. However there seems to be something strance in the GVM software that doesn't allow for a OSPD scanner to be used in a new scan profile. But it seems possible to work around this. From the commandline on the GVM server verify the scanner and if this succeeds change the type to OpenVAS:
 
-``
+```
 su - gvm
 /opt/gvm/sbin/gvmd --get-scanners
 /opt/gvm/sbin/gvmd --verify-scanner=<ID>
 /usr/sbin/gvmd --modify-scanner=<ID> --scanner-type="OpenVAS"
-``
+```
 
 * The scanner should now be usable from the webinterface in tasks.
