@@ -102,20 +102,20 @@ exit
 
 * Go to: Configuration -> Credentials
 * New credential
-** Name: <name of credential>
-** Type: Client Certificate
-** Allow insecure use: no
-** Certificate -> Browse clientcert.pem
-** Private key -> Browse clientkey.pem
+  * Name: <name of credential>
+  * Type: Client Certificate
+  * Allow insecure use: no
+  * Certificate -> Browse clientcert.pem
+  * Private key -> Browse clientkey.pem
 * Save
 * Configuration -> Scanners
 * New Scanner
-** Name: <name of remote scanner>
-** Type: OSP scanner
-** Host: <hostname of remote scanner>
-** Port: 9391
-** CA Certificate: cacert.pem
-** Credential: <name of credential>
+  * Name: <name of remote scanner>
+  * Type: OSP scanner
+  * Host: <hostname of remote scanner>
+  * Port: 9391
+  * CA Certificate: cacert.pem
+  * Credential: <name of credential>
 * Save
 
 * The scanner is now created. However there seems to be something strance in the GVM software that doesn't allow for a OSPD scanner to be used in a new scan profile. But it seems possible to work around this. From the commandline on the GVM server verify the scanner and if this succeeds change the type to OpenVAS:
