@@ -1,0 +1,54 @@
+[INFO]
+arch=amd64
+excludefromall=1
+
+[VERSION]
+B_GITVER https://github.com/greenbone/openvas-scanner
+
+[REQUIRED]
+cmake gcc pkg-config libssh-gcrypt-dev libgnutls28-dev libglib2.0-dev libpcap-dev libgpgme-dev bison libksba-dev libsnmp-dev libgcrypt20-dev gvm-libs-B_PF libhiredis-dev xmltoman clang-format uuid-dev
+
+[BUILD DEBIAN]
+B_GET git https://github.com/greenbone/openvas-scanner openvas-scanner
+cd openvas-scanner
+git checkout tags/v$B_VERSION
+export PKG_CONFIG_PATH=/opt/gvm/lib/pkgconfig:$PKG_CONFIG_PATH
+sed -i "/^set (OPENVAS_STATE_DIR/ s/openvas/gvm/" CMakeLists.txt
+sed -i "/^set (OPENVAS_SYSCONF_DIR/ s/openvas/gvm/" CMakeLists.txt
+mkdir build
+cd build
+cmake -DCMAKE_INSTALL_PREFIX=/opt/gvm -DSYSCONFDIR=/etc -DLOCALSTATEDIR=/var ..
+make
+make install DESTDIR=$B_INSTALLDIR
+sed -i "/^OPENVAS_SYSCONF_DIR/ s/openvas/gvm/" $B_INSTALLDIR/opt/gvm/bin/greenbone-nvt-sync
+B_LINKFILES /opt/gvm/bin /usr/bin
+B_LINKFILES /opt/gvm/sbin /usr/sbin
+B_LINKFILES /opt/gvm/share/man/man1 /usr/share/man/man1
+B_LINKFILES /opt/gvm/share/man/man8 /usr/share/man/man8
+mkdir -p $B_INSTALLDIR/etc/gvm
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB BUSTER]
+Package: openvas
+Version: B_VERSION
+Section: greenbone
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: Greenbone OpenVAS test custom B_ORG build
+Homepage: https://github.com/greenbone/openvas-scanner
+Depends: nmap-B_PF(>=5.51),gvm-libs-B_PF,redis-server,libssh-gcrypt-4,libhiredis0.14,libsnmp30,libpcap0.8,libgpgme11
+
+[DEB STRETCH]
+Package: openvas
+Version: B_VERSION
+Section: greenbone
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: Greenbone OpenVAS custom B_ORG build
+Homepage: https://github.com/greenbone/openvas-scanner
+Depends: nmap-B_PF(>=5.51),gvm-libs-B_PF,redis-server,libssh-gcrypt-4,libhiredis0.13,libsnmp30,libpcap0.8,libgpgme11

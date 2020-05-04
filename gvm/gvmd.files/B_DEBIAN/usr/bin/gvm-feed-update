@@ -1,0 +1,12 @@
+#!/bin/bash
+. /etc/profile
+LOG="/tmp/$$.log"
+err=0
+#greenbone-nvt-sync > "$LOG" 2>&1
+#test "$?" -ne "0" && err=1
+/usr/sbin/greenbone-scapdata-sync >> "$LOG" 2>&1
+test "$?" -ne "0" && err=1
+/usr/sbin/greenbone-certdata-sync >> "$LOG" 2>&1
+test "$?" -ne "0" && err=1
+test "$err" = 1 && cat "$LOG"
+rm -f "$LOG"

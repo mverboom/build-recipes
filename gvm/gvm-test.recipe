@@ -1,0 +1,49 @@
+[INFO]
+arch=all
+excludefromall=1
+
+[VERSION]
+echo none
+
+[BUILD]
+test "$B_FORCE" -eq "1" && opt="-f"
+
+B_METABUILD=1 # we are a meta package, skip lock checking.
+
+case $B_VERSION in
+"none") echo "Specify GVM version to build."; exit 1;
+;;
+11)
+   build $opt -b -p -r gvm-libs-test@11.0.0 \
+                       python-gvm-test@1.0.0
+   # We need above packages for those below, so make them apt installable
+   sudo apt-get -q update > /dev/null
+   build $opt -b -p -r gvm-tools-test@2.0.0 \
+                       ospd-test@2.0.0 \
+                       ospd-openvas-test@1.0.0 \
+                       openvas-smb-test@1.0.5 \
+                       openvas-test@7.0.0 \
+                       gvmd-test@9.0.0 \
+                       gsa-test@9.0.0
+;;
+esac
+
+[PKG]
+type=deb
+
+[DEB_DEPENDS]
+case "$B_VERSION" in
+11)
+   echo "python-gvm-test-B_PF (>=1.0.0), gvm-tools-test-B_PF (>=2.0.0~), openvas-smb-test-B_PF (>=1.0.5~), gvm-libs-test-B_PF (>=11.0.0~), ospd-test-B_PF (>=2.0.0~), ospd-openvas-test-B_PF (>=1.0.0), openvas-test-B_PF (>=7.0.0~), gvmd-test-B_PF (>=9.0.0~), gsa-test-B_PF (>=9.0.0~)"
+;;
+esac
+
+[DEB]
+Package: gvm-test
+Version: B_VERSION
+Section: greenbone
+Priority: optional
+Architecture: all
+Maintainer: B_MAIL
+Description: Greenbone Vulnerability Assessment Scanner custom B_ORG build
+Depends: B_DEPENDS

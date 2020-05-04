@@ -1,0 +1,63 @@
+#!/bin/sh
+ 
+if test "$1" = "configure"; then
+  # Create a gvm system group
+  if ! getent group gvm > /dev/null; then
+      addgroup --quiet --system gvm
+  fi
+  
+  # Create a gvm system user
+  if ! getent passwd gvm > /dev/null; then
+      adduser --quiet --system \
+          --ingroup gvm \
+          --home /opt/gvm \
+          --no-create-home \
+          --disabled-password --shell /bin/bash \
+          gvm
+      usermod -c "GVM user" gvm
+  fi
+
+  chown -R gvm:gvm /var/log/gvm /var/lib/gvm /var/run/gvm
+  systemd-tmpfiles --create
+
+  # Create and setup database
+  if test "$(sudo -u postgres bash -c 'psql -lqt' | grep '^ gvmd')" = ""; then
+     sudo -u postgres bash -c "createuser -DRS gvm;
+     createdb -O gvm gvmd;
+     psql gvmd -c \"
+     create role dba with superuser noinherit;
+     grant dba to gvm;
+     create extension \\\"uuid-ossp\\\";\""
+  fi
+
+  if test "$( su gvm -c "/usr/sbin/gvmd --get-users" | grep admin )" = ""
+  then
+     echo -n "Creating admin user... "
+     su gvm -c "/usr/sbin/gvmd --create-user=admin --role=Admin" > /dev/null 2>&1
+     test $? -ne 0 && { echo "Failed adding admin user."; exit 1; }
+     su gvm -c "/usr/sbin/gvmd --user=admin --new-password=admin" > /dev/nul 2>&1
+     test $? -ne 0 && { echo "Failed setting admin user password."; exit 1; }
+     echo "Done."
+  fi
+
+  if ! test -f /var/lib/gvm/CA/cacert.pem
+  then
+     echo -n "Generating certificates... "
+     su gvm -c "gvm-manage-certs -a" > /tmp/gvm-manage-certs.log 2>&1
+     test $? -ne 0 && { echo "Failed."; echo "See /tmp/gvm-manage-certs.log for details.\n"; exit 1; }
+     rm -f /tmp/gvm-manage-certs.log
+     echo "Done."
+  fi
+
+  if ! test -e /var/lib/gvm/scap-data/feed.xml; then
+     echo "No SCAP feed found, please update."
+  fi
+  if ! test -e /var/lib/gvm/cert-data/feed.xml; then
+     echo "No CERT feed found, please update."
+  fi
+
+  systemctl enable gvmd
+  systemctl start gvmd
+else
+  systemctl restart gvmd
+fi

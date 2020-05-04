@@ -1,0 +1,33 @@
+[INFO]
+arch=amd64
+excludefromall=1
+
+[VERSION]
+B_GITVER https://github.com/greenbone/gvm-libs
+
+[REQUIRED]
+cmake pkg-config libglib2.0-dev libgpgme-dev libgnutls28-dev uuid-dev libssh-gcrypt-dev libhiredis-dev bison libksba-dev libpcap-dev xmltoman
+
+[BUILD DEBIAN]
+B_GET git https://github.com/greenbone/gvm-libs gvm-libs
+cd gvm-libs
+git checkout tags/v$B_VERSION
+mkdir build
+cd build
+cmake -DCMAKE_INSTALL_PREFIX=/opt/gvm -DSYSCONF_INSTALL_DIR=/etc -DGVM_PID_DIR=/var/run/gvm ..
+make
+make install DESTDIR=$B_INSTALLDIR
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: gvm-libs
+Version: B_VERSION
+Section: greenbone
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: Greenbone gvm-libs custom B_ORG build
+Homepage: https://github.com/greenbone/gvm-libs

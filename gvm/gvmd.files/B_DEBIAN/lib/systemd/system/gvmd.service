@@ -1,0 +1,15 @@
+[Unit]
+Description=Greenbone Vulnerability Management Daemon
+After=postgresql.service
+
+[Service]
+EnvironmentFile=-/etc/default/gvmd
+Type=forking
+User=gvm
+Group=gvm
+ExecStart=/opt/gvm/sbin/gvmd $GVMD_OPTS
+ExecReload=/bin/kill -HUP $MAINPID
+KillMode=mixed
+
+[Install]
+WantedBy=multi-user.target

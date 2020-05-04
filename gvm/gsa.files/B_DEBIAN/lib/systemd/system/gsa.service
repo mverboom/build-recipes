@@ -1,0 +1,12 @@
+[Unit]
+Description=Greenbone Security Assistant
+Documentation=man:gsad(8) http://www.openvas.org/
+Wants=gvmd.service
+
+[Service]
+EnvironmentFile=-/etc/default/gsad
+Type=simple
+ExecStart=/opt/gvm/sbin/gsad --drop-privileges=gvm --foreground $GSAD_OPTS
+
+[Install]
+WantedBy=multi-user.target

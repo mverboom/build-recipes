@@ -1,0 +1,2 @@
+# Allow gvm to start openvas scanner as root
+gvm	ALL=(ALL) NOPASSWD:/opt/gvm/sbin/openvas

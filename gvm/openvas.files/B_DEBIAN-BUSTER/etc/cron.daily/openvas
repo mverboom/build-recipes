@@ -1,0 +1,2 @@
+#!/bin/sh
+su gvm -c /usr/bin/openvas-feed-update

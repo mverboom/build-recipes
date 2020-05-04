@@ -1,0 +1,14 @@
+[Unit]
+Description=OSP Daemon
+
+[Service]
+EnvironmentFile=-/etc/default/ospd-openvas
+Type=forking
+User=gvm
+Group=gvm
+ExecStart=/opt/gvm/bin/ospd-openvas --config /etc/gvm/ospd-openvas.conf $OSPDOPENVASOPTS
+ExecReload=/bin/kill -HUP $MAINPID
+KillMode=mixed
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,42 @@
+[VERSION]
+B_GITVER https://github.com/greenbone/python-gvm
+
+[INFO]
+arch=amd64
+excludefromall=1
+
+[REQUIRED]
+python3 python3-setuptools python3-bcrypt python3-cffi python3-cryptography python3-defusedxml python3-lxml python3-paramiko python3-pycparser python3-nacl python3-six
+
+[BUILD DEBIAN STRETCH]
+B_GET git https://github.com/greenbone/python-gvm python-gvm
+cd python-gvm
+git checkout v$B_VERSION
+mkdir -p $B_INSTALLDIR/opt/gvm/lib/python3.5/site-packages
+export PYTHONPATH="$B_INSTALLDIR/opt/gvm/lib/python3.5/site-packages:${PYTHONPATH}"
+python3 setup.py install --prefix $B_INSTALLDIR/opt/gvm
+rm -f $B_INSTALLDIR/opt/gvm/lib/python3.5/site-packages/easy-install.pth
+
+[BUILD DEBIAN BUSTER]
+B_GET git https://github.com/greenbone/python-gvm python-gvm
+cd python-gvm
+git checkout v$B_VERSION
+mkdir -p $B_INSTALLDIR/opt/gvm/lib/python3.7/site-packages
+export PYTHONPATH="$B_INSTALLDIR/opt/gvm/lib/python3.7/site-packages:${PYTHONPATH}"
+python3 setup.py install --prefix $B_INSTALLDIR/opt/gvm
+rm -f $B_INSTALLDIR/opt/gvm/lib/python3.7/site-packages/easy-install.pth
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: python-gvm
+Version: B_VERSION
+Section: greenbone
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: Greenbone python-gvm custom B_ORG build
+Homepage: https://github.com/greenbone/python-gvm
+Depends: python3, python3-nacl, python3-bcrypt, python3-cffi, python3-cryptography, python3-defusedxml, python3-lxml, python3-paramiko, python3-pycparser, python3-six

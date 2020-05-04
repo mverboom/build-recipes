@@ -1,0 +1,29 @@
+if test "$1" = "configure"; then
+  # Create a gvm system group
+  if ! getent group gvm > /dev/null; then
+      addgroup --quiet --system gvm
+  fi
+
+  # Create a gvm system user
+  if ! getent passwd gvm > /dev/null; then
+      adduser --quiet --system \
+          --ingroup gvm \
+          --home /opt/gvm \
+          --no-create-home \
+          --disabled-password --shell /bin/bash \
+          gvm
+      usermod -c "GVM user" gvm
+  fi
+  chown -R gvm:gvm /var/log/gvm
+  systemd-tmpfiles --create
+
+  # Add gvm to redis group
+  if ! $( getent group redis | grep gvm > /dev/null ); then
+     usermod -a -G redis gvm
+  fi
+
+  systemctl enable ospd-openvas
+  systemctl start ospd-openvas
+else
+  systemctl restart ospd-openvas
+fi

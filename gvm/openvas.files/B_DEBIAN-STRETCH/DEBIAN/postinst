@@ -1,0 +1,36 @@
+if test "$1" = "configure"; then
+  sysctl -p
+  ! test -L /etc/redis/redis.conf && mv /etc/redis/redis.conf /etc/redis/redis.conf.orig
+  ln -sf /etc/redis/redis-openvas.conf /etc/redis/redis.conf
+  systemctl restart redis-server
+
+  echo "max_hosts = $(nproc)" >> /etc/gvm/openvas.conf
+
+  # Create a gvm system group
+  if ! getent group gvm > /dev/null; then
+      addgroup --quiet --system gvm
+  fi
+
+  # Create a gvm system user
+  if ! getent passwd gvm > /dev/null; then
+      adduser --quiet --system \
+          --ingroup gvm \
+          --home /opt/gvm \
+          --no-create-home \
+          --disabled-password --shell /bin/bash \
+          gvm
+      usermod -c "GVM user" gvm
+  fi
+  chown -R gvm:gvm /var/lib/gvm
+
+  # Add gvm to redis group
+  if ! $( getent group redis | grep gvm > /dev/null ); then
+     usermod -a -G redis gvm
+  fi
+
+  if test ! -e /var/lib/gvm/gvmd/plugins/plugin_feed_info.inc
+  then
+     echo "No NVT feed found, update nvt feed."
+  fi
+
+fi

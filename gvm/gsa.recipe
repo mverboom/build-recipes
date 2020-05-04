@@ -1,0 +1,49 @@
+[INFO]
+arch=amd64
+excludefromall=1
+
+[VERSION]
+B_GITVER https://github.com/greenbone/gsa
+
+[REQUIRED]
+gvm-libs-B_PF cmake libmicrohttpd-dev libxml2-dev libglib2.0-dev libxml2-dev libxslt1-dev libpcap-dev libgpgme-dev libssh-gcrypt-dev libhiredis-dev python-polib xsltproc xmltoman nodejs-lts-B_PF yarn-B_PF uuid-dev
+
+[BUILD DEBIAN]
+B_GET git https://github.com/greenbone/gsa gsa
+cd gsa
+git checkout tags/v$B_VERSION
+export PKG_CONFIG_PATH=/opt/gvm/lib/pkgconfig:$PKG_CONFIG_PATH
+mkdir build
+cd build
+cmake -DCMAKE_INSTALL_PREFIX=/opt/gvm -DSYSCONF_INSTALL_DIR=/etc -DLOCALSTATEDIR=/var -D GVM_RUN_DIR=/var/run/gvm ..
+make
+make install DESTDIR=$B_INSTALLDIR
+B_LINKFILES /opt/gvm/sbin /usr/sbin
+B_LINKFILES /opt/gvm/share/man/man8 /usr/share/man/man8
+mkdir -p $B_INSTALLDIR/var/lib/gvm/private/CA $B_INSTALLDIR/var/lib/gvm/CA
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB BUSTER]
+Package: gsa
+Version: B_VERSION
+Section: greenbone
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: Greenbone Security Assistant custom B_ORG build
+Homepage: https://github.com/greenbone/gsa
+Depends: gvm-libs-B_PF,gvmd-B_PF,libmicrohttpd12,libhiredis0.14,libssh-gcrypt-4,openssl
+
+[DEB STRETCH]
+Package: gsa
+Version: B_VERSION
+Section: greenbone
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: Greenbone Security Assistant custom B_ORG build
+Homepage: https://github.com/greenbone/gsa
+Depends: gvm-libs-B_PF,gvmd-B_PF,libmicrohttpd12,libhiredis0.13,libssh-gcrypt-4,openssl

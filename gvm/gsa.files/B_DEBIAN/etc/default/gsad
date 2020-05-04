@@ -1,0 +1,3 @@
+# Options to pass to gasd
+# --timeout is web session timeout in minutes
+GSAD_OPTS="--timeout=15 --secure-cookie --http-sts --gnutls-priorities=SECURE256"

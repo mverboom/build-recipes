@@ -1,0 +1,5 @@
+# The installation prefix to find the ospd-openvas binary.
+PATH=/opt/gvm/bin:/opt/gvm/sbin:/usr/bin:/bin:$PATH
+PYTHONPATH=/opt/gvm/lib/python3.7/site-packages:$PYTHONPATH
+# Options to add to daemon
+#OSPDOPENVASOPTS=--ca-file /var/lib/gvm/CA/cacert.pem --cert-file /var/lib/gvm/CA/servercert.pem --key-file /var/lib/gvm/private/CA/serverkey.pem
