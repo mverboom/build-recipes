@@ -41,6 +41,6 @@ Section: greenbone
 Priority: optional
 Architecture: B_ARCH
 Maintainer: B_MAIL
-Description: Greenbone ospd-scanner test custom B_ORG build
+Description: Greenbone ospd-scanner custom B_ORG build
 Homepage: https://github.com/greenbone/ospd-scanner
-Depends: python3, ospd-B_PF, openvas-B_PF, python3-nacl, python3-redis, python3-bcrypt, python3-cffi, python3-cryptography, python3-lxml, ospd-B_PF, python3-paramiko, python3-psutil, python3-pycparser, python3-defusedxml, sudo
+Depends: python3, ospd-B_PF, openvas-B_PF, python3-nacl, python3-redis, python3-bcrypt, python3-cffi, python3-cryptography, python3-lxml, python3-paramiko, python3-psutil, python3-pycparser, python3-defusedxml, sudo

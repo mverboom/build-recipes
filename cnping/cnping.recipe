@@ -1,0 +1,29 @@
+[INFO]
+arch=all
+
+[VERSION]
+B_GITHUBVER https://github.com/cnlohr/cnping
+
+[REQUIRED]
+libxinerama-dev libxext-dev libx11-dev build-essential
+
+[BUILD]
+B_GET git https://github.com/cnlohr/cnping cnping
+cd cnping
+make all
+mkdir -p $B_INSTALLDIR/usr/bin
+cp cnping searchnet $B_INSTALLDIR/usr/bin
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: cnping
+Version: B_VERSION
+Section: cnping
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: cnping custom B_ORG build
+Homepage: https://github.com/cnlohr/cnping

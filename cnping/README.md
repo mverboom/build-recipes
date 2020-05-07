@@ -1,0 +1,3 @@
+# cnping
+
+Graphical ping utility
