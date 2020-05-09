@@ -1,5 +1,7 @@
 #!/bin/bash
 . /etc/profile
+PATH=/opt/gvm/lib:$PATH
+export PATH
 LOG="/tmp/$$.log"
 err=0
 greenbone-nvt-sync > "$LOG" 2>&1
