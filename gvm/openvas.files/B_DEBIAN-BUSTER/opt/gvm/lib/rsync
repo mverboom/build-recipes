@@ -1,0 +1,13 @@
+#!/bin/bash
+#
+# Rsync wrapper to try and actually sync the feed
+MAXRETRY=5
+
+retry=0
+stop=1
+while test "$stop" -ne "0" -a "$retry" -lt "$MAXRETRY"; do
+  /usr/bin/rsync "$@"
+  stop=$?
+  test "$stop" -ne "0" && { retry=$(( retry + 1)); echo "Rsync error, retrying ($retry of $MAXRETRY)..."; sleep 5; }
+done
+exit $stop
