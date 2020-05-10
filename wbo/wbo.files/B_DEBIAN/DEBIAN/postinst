@@ -1,0 +1,27 @@
+#!/bin/sh
+ 
+if test "$1" = "configure"; then
+  # Create a wbo system group
+  if ! getent group wbo > /dev/null; then
+      addgroup --quiet --system wbo
+  fi
+  
+  # Create a wbo system user
+  if ! getent passwd wbo > /dev/null; then
+      adduser --quiet --system \
+          --ingroup wbo \
+          --home /opt/wbo \
+          --no-create-home \
+          --disabled-password --shell /bin/bash \
+          wbo
+      usermod -c "WhiteBoardOnline user" wbo
+  fi
+
+  chown -R wbo:wbo /var/lib/wbo
+  #systemd-tmpfiles --create
+
+  systemctl enable wbo
+  systemctl start wbo
+else
+  systemctl restart wbo
+fi

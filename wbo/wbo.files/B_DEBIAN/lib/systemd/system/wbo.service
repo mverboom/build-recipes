@@ -1,0 +1,13 @@
+[Unit]
+Description=White Board Online
+
+[Service]
+EnvironmentFile=-/etc/wbo/config
+Type=simple
+User=wbo
+Group=wbo
+WorkingDirectory=/opt/wbo
+ExecStart=npm start
+
+[Install]
+WantedBy=multi-user.target

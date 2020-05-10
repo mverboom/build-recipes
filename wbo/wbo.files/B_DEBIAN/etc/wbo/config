@@ -1,0 +1,4 @@
+# Port for webserver to listen on
+PORT=8080
+# Storage location of whiteboards
+WBO_HISTORY_DIR=/var/lib/wbo

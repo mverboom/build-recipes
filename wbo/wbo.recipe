@@ -1,0 +1,33 @@
+[INFO]
+arch=amd64
+
+[VERSION]
+B_GITVER https://github.com/lovasoa/whitebophir
+
+[REQUIRED]
+nodejs-lts-B_PF
+
+[BUILD]
+B_GET git https://github.com/lovasoa/whitebophir wbo
+cd wbo
+git checkout v$B_VERSION
+npm install
+rm -f README.md Dockerfile docker-compose.yml AUTHORS LICENSE package-lock.json nightwatch.conf.js
+rm -rf .git* server-data
+mkdir -p $B_INSTALLDIR/opt/wbo
+tar cf - . | ( cd $B_INSTALLDIR/opt/wbo ; tar xf - )
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: wbo
+Version: B_VERSION
+Section: wbo
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: WhiteBoardOnline custom B_ORG build
+Homepage: https://github.com/lovasoa/whitebophir
+Depends: nodejs-lts-B_PF
