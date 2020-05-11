@@ -8,9 +8,9 @@ B_GITHUBVER https://github.com/cnlohr/cnping
 libxinerama-dev libxext-dev libx11-dev build-essential
 
 [BUILD]
-B_GET git https://github.com/cnlohr/cnping cnping
+B_GET git -s https://github.com/cnlohr/cnping cnping
 cd cnping
-make all
+make cnping searchnet
 mkdir -p $B_INSTALLDIR/usr/bin
 cp cnping searchnet $B_INSTALLDIR/usr/bin
 
