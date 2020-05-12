@@ -1,0 +1,27 @@
+[INFO]
+arch=amd64
+
+[VERSION]
+B_GITVER https://github.com/jgraph/drawio
+
+[BUILD]
+B_GET git https://github.com/jgraph/drawio drawio
+cd drawio
+git checkout v$B_VERSION
+cd src/main
+mkdir -p $B_INSTALLDIR/opt/drawio/
+mv webapp $B_INSTALLDIR/opt/drawio/
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: drawio
+Version: B_VERSION
+Section: drawio
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: DrawIO custom B_ORG build
+Homepage: https://www.diagrams.net/
