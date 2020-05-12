@@ -40,7 +40,7 @@ Architecture: B_ARCH
 Maintainer: B_MAIL
 Description: Greenbone OpenVAS test custom B_ORG build
 Homepage: https://github.com/greenbone/openvas-scanner
-Depends: nmap-B_PF(>=5.51),gvm-libs-B_PF,redis-server,libssh-gcrypt-4,libhiredis0.14,libsnmp30,libpcap0.8,libgpgme11
+Depends: nmap-B_PF(>=5.51),gvm-libs-B_PF,redis-server,libssh-gcrypt-4,libhiredis0.14,libsnmp30,libpcap0.8,libgpgme11,rsync
 
 [DEB STRETCH]
 Package: openvas
@@ -51,4 +51,4 @@ Architecture: B_ARCH
 Maintainer: B_MAIL
 Description: Greenbone OpenVAS custom B_ORG build
 Homepage: https://github.com/greenbone/openvas-scanner
-Depends: nmap-B_PF(>=5.51),gvm-libs-B_PF,redis-server,libssh-gcrypt-4,libhiredis0.13,libsnmp30,libpcap0.8,libgpgme11
+Depends: nmap-B_PF(>=5.51),gvm-libs-B_PF,redis-server,libssh-gcrypt-4,libhiredis0.13,libsnmp30,libpcap0.8,libgpgme11,rsync
