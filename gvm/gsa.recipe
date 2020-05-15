@@ -15,12 +15,13 @@ git checkout tags/v$B_VERSION
 export PKG_CONFIG_PATH=/opt/gvm/lib/pkgconfig:$PKG_CONFIG_PATH
 mkdir build
 cd build
-cmake -DCMAKE_INSTALL_PREFIX=/opt/gvm -DSYSCONF_INSTALL_DIR=/etc -DLOCALSTATEDIR=/var -D GVM_RUN_DIR=/var/run/gvm ..
+cmake -DCMAKE_INSTALL_PREFIX=/opt/gvm -DSYSCONFDIR=/etc -DSYSCONF_INSTALL_DIR=/etc -DLOCALSTATEDIR=/var -D GVM_RUN_DIR=/var/run/gvm -DLOGROTATE_DIR=/etc/logrotate.d -DDEFAULT_CONFIG_DIR=/etc/default -DSYSTEMD_SERVICE_DIR=/lib/systemd/system ..
 make
 make install DESTDIR=$B_INSTALLDIR
 B_LINKFILES /opt/gvm/sbin /usr/sbin
 B_LINKFILES /opt/gvm/share/man/man8 /usr/share/man/man8
 mkdir -p $B_INSTALLDIR/var/lib/gvm/private/CA $B_INSTALLDIR/var/lib/gvm/CA
+rm $B_INSTALLDIR/lib/systemd/system/gsad.service
 
 [PKG]
 type=deb

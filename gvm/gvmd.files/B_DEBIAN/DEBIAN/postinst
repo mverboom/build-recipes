@@ -28,6 +28,13 @@ if test "$1" = "configure"; then
      create role dba with superuser noinherit;
      grant dba to gvm;
      create extension \\\"uuid-ossp\\\";\""
+  else
+     echo -n "Migrating database... "
+     systemctl stop gvmd
+     su gvm -c "/opt/gvm/sbin/gvmd --migrate"
+     systemctl start gvmd
+     sleep 5
+     echo "Done."
   fi
 
   if test "$( su gvm -c "/usr/sbin/gvmd --get-users" | grep admin )" = ""

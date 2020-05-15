@@ -6,7 +6,7 @@ arch=amd64
 excludefromall=1
 
 [REQUIRED]
-python3 python3-setuptools python3-bcrypt python3-cffi python3-cryptography python3-defusedxml python3-lxml python3-paramiko python3-pycparser python3-nacl python3-six
+python3 python3-setuptools python3-bcrypt python3-cffi python3-cryptography python3-defusedxml python3-lxml python3-paramiko python3-pycparser python3-nacl python3-six python3-pip
 
 [BUILD DEBIAN STRETCH]
 B_GET git https://github.com/greenbone/python-gvm python-gvm
@@ -23,7 +23,8 @@ cd python-gvm
 git checkout v$B_VERSION
 mkdir -p $B_INSTALLDIR/opt/gvm/lib/python3.7/site-packages
 export PYTHONPATH="$B_INSTALLDIR/opt/gvm/lib/python3.7/site-packages:${PYTHONPATH}"
-python3 setup.py install --prefix $B_INSTALLDIR/opt/gvm
+#python3 setup.py install --prefix $B_INSTALLDIR/opt/gvm
+pip3 install --system --prefix=$B_INSTALLDIR/opt/gvm python-gvm
 rm -f $B_INSTALLDIR/opt/gvm/lib/python3.7/site-packages/easy-install.pth
 
 [PKG]
