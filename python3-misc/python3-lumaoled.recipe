@@ -1,0 +1,30 @@
+[VERSION]
+B_GITVER https://github.com/rm-hull/luma.oled
+
+[INFO]
+arch=amd64
+excludefromall=1
+
+[REQUIRED]
+python3-setuptools
+
+[BUILD DEBIAN]
+B_GET git https://github.com/rm-hull/luma.oled luma-oled
+cd luma-oled
+git checkout $B_VERSION
+python3 setup.py install --root=$B_INSTALLDIR --install-layout deb
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: python3-lumaoled
+Version: B_VERSION
+Section: python3
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: Python3 luma oled custom B_ORG build
+Homepage: https://github.com/rm-hull/luma.oled
+Depends: python3, python3-lumacore-B_PF, python3-smbus2-B_PF

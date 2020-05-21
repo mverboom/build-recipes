@@ -29,3 +29,4 @@ Architecture: B_ARCH
 Maintainer: B_MAIL
 Description: Freerdp custom B_ORG build
 Homepage: https://github.com/FreeRDP/FreeRDP
+Depends: libfaac0
