@@ -1,0 +1,30 @@
+[INFO]
+arch=amd64
+
+[VERSION]
+B_GITVER -r s/lsp-plugins-// https://github.com/sadko4u/lsp-plugins
+
+[REQUIRED]
+make gcc g++ pkg-config libsndfile1-dev libx11-dev libcairo2-dev libjack-dev lv2-dev php-cli  mesa-common-dev libglu1-mesa-dev ladspa-sdk
+
+[BUILD]
+B_GET git https://github.com/sadko4u/lsp-plugins lsp-plugins
+cd lsp-plugins
+git checkout lsp-plugins-$B_VERSION
+make clean
+make
+make DESTDIR=$B_INSTALLDIR PREFIX=/usr install
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: lsp-plugins
+Version: B_VERSION
+Section: lsp-plugins
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: LSP plugins custom B_ORG build
+Homepage: https://lsp-plug.in
