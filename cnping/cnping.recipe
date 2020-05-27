@@ -5,7 +5,7 @@ arch=all
 B_GITHUBVER https://github.com/cnlohr/cnping
 
 [REQUIRED]
-libxinerama-dev libxext-dev libx11-dev build-essential
+libxinerama-dev libxext-dev libx11-dev build-essential libgl1-mesa-dev
 
 [BUILD]
 B_GET git -s https://github.com/cnlohr/cnping cnping
