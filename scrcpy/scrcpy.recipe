@@ -18,6 +18,7 @@ ninja
 DESTDIR=$B_INSTALLDIR ninja install
 ln -s /opt/scrcpy/share/scrcpy/scrcpy-server.jar $B_INSTALLDIR/opt/scrcpy/bin/
 B_LINKFILES /opt/scrcpy/bin /usr/bin
+B_LINKFILES /opt/scrcpy/share/man/man1 /usr/share/man/man1
 
 [PKG]
 type=deb
