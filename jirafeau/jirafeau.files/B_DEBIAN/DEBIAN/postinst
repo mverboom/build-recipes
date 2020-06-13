@@ -1,0 +1,5 @@
+#!/bin/sh
+set -e
+
+chown -R www-data.www-data /var/lib/jirafeau
+chown www-data.www-data /opt/jirafeau/lib

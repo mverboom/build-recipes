@@ -1,0 +1,27 @@
+[INFO]
+arch=all
+
+[VERSION]
+B_GITVER https://gitlab.com/mojo42/Jirafeau
+
+[BUILD]
+B_GET git https://gitlab.com/mojo42/Jirafeau jirafeau
+cd jirafeau
+mkdir -p $B_INSTALLDIR/opt/jirafeau $B_INSTALLDIR/var/lib/jirafeau/async $B_INSTALLDIR/var/lib/jirafeau/files $B_INSTALLDIR/var/lib/jirafeau/links $B_INSTALLDIR/etc/jirafeau
+sed -i "/var_root/ s#''#'/var/lib/jirafeau'#" lib/config.original.php
+tar cfB - . | ( cd $B_INSTALLDIR/opt/jirafeau; tar xfB - )
+ln -s /opt/jirafeau/lib/config.local.php $B_INSTALLDIR/etc/jirafeau
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: jirafeau
+Version: B_VERSION
+Section: jirafeau
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Homepage: https://gitlab.com/mojo42/Jirafeau
+Description: jirafeau custom B_ORG build
