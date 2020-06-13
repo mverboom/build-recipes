@@ -1,0 +1,26 @@
+[INFO]
+arch=amd64
+
+[VERSION]
+echo 0.4
+
+[REQUIRED]
+gcc
+
+[BUILD]
+mkdir -p $B_INSTALLDIR/usr/bin
+gcc -o $B_INSTALLDIR/usr/bin/jitsiroomlist $B_FILES/jitsiroomlist.c
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: jitsiroomlist
+Version: B_VERSION
+Section: jitsiroomlist
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Homepage: https://community.jitsi.org/t/room-list-tool/45087/47
+Description: jitsiroomlist custom B_ORG build
