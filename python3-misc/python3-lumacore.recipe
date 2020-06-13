@@ -3,7 +3,6 @@ B_GITVER https://github.com/rm-hull/luma.core
 
 [INFO]
 arch=amd64
-excludefromall=1
 
 [REQUIRED]
 python3-setuptools
