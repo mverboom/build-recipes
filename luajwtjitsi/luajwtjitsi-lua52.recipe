@@ -1,0 +1,37 @@
+[INFO]
+arch=amd64
+
+[VERSION]
+echo "1.0"
+
+[REQUIRED]
+lua5.2 luarocks cmake libssl-dev liblua5.2-dev
+
+[BUILD]
+B_GET git https://github.com/evanlabs/luacrypto luacrypto
+cd luacrypto
+# ugly patches, but seems to work
+sed -i '/Lua51 REQUIRED/d' dist.cmake
+sed -i -r 's#(lua.h|lauxlib.h)#/usr/include/lua5.2/\1#' src/lcrypto.c
+PREFIX=$B_INSTALLDIR/usr/local
+sed -i 's/LUA_PREFIX/CMAKE_INSTALL_PREFIX/' rockspecs/luacrypto-git-1.rockspec
+luarocks --tree $B_INSTALLDIR/usr/local make
+mv $B_INSTALLDIR/usr/local/lib/lua/5.2/lua/crypto.so $B_INSTALLDIR/usr/local/lib/lua/5.2/crypto.so
+rmdir $B_INSTALLDIR/usr/local/lib/lua/5.2/lua
+luarocks install --tree $B_INSTALLDIR/usr/local net-url
+luarocks install --tree $B_INSTALLDIR/usr/local basexx
+luarocks install --tree $B_INSTALLDIR/usr/local lua-cjson 2.1.0-1
+luarocks install --tree $B_INSTALLDIR/usr/local luajwtjitsi
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: luajwtjitsi-lua52
+Version: B_VERSION
+Section: luajwtjitsi-lua52
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: luajwtjitsi-lua52 custom B_ORG build
