@@ -1,0 +1,42 @@
+[INFO]
+arch=amd64
+
+[VERSION]
+B_GITVER https://github.com/badaix/snapcast
+
+[REQUIRED]
+build-essential libasound2-dev libvorbisidec-dev libvorbis-dev libflac-dev alsa-utils libavahi-client-dev avahi-daemon libopus-dev
+
+[BUILD]
+B_GET git -s https://github.com/badaix/snapcast.git snapcast
+B_GET git -s https://github.com/boostorg/boost/ boost
+pushd boost
+rm -rf more
+git checkout boost-1.72.0
+./bootstrap.sh
+./b2 headers
+popd
+cd snapcast
+git checkout v$B_VERSION
+cd server
+make ADD_CFLAGS="-I../../boost"
+mkdir -p $B_INSTALLDIR/usr/bin $B_INSTALLDIR/usr/share/man/man1 $B_INSTALLDIR/etc
+cp snapserver $B_INSTALLDIR/usr/bin
+cp snapserver.1 $B_INSTALLDIR/usr/share/man/man1
+cp etc/snapserver.conf $B_INSTALLDIR/etc
+gzip $B_INSTALLDIR/usr/share/man/man1/snapserver.1
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: snapserver
+Version: B_VERSION
+Section: snapserver
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: snapserver custom B_ORG build
+Homepage: https://github.com/badaix/snapcast
+Depends: adduser, libavahi-client3, libavahi-common3, libc6, libflac8, libogg0, libvorbis0a, libvorbisenc2, init-system-helpers, libopus0
