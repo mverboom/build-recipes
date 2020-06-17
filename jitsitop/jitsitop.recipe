@@ -7,6 +7,7 @@ B_GITVER https://github.com/mverboom/jitsitop
 [BUILD]
 B_GET git https://github.com/mverboom/jitsitop jitsitop
 cd jitsitop
+git checkout v$B_VERSION
 mkdir -p $B_INSTALLDIR/usr/bin
 cp jitsitop $B_INSTALLDIR/usr/bin
 
@@ -21,6 +22,4 @@ Section: jitsitop
 Priority: optional
 Architecture: B_ARCH
 Maintainer: B_MAIL
-Homepage: https://github.com/mverboom/jitsitop
-Description: jitsitop custom B_ORG build
-Depends: python3, python3-requests, python3-tzlocal, python3-psutil, luajwtjitsi-lua52-B_PF
+Description: Jitsitop custom B_ORG build
