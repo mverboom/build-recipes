@@ -11,6 +11,7 @@ golang-go
 B_GET git https://go.googlesource.com/go go
 cd go
 git checkout -b go${B_VERSION}
+echo "go$B_VERSION" > src/VERSION
 cd src
 ./make.bash
 cd ../..

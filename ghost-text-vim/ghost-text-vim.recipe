@@ -1,0 +1,25 @@
+[INFO]
+arch=all
+
+[VERSION]
+B_GITHUBVER https://github.com/falstro/ghost-text-vim
+
+[BUILD]
+B_GET git https://github.com/falstro/ghost-text-vim ghost-text-vim
+cd ghost-text-vim
+mkdir -p $B_INSTALLDIR/usr/bin
+cp ghost-text-server.tcl $B_INSTALLDIR/usr/bin
+
+[PKG]
+type=deb
+
+[DEB]
+Package: ghost-text-vim
+Version: B_VERSION
+Section: ghost-text-vim
+Priority: optional
+Architecture: all
+Maintainer: B_MAIL
+Description: Ghost-text-vim custom B_ORG build
+Homepage: https://github.com/falstro/ghost-text-vim
+Depends: tcllib
