@@ -10,11 +10,13 @@ golang-go
 [BUILD]
 B_GET git https://go.googlesource.com/go go
 cd go
-git checkout -b go${B_VERSION}
-echo "go$B_VERSION" > src/VERSION
+git checkout go${B_VERSION}
+#echo "go$B_VERSION" > src/VERSION
 cd src
-./make.bash
-cd ../..
+./make.bash -v
+cd ..
+rm -rf .git .gitattributes .github .gitignore # src test
+cd ..
 mkdir -p $B_INSTALLDIR/opt
 tar cfB - go | ( cd $B_INSTALLDIR/opt ; tar xfB - )
 
