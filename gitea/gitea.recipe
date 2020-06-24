@@ -9,7 +9,7 @@ golang-B_PF libpam0g-dev gcc go-bindata nodejs-B_PF
 
 [BUILD]
 # 20200207 MV: Prevent memory debug error
-GODEBUG=asyncpreemptoff=1
+#GODEBUG=asyncpreemptoff=1
 
 B_GET go code.gitea.io/gitea gitea
 cd src/code.gitea.io/gitea
@@ -17,7 +17,7 @@ git checkout v$B_VERSION
 #TAGS="bindata sqlite  pam" make generate build
 TAGS="bindata sqlite sqlite_unlock_notify pam" make build
 mkdir -p $B_INSTALLDIR/opt/gitea/
-tar cfB - public templates scripts gitea | ( cd $B_INSTALLDIR/opt/gitea ; tar xfB - )
+tar cfB - public templates gitea | ( cd $B_INSTALLDIR/opt/gitea ; tar xfB - )
 B_LINKFILE /opt/gitea/gitea /usr/bin
 
 [PKG]
