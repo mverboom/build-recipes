@@ -3,6 +3,6 @@
 Version=1.0
 Type=Application
 Terminal=false
-Icon=/opt/apache-ds/ApacheDirectoryStudio.xpm
+Icon=/opt/apache-ds/icon.xpm
 Name=Apache Directory Studio
 Exec=/opt/apache-ds/ApacheDirectoryStudio
