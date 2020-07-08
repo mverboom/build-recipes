@@ -19,6 +19,6 @@ Section: apache-ds
 Priority: optional
 Architecture: B_ARCH
 Maintainer: B_MAIL
-Depends: openjdk-8-jre
+Depends: default-jre
 Description: Apache Directory Studio - Graphical LDAP Editor
  Apache Directory Studio is a complete directory tooling platform intended to be used with any LDAP server however it is particularly designed for use with ApacheDS. It is an Eclipse RCP application, composed of several Eclipse (OSGi) plugins, that can be easily upgraded with additional ones. 
