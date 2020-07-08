@@ -2,7 +2,7 @@
 B_GITVER https://github.com/keepassxreboot/keepassxc
 
 [REQUIRED]
-build-essential cmake g++ qtbase5-dev qttools5-dev qttools5-dev-tools libgcrypt20-dev libargon2-0-dev zlib1g-dev libxi-dev libxtst-dev libqt5x11extras5-dev libyubikey-dev libykpers-1-dev libsodium-dev libcurl4-openssl-dev libqt5svg5-dev libqrencode-dev
+build-essential cmake g++ qtbase5-dev qttools5-dev qttools5-dev-tools libgcrypt20-dev libargon2-dev zlib1g-dev libxi-dev libxtst-dev libqt5x11extras5-dev libyubikey-dev libykpers-1-dev libsodium-dev libcurl4-openssl-dev libqt5svg5-dev libqrencode-dev libquazip-dev libreadline-dev asciidoctor qtbase5-private-dev
 
 [BUILD]
 B_GET git https://github.com/keepassxreboot/keepassxc keepassxc
@@ -17,20 +17,20 @@ make test
 B_LINKFILES /opt/keepassxc/bin/ /usr/bin/
 B_LINKFILES /opt/keepassxc/lib/ /usr/lib/
 B_LINKFILES /opt/keepassxc/share/applications /usr/share/applications
-B_LINKFILES /opt/keepassxc/share/icons/hicolor/128x128/apps /usr/share/icons/hicolor/128x128/apps
-B_LINKFILES /opt/keepassxc/share/icons/hicolor/128x128/mimetypes /usr/share/icons/hicolor/128x128/mimetypes
-B_LINKFILES /opt/keepassxc/share/icons/hicolor/48x48/apps /usr/share/icons/hicolor/48x48/apps
-B_LINKFILES /opt/keepassxc/share/icons/hicolor/64x64/mimetypes /usr/share/icons/hicolor/64x64/mimetypes
-B_LINKFILES /opt/keepassxc/share/icons/hicolor/64x64/apps /usr/share/icons/hicolor/64x64/apps
-B_LINKFILES /opt/keepassxc/share/icons/hicolor/24x24/apps /usr/share/icons/hicolor/24x24/apps
+#B_LINKFILES /opt/keepassxc/share/icons/hicolor/128x128/apps /usr/share/icons/hicolor/128x128/apps
+#B_LINKFILES /opt/keepassxc/share/icons/hicolor/128x128/mimetypes /usr/share/icons/hicolor/128x128/mimetypes
+#B_LINKFILES /opt/keepassxc/share/icons/hicolor/48x48/apps /usr/share/icons/hicolor/48x48/apps
+#B_LINKFILES /opt/keepassxc/share/icons/hicolor/64x64/mimetypes /usr/share/icons/hicolor/64x64/mimetypes
+#B_LINKFILES /opt/keepassxc/share/icons/hicolor/64x64/apps /usr/share/icons/hicolor/64x64/apps
+#B_LINKFILES /opt/keepassxc/share/icons/hicolor/24x24/apps /usr/share/icons/hicolor/24x24/apps
 B_LINKFILES /opt/keepassxc/share/icons/hicolor/256x256/apps /usr/share/icons/hicolor/256x256/apps
-B_LINKFILES /opt/keepassxc/share/icons/hicolor/32x32/apps /usr/share/icons/hicolor/32x32/apps
-B_LINKFILES /opt/keepassxc/share/icons/hicolor/32x32/mimetypes /usr/share/icons/hicolor/32x32/mimetypes
+#B_LINKFILES /opt/keepassxc/share/icons/hicolor/32x32/apps /usr/share/icons/hicolor/32x32/apps
+#B_LINKFILES /opt/keepassxc/share/icons/hicolor/32x32/mimetypes /usr/share/icons/hicolor/32x32/mimetypes
 B_LINKFILES /opt/keepassxc/share/icons/hicolor/scalable/mimetypes /usr/share/icons/hicolor/scalable/mimetypes
 B_LINKFILES /opt/keepassxc/share/icons/hicolor/scalable/apps /usr/share/icons/hicolor/scalable/apps
-B_LINKFILES /opt/keepassxc/share/icons/hicolor/22x22/mimetypes /usr/share/icons/hicolor/22x22/mimetypes
-B_LINKFILES /opt/keepassxc/share/icons/hicolor/16x16/mimetypes /usr/share/icons/hicolor/16x16/mimetypes
-B_LINKFILES /opt/keepassxc/share/icons/hicolor/16x16/apps /usr/share/icons/hicolor/16x16/apps
+#B_LINKFILES /opt/keepassxc/share/icons/hicolor/22x22/mimetypes /usr/share/icons/hicolor/22x22/mimetypes
+#B_LINKFILES /opt/keepassxc/share/icons/hicolor/16x16/mimetypes /usr/share/icons/hicolor/16x16/mimetypes
+#B_LINKFILES /opt/keepassxc/share/icons/hicolor/16x16/apps /usr/share/icons/hicolor/16x16/apps
 B_LINKFILES /opt/keepassxc/share/keepassxc/ /usr/share/keepassxc
 B_LINKFILES /opt/keepassxc/share/man/man1 /usr/share/man/man1
 B_LINKFILES /opt/keepassxc/share/metainfo /usr/share/metainfo
