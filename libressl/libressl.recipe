@@ -1,0 +1,31 @@
+[INFO]
+arch=amd64
+
+[VERSION]
+B_GITVER https://github.com/libressl-portable/portable
+
+[REQUIRED]
+make gcc autoconf libtool
+
+[BUILD]
+B_GET http https://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-$B_VERSION.tar.gz libressl.tar.gz
+mkdir libressl
+tar xzf libressl.tar.gz -C libressl --strip-components 1
+cd libressl
+./configure --prefix=/opt/libressl
+make check
+make install DESTDIR=$B_INSTALLDIR
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: libressl
+Version: B_VERSION
+Section: libressl
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: Libressl custom B_ORG build
+Homepage: https://www.libressl.org
