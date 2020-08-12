@@ -1,0 +1,32 @@
+[VERSION]
+B_GITVER https://github.com/mozilla/ssh_scan
+
+[REQUIRED]
+
+[BUILD]
+B_GET git https://github.com/mozilla/ssh_scan ssh_scan
+cd ssh_scan
+git checkout tags/$B_VERSION
+mkdir -p $B_INSTALLDIR/opt/ssh_scan
+cp -r bin config lib $B_INSTALLDIR/opt/ssh_scan
+
+# Replace default '../config.. path with absolute path where we installed the package
+sed -i 's#"policy" => File.join(File.dirname(__FILE__),"../config/policies/mozilla_modern.yml"),#"policy" => "/opt/ssh_scan/config/policies/mozilla_modern.yml",#' $B_INSTALLDIR/opt/ssh_scan/bin/ssh_scan
+
+B_LINKFILES /opt/ssh_scan/lib /usr/lib/ruby/vendor_ruby
+B_LINKFILES /opt/ssh_scan/bin /usr/bin/
+
+[PKG]
+type=deb
+torepo=n
+
+[DEB]
+Package: ssh-scan
+Version: B_VERSION
+Section: utils
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: A SSH configuration and policy scanner
+Homepage: A SSH configuration and policy scanner
+Depends: ruby-bindata, ruby-netaddr, ruby-sshkey, ruby-net-ssh
