@@ -2,10 +2,10 @@
 arch=amd64
 
 [VERSION]
-B_GITVER -e 4.7.[23] https://github.com/wwmm/pulseeffects
+B_GITVER https://github.com/wwmm/pulseeffects
 
 [REQUIRED]
-meson gcc g++ pkg-config libglib2.0-dev appstream-util desktop-file-utils gettext itstool libpulse-dev libglibmm-2.4-dev libgtk-3-dev libgtkmm-3.0-dev libgstreamer1.0-dev libgstreamer-plugins-bad1.0-dev libboost-filesystem1.67-dev libboost-system1.67-dev libsndfile1-dev libebur128-dev libboost1.67-dev libzita-convolver-dev cmake libbs2b-dev liblilv-dev libsamplerate0-dev
+meson gcc g++ pkg-config libglib2.0-dev appstream-util desktop-file-utils gettext itstool libpulse-dev libglibmm-2.4-dev libgtk-3-dev libgtkmm-3.0-dev libgstreamer1.0-dev libgstreamer-plugins-bad1.0-dev libsndfile1-dev libebur128-dev libzita-convolver-dev cmake libbs2b-dev liblilv-dev libsamplerate0-dev boost-B_PF
 
 [BUILD]
 B_GET git https://github.com/wwmm/pulseeffects pulseeffects
