@@ -1,0 +1,31 @@
+[INFO]
+arch=amd64
+
+[VERSION]
+svn list https://svn.nmap.org/nmap-releases/ | tr -d '/' | grep -v -e BETA -e TEST | sed "s/nmap-//" | sort -t. -k 1,1n -k 2,2n -k 3,3n | tail -1
+
+[REQUIRED]
+gcc make g++ autoconf flex bison libssl-dev libssh2-1-dev
+
+[BUILD]
+export PYTHONDONTWRITEBYTECODE=0
+B_GET svn https://svn.nmap.org/nmap-releases nmap
+cd nmap
+cd *${B_VERSION}*
+./configure --prefix=/opt/nmap --without-zenmap
+make
+make install DESTDIR=$B_INSTALLDIR
+B_LINKFILES /opt/nmap/bin /usr/bin
+
+[PKG]
+type=deb
+
+[DEB]
+Package: nmap
+Version: B_VERSION
+Section: nmap
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: Nmap custom B_ORG build
+Homepage: www.nmap.org
