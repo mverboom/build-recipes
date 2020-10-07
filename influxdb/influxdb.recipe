@@ -2,7 +2,7 @@
 arch=amd64
 
 [VERSION]
-B_GITVER https://github.com/influxdata/influxdb
+B_GITVER -f 9.9.9 https://github.com/influxdata/influxdb
 
 [REQUIRED]
 golang-B_PF make dep-B_PF asciidoc
