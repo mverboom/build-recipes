@@ -1,0 +1,35 @@
+[INFO]
+arch=amd64
+
+[VERSION]
+B_GITVER https://github.com/microsoft/TypeScript
+
+[REQUIRED]
+nodejs-B_PF gulp-B_PF
+
+[BUILD]
+B_GET git https://github.com/microsoft/TypeScript typescript
+cd typescript
+git checkout v$B_VERSION
+rm -rf .git .github doc node_modules src tests .vscode
+#npm ci
+#gulp local
+#cd built/local
+mkdir -p $B_INSTALLDIR/opt/typescript
+tar cfB - . | ( cd $B_INSTALLDIR/opt/typescript ; tar xfB - )
+B_LINKFILES /opt/typescript/bin /usr/bin
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: typescript
+Version: B_VERSION
+Section: typscript
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: typscript custom B_ORG build
+Homepage: https://www.typescriptlang.org
+Depends: nodejs-B_PF
