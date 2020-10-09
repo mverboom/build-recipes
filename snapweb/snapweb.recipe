@@ -1,0 +1,31 @@
+[INFO]
+arch=amd64
+
+[VERSION]
+B_GITHUBVER https://github.com/badaix/snapweb
+
+[REQUIRED]
+make typescript-B_PF
+
+[BUILD]
+B_GET git https://github.com/badaix/snapweb snapweb
+cd snapweb
+make
+mkdir -p $B_INSTALLDIR/opt/snapweb
+cd dist
+tar cfB - . | ( cd $B_INSTALLDIR/opt/snapweb; tar xfB - )
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: snapweb
+Version: B_VERSION
+Section: snapweb
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: snapweb custom B_ORG build
+Homepage: https://github.com/badaix/snapweb
+Depends: adduser, libavahi-client3, libavahi-common3, libc6, libflac8, libogg0, libvorbis0a, libvorbisenc2, init-system-helpers, libopus0
