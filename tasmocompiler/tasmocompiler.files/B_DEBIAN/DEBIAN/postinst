@@ -1,0 +1,22 @@
+#!/bin/sh
+ 
+if test "$1" = "configure"; then
+   # Create a tasmocompiler system group
+   if ! getent group tasmocompiler > /dev/null; then
+       addgroup --quiet --system tasmocompiler
+   fi
+   
+   # Create a tasmocompiler system user
+   if ! getent passwd tasmocompiler > /dev/null; then
+       adduser --quiet --system \
+           --ingroup tasmocompiler \
+           --home /var/lib/tasmocompiler \
+           --no-create-home \
+           --disabled-password --shell /bin/bash \
+           tasmocompiler
+       usermod -c "Tasmocompiler user" tasmocompiler
+   fi
+   chown -R tasmocompiler.tasmocompiler /var/lib/tasmocompiler
+   systemctl enable tasmocompiler
+fi
+systemctl restart tasmocompiler

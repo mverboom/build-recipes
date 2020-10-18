@@ -1,0 +1,12 @@
+[Unit]
+Description=Tasmocompiler
+After=network.target
+
+[Service]
+EnvironmentFile=-/etc/default/tasmocompiler
+Type=simple
+User=tasmocompiler
+ExecStart=node /opt/tasmocompiler/server/server.js
+
+[Install]
+WantedBy=multi-user.target
