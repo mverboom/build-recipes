@@ -1,0 +1,34 @@
+[INFO]
+arch=amd64
+
+[VERSION]
+B_GITVER https://github.com/nodejs/node/
+
+[REQUIRED]
+python make gcc g++ python3-distutils
+
+[BUILD]
+#B_GET http https://nodejs.org/dist/v$B_VERSION/node-v$B_VERSION.tar.gz nodejs.tar.gz
+B_GET git https://github.com/nodejs/node/ nodejs
+cd nodejs
+git checkout v$B_VERSION
+#mkdir nodejs
+#tar xzf nodejs.tar.gz -C nodejs --strip-components 1
+#cd nodejs
+./configure --prefix=/opt/nodejs
+make
+make install DESTDIR=$B_INSTALLDIR
+B_LINKFILES /opt/nodejs/bin /usr/bin
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: nodejs
+Version: B_VERSION
+Section: nodejs
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: Nodejs custom B_ORG build
