@@ -1,0 +1,34 @@
+[INFO]
+arch=amd64
+
+[VERSION]
+B_GITVER https://github.com/dashesy/cc-tool.git
+
+[REQUIRED]
+dh-autoreconf libusb-1.0 libboost-all-dev libglib2.0-dev
+
+[BUILD]
+B_GET git https://github.com/dashesy/cc-tool.git cc-tool
+cd cc-tool
+git checkout v$B_VERSION
+./bootstrap
+./configure --prefix=/opt/cc-tool
+make
+make DESTDIR=$B_INSTALLDIR install
+B_LINKFILES /opt/cc-tool/bin /usr/bin
+B_LINKFILES /opt/cc-tool/share/man/man1 /usr/share/man/man1
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: cc-tool
+Version: B_VERSION
+Section: cc-tool
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: cc-tool custom B_ORG build
+Homepage: https://github.com/dashesy/cc-tool.git
+Depends: libusb-1.0-0,libboost-filesystem1.67.0,libboost-regex1.67.0,libboost-system1.67.0,libboost-program-options1.67.0
