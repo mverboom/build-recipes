@@ -13,9 +13,7 @@ cd nodered
 git checkout tags/$B_VERSION
 npm install
 npm run build
-#npm install node-red-node-email
-#npm install node-red-contrib-graphs
-#npm install node-red-contrib-mpd
+rm -rf *.md .git* .nodemonignore package.json package-lock.json .travis.yml Gruntfile.js .jshintrc jsdoc.json LICENSE test
 mkdir -p $B_INSTALLDIR/opt/node-red/bin
 tar cf - . | ( cd $B_INSTALLDIR/opt/node-red ; tar xf - )
 cd $B_INSTALLDIR/opt/node-red/bin
