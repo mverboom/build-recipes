@@ -1,0 +1,30 @@
+[INFO]
+arch=amd64
+
+[VERSION]
+B_GITVER -i "^12" https://github.com/nodejs/node/
+
+[REQUIRED]
+python make gcc g++
+
+[BUILD]
+B_GET git https://github.com/nodejs/node/ nodejs
+cd nodejs
+git checkout v$B_VERSION
+./configure --prefix=/opt/nodejs
+make
+make install DESTDIR=$B_INSTALLDIR
+B_LINKFILES /opt/nodejs/bin /usr/bin
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: nodejs-12
+Version: B_VERSION
+Section: nodejs-12
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: Nodejs 12 custom B_ORG build
