@@ -1,0 +1,37 @@
+[INFO]
+arch=amd64
+
+[VERSION]
+B_GITVER https://github.com/node-red/node-red
+
+[REQUIRED]
+nodejs-lts-B_PF g++ make
+
+[BUILD]
+B_GET git https://github.com/node-red/node-red nodered
+cd nodered
+git checkout tags/$B_VERSION
+npm install
+npm run build
+#npm install node-red-node-email
+#npm install node-red-contrib-graphs
+#npm install node-red-contrib-mpd
+mkdir -p $B_INSTALLDIR/opt/node-red/bin
+tar cf - . | ( cd $B_INSTALLDIR/opt/node-red ; tar xf - )
+cd $B_INSTALLDIR/opt/node-red/bin
+ln -s ../packages/node_modules/node-red/bin/node-red-pi
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: node-red
+Version: B_VERSION
+Section: nodered
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: Node RED custom B_ORG build
+Homepage: http://nodered.org/
+Depends: nodejs-lts-B_PF

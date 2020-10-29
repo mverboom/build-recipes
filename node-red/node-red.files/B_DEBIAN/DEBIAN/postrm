@@ -1,0 +1,45 @@
+#!/bin/sh
+
+set -e
+
+if [ "$1" = "purge" ]; then
+	# clean up all statoverrides that belonged to node-red, so the
+	# node-red system user can be removed cleanly
+	for i in $(dpkg-statoverride --list | awk '/^node-red / {print $4}'); do
+		if dpkg-statoverride --list --quiet "$i" >/dev/null; then
+			dpkg-statoverride --force --quiet --remove "$i"
+		fi
+	done
+fi
+
+userdel --force node-red > /dev/null || true
+groupdel node-red > /dev/null || true
+
+# Automatically added by dh_installinit
+if [ "$1" = "purge" ] ; then
+	update-rc.d node-red remove >/dev/null
+fi
+
+
+# In case this system is running systemd, we make systemd reload the unit files
+# to pick up changes.
+if [ -d /run/systemd/system ] ; then
+	systemctl --system daemon-reload >/dev/null || true
+fi
+# End automatically added section
+# Automatically added by dh_systemd_enable
+if [ "$1" = "remove" ]; then
+	if [ -x "/usr/bin/deb-systemd-helper" ]; then
+		deb-systemd-helper mask node-red.service >/dev/null
+	fi
+fi
+
+if [ "$1" = "purge" ]; then
+	if [ -x "/usr/bin/deb-systemd-helper" ]; then
+		export _DEB_SYSTEMD_HELPER_PURGE=1
+		deb-systemd-helper disable node-red.service >/dev/null
+		deb-systemd-helper unmask node-red.service >/dev/null
+	fi
+fi
+# End automatically added section
+

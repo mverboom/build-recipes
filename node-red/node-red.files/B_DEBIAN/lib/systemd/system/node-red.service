@@ -1,0 +1,14 @@
+[Unit]
+Description=Node RED
+After=network-online.target
+Requires=network-online.target
+
+[Service]
+User=node-red
+Group=node-red
+ExecStart=/opt/node-red/bin/node-red-pi
+PIDFile=/var/run/snapserver/pid
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

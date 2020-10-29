@@ -1,0 +1,36 @@
+#!/bin/sh
+
+set -e
+
+umask 0022
+ACTION="$1"
+VERSION="$2"
+
+if [ "$ACTION" = "configure" ]; then
+	# add the node-red user
+	if ! getent passwd node-red >/dev/null; then
+		useradd --user-group --system --home-dir /var/lib/node-red node-red
+	fi
+	if ! test -d /var/lib/node-red
+	then
+		mkdir /var/lib/node-red
+		chown node-red:node-red /var/lib/node-red
+	fi
+fi
+
+# Automatically added by dh_systemd_enable
+# This will only remove masks created by d-s-h on package removal.
+deb-systemd-helper unmask node-red.service >/dev/null || true
+
+# was-enabled defaults to true, so new installations run enable.
+if deb-systemd-helper --quiet was-enabled node-red.service; then
+	# Enables the unit on first installation, creates new
+	# symlinks on upgrades if the unit file has changed.
+	deb-systemd-helper enable node-red.service >/dev/null || true
+else
+	# Update the statefile to add new symlinks (if any), which need to be
+	# cleaned up on purge. Also remove old symlinks.
+	deb-systemd-helper update-state node-red.service >/dev/null || true
+fi
+# End automatically added section
+
