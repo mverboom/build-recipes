@@ -8,15 +8,11 @@ B_GITVER https://github.com/nodejs/node/
 python make gcc g++ python3-distutils
 
 [BUILD]
-#B_GET http https://nodejs.org/dist/v$B_VERSION/node-v$B_VERSION.tar.gz nodejs.tar.gz
 B_GET git https://github.com/nodejs/node/ nodejs
 cd nodejs
 git checkout v$B_VERSION
-#mkdir nodejs
-#tar xzf nodejs.tar.gz -C nodejs --strip-components 1
-#cd nodejs
 ./configure --prefix=/opt/nodejs
-make
+make -j $(nproc)
 make install DESTDIR=$B_INSTALLDIR
 B_LINKFILES /opt/nodejs/bin /usr/bin
 
