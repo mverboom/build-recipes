@@ -19,7 +19,7 @@ popd
 cd snapcast
 git checkout v$B_VERSION
 cd server
-make ADD_CFLAGS="-I../../boost"
+make ADD_CFLAGS="-I../../boost" -j $(nproc)
 mkdir -p $B_INSTALLDIR/usr/bin $B_INSTALLDIR/usr/share/man/man1 $B_INSTALLDIR/etc
 cp snapserver $B_INSTALLDIR/usr/bin
 cp snapserver.1 $B_INSTALLDIR/usr/share/man/man1

@@ -19,7 +19,7 @@ popd
 cd snapcast
 git checkout v$B_VERSION
 cd client
-make ADD_CFLAGS="-I../../boost -DBOOST_ERROR_CODE_HEADER_ONLY"
+make ADD_CFLAGS="-I../../boost -DBOOST_ERROR_CODE_HEADER_ONLY" -j $(nproc)
 mkdir -p $B_INSTALLDIR/usr/bin $B_INSTALLDIR/usr/share/man/man1
 cp snapclient $B_INSTALLDIR/usr/bin
 cp snapclient.1 $B_INSTALLDIR/usr/share/man/man1
