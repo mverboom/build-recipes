@@ -1,6 +1,9 @@
 [VERSION]
 B_GITVER https://github.com/keepassxreboot/keepassxc
 
+[INFO]
+arch=amd64
+
 [REQUIRED DEBIAN STRETCH]
 build-essential cmake g++ qtbase5-dev qttools5-dev qttools5-dev-tools libgcrypt20-dev libargon2-0-dev zlib1g-dev libxi-dev libxtst-dev libqt5x11extras5-dev libyubikey-dev libykpers-1-dev libsodium-dev libcurl4-openssl-dev libqt5svg5-dev libqrencode-dev libquazip-dev libreadline-dev asciidoctor qtbase5-private-dev
 

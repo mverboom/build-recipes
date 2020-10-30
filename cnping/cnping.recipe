@@ -4,6 +4,9 @@ arch=all
 [VERSION]
 B_GITHUBVER https://github.com/cnlohr/cnping
 
+[INFO]
+arch=amd64
+
 [REQUIRED]
 libxinerama-dev libxext-dev libx11-dev build-essential libgl1-mesa-dev
 
