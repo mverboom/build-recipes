@@ -1,0 +1,23 @@
+#!/bin/sh
+ 
+if test "$1" = "configure"; then
+   # Create a zigbee2mqtt system group
+   if ! getent group zigbee2mqtt > /dev/null; then
+       addgroup --quiet --system zigbee2mqtt
+   fi
+   
+   # Create a zigbee2mqtt system user
+   if ! getent passwd zigbee2mqtt > /dev/null; then
+       adduser --quiet --system \
+           --ingroup zigbee2mqtt \
+           --home /var/lib/zigbee2mqtt \
+           --no-create-home \
+           --disabled-password --shell /dev/null \
+           zigbee2mqtt
+       usermod -c "Zigbee2mqtt user" zigbee2mqtt
+       adduser zigbee2mqtt dialout
+   fi
+   chown -R zigbee2mqtt.zigbee2mqtt /var/lib/zigbee2mqtt /var/log/zigbee2mqtt
+   systemctl enable zigbee2mqtt
+fi
+systemctl restart zigbee2mqtt
