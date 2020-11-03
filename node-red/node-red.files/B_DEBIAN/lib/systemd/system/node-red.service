@@ -4,6 +4,7 @@ After=network-online.target
 Requires=network-online.target
 
 [Service]
+EnvironmentFile=-/etc/default/node-red
 User=node-red
 Group=node-red
 ExecStart=/opt/node-red/bin/node-red-pi
