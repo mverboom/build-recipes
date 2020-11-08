@@ -1,0 +1,15 @@
+[Unit]
+Description=homeassistant
+After=network.target
+
+[Service]
+EnvironmentFile=/etc/default/homeassistant
+ExecStart=/opt/homeassistant/bin/hass
+WorkingDirectory=/opt/homeassistant
+StandardOutput=inherit
+StandardError=inherit
+Restart=always
+User=homeassistant
+
+[Install]
+WantedBy=multi-user.target

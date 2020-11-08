@@ -1,0 +1,23 @@
+#!/bin/sh
+ 
+if test "$1" = "configure"; then
+   # Create a homeassistant system group
+   if ! getent group homeassistant > /dev/null; then
+       addgroup --quiet --system homeassistant
+   fi
+   
+   # Create a homeassistant system user
+   if ! getent passwd homeassistant > /dev/null; then
+       adduser --quiet --system \
+           --ingroup homeassistant \
+           --home /opt/homeassistant \
+           --disabled-password \
+           homeassistant
+       usermod -c "Homeassistant user" homeassistant
+   fi
+   systemctl enable homeassistant
+   echo
+   echo "This is a homeassistant place holder package and does not install the software!"
+   echo "Use hass-setup to initialise the environment and"
+   echo "systemctl start homemassistant to start."
+fi

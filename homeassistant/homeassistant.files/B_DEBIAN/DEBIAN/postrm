@@ -1,0 +1,6 @@
+#!/bin/sh
+
+userdel --force homeassistant > /dev/null || true
+groupdel homeassistant > /dev/null || true
+
+echo "Not removing /opt/homeassistant"

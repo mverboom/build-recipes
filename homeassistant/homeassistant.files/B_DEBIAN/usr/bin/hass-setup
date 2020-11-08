@@ -1,0 +1,56 @@
+#!/bin/bash
+BASEDIR=/opt/homeassistant
+USERID=homeassistant
+
+setup() {
+   test -e $BASEDIR/bin/activate && { echo "Environment already exists."; exit 1; }
+   echo "Setting up python virtual environment..."
+   /opt/python/bin/python3 -m venv $BASEDIR
+   source $BASEDIR/bin/activate
+   echo "Installing homeassistant core..."
+   python3 -m pip install homeassistant
+   deactivate
+   echo "Creating selfsigned ssl certificate..."
+   mkdir -p $BASEDIR/ssl
+   if test -e ~/ssl/server.key; then
+      echo "Certificate already found, skippping."
+   else
+      openssl req \
+       -newkey rsa:2048 \
+       -x509 \
+       -nodes \
+       -keyout ~/ssl/server.key \
+       -new \
+       -out ~/ssl/server.crt \
+       -subj /CN=$(hostname --fqdn) \
+       -reqexts SAN \
+       -extensions SAN \
+       -config <(cat /etc/ssl/openssl.cnf \
+           <(printf '[SAN]\nsubjectAltName=DNS:'$(hostname --fqdn))) \
+       -sha256 \
+       -days 3650
+   fi
+   echo "Creating base config..."
+   if test -d $BASEDIR/.homeassistant; then
+      echo "Configuration directory already found, skipping."
+   else
+      mkdir -p $BASEDIR/.homeassistant
+      cat > $BASEDIR/.homeassistant/configuration.yaml <<EOF
+   default_config:
+
+   http:
+     server_port: 8123
+     ssl_certificate: $BASEDIR/ssl/server.crt
+     ssl_key: $BASEDIR/ssl/server.key
+EOF
+   fi
+   echo "Installation complete."
+   echo
+   echo "Try: https://$(hostname --fqdn):8123"
+}
+
+if test "$USER" != "$USERID"; then
+   su -s /bin/bash $USERID -c "$0"
+else
+   setup
+fi

@@ -1,0 +1,24 @@
+[VERSION]
+B_GITVER https://github.com/home-assistant/core
+
+[INFO]
+arch=amd64
+
+[BUILD]
+# This is a placeholder recipe, don't actually need to do anything.
+sleep 0
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: homeassistant
+Version: B_VERSION
+Section: homeassistant
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: Homeassistant custom B_ORG build
+Homepage: https://www.home-assistant.io/
+Depends: python-3.8-B_PF,zlib1g-dev,libjpeg-dev,libffi-dev,libssl-dev,autoconf,build-essential,libopenjp2-7,libtiff5
