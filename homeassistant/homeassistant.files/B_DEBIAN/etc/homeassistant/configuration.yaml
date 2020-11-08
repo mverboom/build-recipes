@@ -1,0 +1,9 @@
+default_config:
+
+recorder:
+  db_url: sqlite:////var/lib/homeassistant/hass.sqlite3
+
+http:
+  server_port: 8123
+  ssl_certificate: /etc/homeassistant/server.crt
+  ssl_key: /etc/homeassistant/server.key
