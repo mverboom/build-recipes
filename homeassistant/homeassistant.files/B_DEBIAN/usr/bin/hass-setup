@@ -38,6 +38,9 @@ setup() {
       cat > $BASEDIR/.homeassistant/configuration.yaml <<EOF
    default_config:
 
+   recorder:
+     db_url: sqlite:////var/lib/homeassistant/hass.sqlite3
+
    http:
      server_port: 8123
      ssl_certificate: $BASEDIR/ssl/server.crt
@@ -46,7 +49,8 @@ EOF
    fi
    echo "Installation complete."
    echo
-   echo "Try: https://$(hostname --fqdn):8123"
+   echo "Start homeassistant: systemctl start homeassistant"
+   echo "Connect to interface on: https://$(hostname --fqdn):8123"
 }
 
 if test "$USER" != "$USERID"; then
