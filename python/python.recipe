@@ -1,0 +1,30 @@
+[VERSION]
+B_GITVER -D -e a[0-9]\*\$ https://github.com/python/cpython
+
+[INFO]
+arch=amd64
+
+[REQUIRED]
+gcc make libssl-dev libbz2-dev libncurses5-dev zlib1g-dev libsqlite3-dev libreadline-dev liblzma-dev uuid-dev libgdbm-dev tcl-dev tk-dev libffi-dev
+
+[BUILD DEBIAN BUSTER]
+B_GET git https://github.com/python/cpython python
+cd python
+git checkout v$B_VERSION
+./configure --prefix=/opt/python
+make -j $(nproc)
+make DESTDIR=$B_INSTALLDIR install
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: python
+Version: B_VERSION
+Section: python
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: Python custom B_ORG build
+Homepage: https://github.com/python/cpython
