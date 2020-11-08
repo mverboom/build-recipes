@@ -19,9 +19,9 @@ setup() {
        -newkey rsa:2048 \
        -x509 \
        -nodes \
-       -keyout ~/ssl/server.key \
+       -keyout /etc/homeassistant/server.key \
        -new \
-       -out ~/ssl/server.crt \
+       -out /etc/homeassistant/server.crt \
        -subj /CN=$(hostname --fqdn) \
        -reqexts SAN \
        -extensions SAN \
@@ -29,23 +29,6 @@ setup() {
            <(printf '[SAN]\nsubjectAltName=DNS:'$(hostname --fqdn))) \
        -sha256 \
        -days 3650
-   fi
-   echo "Creating base config..."
-   if test -d $BASEDIR/.homeassistant; then
-      echo "Configuration directory already found, skipping."
-   else
-      mkdir -p $BASEDIR/.homeassistant
-      cat > $BASEDIR/.homeassistant/configuration.yaml <<EOF
-   default_config:
-
-   recorder:
-     db_url: sqlite:////var/lib/homeassistant/hass.sqlite3
-
-   http:
-     server_port: 8123
-     ssl_certificate: $BASEDIR/ssl/server.crt
-     ssl_key: $BASEDIR/ssl/server.key
-EOF
    fi
    echo "Installation complete."
    echo

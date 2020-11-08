@@ -4,7 +4,7 @@ After=network.target
 
 [Service]
 EnvironmentFile=/etc/default/homeassistant
-ExecStart=/opt/homeassistant/bin/hass --log-file /var/log/homeassistant/homeassistant.log
+ExecStart=/opt/homeassistant/bin/hass --log-file /var/log/homeassistant/homeassistant.log -c /etc/homeassistant
 WorkingDirectory=/opt/homeassistant
 StandardOutput=inherit
 StandardError=inherit

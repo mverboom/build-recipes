@@ -15,7 +15,7 @@ if test "$1" = "configure"; then
            homeassistant
        usermod -c "Homeassistant user" homeassistant
    fi
-   chown -R homeassistant:homeassistant /var/log/homeassistant /var/lib/homeassistant
+   chown -R homeassistant:homeassistant /var/log/homeassistant /var/lib/homeassistant /etc/homeassistant
    systemctl enable homeassistant
    echo
    echo "This is a homeassistant place holder package and does not install the software!"
