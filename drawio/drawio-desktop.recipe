@@ -19,10 +19,11 @@ git pull
 git checkout v$B_VERSION
 cd ..
 npm install electron
-sed -i '/^  "mac": {/,/^  },/d; /^      "AppImage",/d; /^      "rpm"/d; s/\${productName}/drawio-desktop-'$B_PF'/' electron-builder-linux-mac.json
+#sed -i '/^  "mac": {/,/^  },/d; /^      "AppImage",/d; /^      "rpm"/d; s/\${productName}/drawio-desktop-'$B_PF'/' electron-builder-linux-mac.json
+sed -i '/^  "mac": {/,/^  },/d; /^      "AppImage",/d; /^      "rpm"/d;' electron-builder-linux-mac.json
 sed -i 's/"version": ".*/"version": "'$B_VERSION'",/' drawio/src/main/webapp/package.json
 npm run release-linux
-cp dist/drawio-desktop-$B_PF-amd64-${B_VERSION}.deb $B_INSTALLDIR
+cp dist/draw.io-amd64-${B_VERSION}.deb $B_INSTALLDIR
 
 [PKG]
 type=deb
