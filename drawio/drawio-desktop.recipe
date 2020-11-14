@@ -1,0 +1,30 @@
+[INFO]
+arch=amd64
+
+[VERSION]
+B_GITVER https://github.com/jgraph/drawio-desktop.git
+
+[REQUIRED]
+nodejs-lts-B_PF rpm
+
+[BUILD]
+B_GET git -s https://github.com/jgraph/drawio-desktop.git drawio-desktop
+cd drawio-desktop
+git checkout v$B_VERSION
+npm install
+cd drawio
+npm install
+git checkout master
+git pull
+git checkout v$B_VERSION
+cd ..
+npm install electron
+sed -i '/^  "mac": {/,/^  },/d; /^      "AppImage",/d; /^      "rpm"/d; s/\${productName}/drawio-desktop-'$B_PF'/' electron-builder-linux-mac.json
+sed -i 's/"version": ".*/"version": "'$B_VERSION'",/' drawio/src/main/webapp/package.json
+npm run release-linux
+cp dist/drawio-desktop-$B_PF-amd64-${B_VERSION}.deb $B_INSTALLDIR
+
+[PKG]
+type=deb
+pkgready=y
+torepo=y
