@@ -1,0 +1,32 @@
+[VERSION]
+# weird repository tagging
+B_GITVER -i 1.[0-9].[0-9] https://github.com/esphome/esphome-flasher
+
+[INFO]
+arch=amd64
+
+[REQUIRED]
+python3 python3-pip python3-wxgtk4.0
+
+[BUILD]
+B_GET git https://github.com/esphome/esphome-flasher esphome-flasher
+cd esphome-flasher
+git checkout v$B_VERSION
+pip3 install --system --prefix=$B_INSTALLDIR/opt/esphome-flasher -r requirements.txt
+export PYTHONPATH="$B_INSTALLDIR/opt/esphome-flasher/lib/python3.7/site-packages"
+python3 setup.py install --prefix=$B_INSTALLDIR/opt/esphome-flasher
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: esphome-flasher
+Version: B_VERSION
+Section: esphome-flasher
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: ESPHome-flasher custom B_ORG build
+Homepage: https://github.com/esphome/esphome-flasher
+Depends: python3, python3-wxgtk4.0
