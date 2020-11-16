@@ -1,0 +1,20 @@
+#!/bin/sh
+ 
+if test "$1" = "configure"; then
+   # Create a esphome system group
+   if ! getent group esphome > /dev/null; then
+       addgroup --quiet --system esphome
+   fi
+   
+   # Create a esphome system user
+   if ! getent passwd esphome > /dev/null; then
+       adduser --quiet --system \
+           --ingroup esphome \
+           --home /var/lib/esphome \
+           --disabled-password \
+           esphome
+       usermod -c "ESPHome user" esphome
+   fi
+   chown -R esphome:esphome /var/lib/esphome
+   systemctl enable esphome
+fi

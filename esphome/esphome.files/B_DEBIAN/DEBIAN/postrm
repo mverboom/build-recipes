@@ -1,0 +1,4 @@
+#!/bin/sh
+
+userdel --force esphome > /dev/null || true
+groupdel esphome > /dev/null || true

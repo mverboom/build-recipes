@@ -1,0 +1,31 @@
+[VERSION]
+B_GITVER https://github.com/esphome/esphome
+
+[INFO]
+arch=amd64
+
+[REQUIRED]
+python3 python3-pip
+
+[BUILD]
+B_GET git https://github.com/esphome/esphome esphome
+cd esphome
+git checkout v$B_VERSION
+pip3 install --system --prefix=$B_INSTALLDIR/opt/esphome -r requirements.txt
+export PYTHONPATH="$B_INSTALLDIR/opt/esphome/lib/python3.7/site-packages"
+python3 setup.py install --prefix=$B_INSTALLDIR/opt/esphome
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: esphome
+Version: B_VERSION
+Section: esphome
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: ESPHome custom B_ORG build
+Homepage: https://esphome.io/
+Depends: python3

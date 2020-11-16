@@ -1,0 +1,15 @@
+[Unit]
+Description=esphome
+After=network.target
+
+[Service]
+EnvironmentFile=/etc/default/esphome
+ExecStart=/opt/esphome/bin/esphome /var/lib/esphome dashboard
+WorkingDirectory=/var/lib/esphome
+StandardOutput=inherit
+StandardError=inherit
+Restart=always
+User=esphome
+
+[Install]
+WantedBy=multi-user.target

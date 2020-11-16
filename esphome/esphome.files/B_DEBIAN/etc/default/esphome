@@ -1,0 +1,9 @@
+# Set optional authentication
+#AUTH="--username user --password changeme"
+
+# Set port
+#PORT="--port 6052"
+
+# Set any environment variables required to start esphome in this file.
+PYTHONPATH="/opt/esphome/lib/python3.7/site-packages"
+PATH="$PATH:/opt/esphome/bin:/bin:/usr/bin"
