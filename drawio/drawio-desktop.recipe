@@ -14,8 +14,7 @@ git checkout v$B_VERSION
 npm install
 cd drawio
 npm install
-git checkout master
-git pull
+git fetch --tags
 git checkout v$B_VERSION
 cd ..
 npm install electron
