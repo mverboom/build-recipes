@@ -11,7 +11,7 @@ gcc make
 B_GET git https://github.com/netblue30/firejail firejail
 cd firejail
 git checkout tags/$B_VERSION
-./configure --prefix=/opt/firejail
+./configure --prefix=/opt/firejail --sysconfdir=/etc
 make
 make install DESTDIR=$B_INSTALLDIR
 B_LINKFILES /opt/firejail/bin /usr/bin
