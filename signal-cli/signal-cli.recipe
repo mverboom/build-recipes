@@ -10,6 +10,7 @@ gradle default-jdk-headless make asciidoc
 [BUILD]
 B_GET git https://github.com/AsamK/signal-cli signal-cli
 cd signal-cli
+git checkout v${B_VERSION}
 ./gradlew build
 ./gradlew installDist
 cd man
