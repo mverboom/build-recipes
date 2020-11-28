@@ -28,4 +28,5 @@ Architecture: B_ARCH
 Maintainer: B_MAIL
 Description: ESPHome custom B_ORG build
 Homepage: https://esphome.io/
-Depends: python3
+Recommends: lighttpd
+Depends: python3,python3-setuptools,python3-six,openssl

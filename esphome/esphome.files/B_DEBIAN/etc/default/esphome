@@ -1,8 +1,8 @@
 # Set optional authentication
 #AUTH="--username user --password changeme"
 
-# Set port
-#PORT="--port 6052"
+# Set port to unix domain socket for lighttpd to reverse proxy
+#PORT="--socket /var/run/esphome/socket"
 
 # Set any environment variables required to start esphome in this file.
 PYTHONPATH="/opt/esphome/lib/python3.7/site-packages"

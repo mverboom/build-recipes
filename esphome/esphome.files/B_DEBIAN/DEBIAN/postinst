@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
  
 if test "$1" = "configure"; then
    # Create a esphome system group
@@ -16,5 +16,20 @@ if test "$1" = "configure"; then
        usermod -c "ESPHome user" esphome
    fi
    chown -R esphome:esphome /var/lib/esphome
-   systemctl enable esphome
+   if ! test -e /etc/esphome/privkey.pem; then
+      openssl req \
+       -newkey rsa:2048 \
+       -x509 \
+       -nodes \
+       -keyout /etc/esphome/fullchain.pem \
+       -new \
+       -out /etc/esphome/privkey.pem \
+       -subj /CN=$(hostname --fqdn) \
+       -reqexts SAN \
+       -extensions SAN \
+       -config <(cat /etc/ssl/openssl.cnf \
+           <(printf '[SAN]\nsubjectAltName=DNS:'$(hostname --fqdn))) \
+       -sha256 \
+       -days 3650
+   fi
 fi

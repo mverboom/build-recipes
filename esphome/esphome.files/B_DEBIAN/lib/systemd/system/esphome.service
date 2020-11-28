@@ -4,7 +4,10 @@ After=network.target
 
 [Service]
 EnvironmentFile=/etc/default/esphome
-ExecStart=/opt/esphome/bin/esphome /var/lib/esphome dashboard
+PermissionsStartOnly=true
+ExecStartPre=/bin/mkdir -p /var/run/esphome/
+ExecStartPre=/bin/chown -R esphome:esphome /var/run/esphome/
+ExecStart=/opt/esphome/bin/esphome /var/lib/esphome dashboard $AUTH $PORT
 WorkingDirectory=/var/lib/esphome
 StandardOutput=inherit
 StandardError=inherit
