@@ -1,0 +1,3 @@
+#!/bin/sh
+export PYTHONPATH=/opt/esphome/lib/python3.7/site-packages/
+/opt/esphome/bin/esphome "$@"
