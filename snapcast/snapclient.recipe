@@ -1,5 +1,5 @@
 [INFO]
-arch=amd64
+arch=amd64,armhf
 
 [VERSION]
 B_GITVER https://github.com/badaix/snapcast
