@@ -1,0 +1,33 @@
+[INFO]
+arch=amd64
+
+[VERSION]
+B_GITVER https://github.com/eclipse/mosquitto
+
+[REQUIRED]
+libwebsockets-B_PF libc-ares-dev uuid-dev gcc libssl-dev g++ xsltproc make docbook-xsl libcjson-dev
+
+[BUILD]
+B_GET git https://github.com/eclipse/mosquitto mosquitto
+cd mosquitto
+git checkout tags/v$B_VERSION
+sed -i "s#prefix?=/usr/local#prefix?=/opt/mosquitto#" config.mk
+make WITH_WEBSOCKETS=yes CPPFLAGS=-I/opt/libwebsockets/include LDFLAGS=-L/opt/libwebsockets/lib
+make install DESTDIR=$B_INSTALLDIR WITH_LIBWEBSOCKETS=yes
+B_LINKFILES /opt/mosquitto/bin /usr/bin
+B_LINKFILES /opt/mosquitto/sbin /usr/sbin
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: mosquitto
+Version: B_VERSION
+Section: mosquitto
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: Mosquitto custom B_ORG build
+Homepage: https://mosquitto.org/
+Depends: libuuid1,libc-ares2,libwebsockets8,libcjson1,libwebsockets-B_PF

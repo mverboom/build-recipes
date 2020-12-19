@@ -1,0 +1,18 @@
+[Unit]
+Description=mosquitto
+After=network.target
+
+[Service]
+EnvironmentFile=/etc/default/mosquitto
+PermissionsStartOnly=true
+ExecStartPre=/bin/mkdir -p /var/run/mosquitto/
+ExecStartPre=/bin/chown -R mosquitto:mosquitto /var/run/mosquitto/
+ExecStart=/opt/mosquitto/sbin/mosquitto -c /etc/mosquitto/mosquitto.conf
+StandardOutput=inherit
+StandardError=inherit
+Restart=always
+User=mosquitto
+
+[Install]
+WantedBy=multi-user.target
+

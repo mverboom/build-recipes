@@ -1,0 +1,32 @@
+[INFO]
+arch=amd64
+
+[VERSION]
+B_GITVER https://libwebsockets.org/repo/libwebsockets
+
+[REQUIRED]
+cmake libssl-dev
+
+[BUILD]
+B_GET git https://libwebsockets.org/repo/libwebsockets libwebsockets
+cd libwebsockets
+git checkout v$B_VERSION
+mkdir build
+cd build
+cmake -DCMAKE_INSTALL_PREFIX:PATH=/opt/libwebsockets ..
+make
+make install DESTDIR=$B_INSTALLDIR
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: libwebsockets
+Version: B_VERSION
+Section: libwebsockets
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: Libwebsockets custom B_ORG build
+Homepage: https://libwebsockets.org/
