@@ -1,0 +1,3 @@
+#!/bin/sh
+. /opt/nanovna-saver/bin/activate
+LD_LIBRARY_PATH=/opt/nanovna-saver/lib NanoVNASaver
