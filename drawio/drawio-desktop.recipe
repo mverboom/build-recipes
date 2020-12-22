@@ -2,25 +2,20 @@
 arch=amd64
 
 [VERSION]
-B_GITVER https://github.com/jgraph/drawio-desktop.git
+B_GITHUBREL https://github.com/jgraph/drawio-desktop
 
 [REQUIRED]
 nodejs-lts-B_PF rpm
 
 [BUILD]
 B_GET git -s https://github.com/jgraph/drawio-desktop.git drawio-desktop
+B_GET http https://github.com/jgraph/drawio-desktop/archive/v${B_VERSION}.tar.gz
 cd drawio-desktop
 git checkout v$B_VERSION
 npm install
 cd drawio
 npm install
-#git fetch --tags
-#git checkout v$B_VERSION
-#cd ..
 npm install electron
-#sed -i '/^  "mac": {/,/^  },/d; /^      "AppImage",/d; /^      "rpm"/d; s/\${productName}/drawio-desktop-'$B_PF'/' electron-builder-linux-mac.json
-#sed -i '/^  "mac": {/,/^  },/d; /^      "AppImage",/d; /^      "rpm"/d;' electron-builder-linux-mac.json
-#sed -i 's/"version": ".*/"version": "'$B_VERSION'",/' drawio/src/main/webapp/package.json
 npm run release-linux
 cp dist/draw.io-amd64-${B_VERSION}.deb $B_INSTALLDIR
 
