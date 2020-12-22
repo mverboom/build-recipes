@@ -10,7 +10,8 @@ make gcc g++ pkg-config libsndfile1-dev libx11-dev libcairo2-dev libjack-dev lv2
 [BUILD]
 B_GET git https://github.com/sadko4u/lsp-plugins lsp-plugins
 cd lsp-plugins
-git checkout lsp-plugins-$B_VERSION
+#git checkout lsp-plugins-$B_VERSION
+git checkout $B_VERSION
 make clean
 make
 make DESTDIR=$B_INSTALLDIR PREFIX=/usr install
