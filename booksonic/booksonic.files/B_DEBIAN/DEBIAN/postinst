@@ -1,0 +1,22 @@
+#!/bin/bash
+ 
+if test "$1" = "configure"; then
+   # Create a booksonic system group
+   if ! getent group booksonic > /dev/null; then
+       addgroup --quiet --system booksonic
+   fi
+   
+   # Create a booksonic system user
+   if ! getent passwd booksonic > /dev/null; then
+       adduser --quiet --system \
+           --ingroup booksonic \
+           --home /var/lib/booksonic \
+           --disabled-password \
+           booksonic
+       usermod -c "Booksonic user" booksonic
+   fi
+   chown -R booksonic:booksonic /var/lib/booksonic
+   systemctl enable booksonic
+fi
+
+systemctl restart booksonic

@@ -1,0 +1,25 @@
+[VERSION]
+B_GITHUBREL https://github.com/popeen/Booksonic-Air
+
+[INFO]
+arch=amd64
+
+[BUILD]
+B_GET http https://github.com/popeen/Booksonic-Air/releases/download/v$B_VERSION/booksonic.war booksonic.war
+mkdir -p $B_INSTALLDIR/opt/booksonic
+mv booksonic.war $B_INSTALLDIR/opt/booksonic
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: booksonic
+Version: B_VERSION
+Section: booksonic
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: Booksonic custom B_ORG build
+Homepage: https://booksonic.org/
+Depends: openjdk-11-jre-headless,ffmpeg

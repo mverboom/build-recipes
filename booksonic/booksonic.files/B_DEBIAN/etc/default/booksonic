@@ -1,0 +1,4 @@
+HOMEDIR=/var/lib/booksonic
+PORT=8080
+IP=0.0.0.0
+CONTEXT_PATH=/booksonic

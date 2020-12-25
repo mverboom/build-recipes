@@ -1,0 +1,5 @@
+#!/bin/sh
+
+systemctl stop booksonic > /dev/null || true
+userdel --force booksonic > /dev/null || true
+groupdel booksonic > /dev/null || true
