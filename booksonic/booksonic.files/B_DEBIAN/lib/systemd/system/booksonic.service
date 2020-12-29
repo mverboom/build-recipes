@@ -6,7 +6,7 @@ AssertPathExists=/var/lib/booksonic
 [Service]
 Type=simple
 EnvironmentFile=-/etc/default/booksonic
-ExecStart=/usr/bin/java -Xmx700m -Dairsonic.home=${HOMEDIR} -Dserver.servlet.contextPath=${CONTEXT_PATH} -Dserver.address=127.0.0.1 -Dserver.port=${PORT} -Dserver.use-forward-headers=true -jar /opt/booksonic/booksonic.war $JAVA_ARGS
+ExecStart=/usr/bin/java -Xmx700m -Dairsonic.home=${HOMEDIR} -Dserver.servlet.contextPath=${CONTEXT_PATH} -Dserver.address=${IP} -Dserver.port=${PORT} ${REVPROXY} -jar /opt/booksonic/booksonic.war $JAVA_ARGS
 User=booksonic
 Group=booksonic
 
