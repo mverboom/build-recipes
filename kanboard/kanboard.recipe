@@ -17,7 +17,6 @@ do
 done
 rm -rf .git
 mv data plugins ../../var/lib/kanboard
-touch ../../var/lib/kanboard/data/db.sqlite
 mv config.default.php ../../etc/kanboard
 ln -s ../../etc/kanboard/config.php config.php
 ln -s ../../var/lib/kanboard/data data
