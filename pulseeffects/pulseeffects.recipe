@@ -10,7 +10,7 @@ meson gcc g++ pkg-config libglib2.0-dev appstream-util desktop-file-utils gettex
 [BUILD]
 B_GET git https://github.com/wwmm/pulseeffects pulseeffects
 cd pulseeffects
-git checkout v$B_VERSION
+git checkout $B_VERSION
 #meson _build --prefix=/opt/pulseeffects
 meson _build --prefix=/usr
 env DESTDIR=$B_INSTALLDIR ninja -C _build install
