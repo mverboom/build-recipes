@@ -12,8 +12,10 @@ B_GET git -s https://github.com/vrana/adminer adminer
 cd adminer
 git checkout v$B_VERSION
 ./compile.php
+./compile.php editor
 mkdir -p $B_INSTALLDIR/opt/adminer
 mv adminer-*.php $B_INSTALLDIR/opt/adminer/adminer.php
+mv editor-*.php $B_INSTALLDIR/opt/adminer/editor.php
 
 [PKG]
 type=deb
