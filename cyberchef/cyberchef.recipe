@@ -1,0 +1,34 @@
+[INFO]
+arch=all
+
+[VERSION]
+B_GITVER https://github.com/gchq/CyberChef
+
+[REQUIRED]
+nodejs-10-B_PF
+
+[BUILD]
+B_GET git https://github.com/gchq/CyberChef cyberchef
+cd cyberchef
+git checkout v$B_VERSION
+npm install
+./node_modules/grunt/bin/grunt prod
+
+cd build/prod
+mkdir -p $B_INSTALLDIR/opt/cyberchef
+unzip CyberChef_v$B_VERSION.zip -d $B_INSTALLDIR/opt/cyberchef
+mv $B_INSTALLDIR/opt/cyberchef/CyberChef_v$B_VERSION.html $B_INSTALLDIR/opt/cyberchef/CyberChef.html
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: cyberchef
+Version: B_VERSION
+Section: cyberchef
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: cyberchef custom B_ORG build
+Homepage: https://github.com/gchq/CyberChef

@@ -1,0 +1,3 @@
+# cyberchef
+
+CyberChef static build.
