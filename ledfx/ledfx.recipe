@@ -1,0 +1,35 @@
+[VERSION]
+B_GITHUBVER https://github.com/ledfx/ledfx
+
+[INFO]
+arch=amd64
+
+[REQUIRED]
+python3-virtualenv virtualenv gcc python3-dev portaudio19-dev
+
+[BUILD]
+B_GET git https://github.com/ledfx/ledfx ledfx
+cd ledfx
+DEST=$B_INSTALLDIR/opt/ledfx
+virtualenv  -p python3 $DEST
+source $DEST/bin/activate
+pip install -r requirements.txt
+python -m pip install .
+virtualenv --relocatable -p python3 $DEST
+sed -i "s#$B_INSTALLDIR##" $DEST/bin/activate*
+deactivate
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: ledfx
+Version: B_VERSION
+Section: ledfx
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: ledfx saver custom B_ORG build
+Homepage: https://github.com/ledfx/ledfx
+Depends: python3,libportaudio2

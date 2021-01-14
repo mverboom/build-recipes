@@ -1,0 +1,13 @@
+[Unit]
+Description=ledfx server
+After=remote-fs.target network.target
+AssertPathExists=/var/lib/ledfx
+
+[Service]
+Type=simple
+ExecStart=/opt/ledfx/bin/ledfx
+User=ledfx
+Group=ledfx
+
+[Install]
+WantedBy=multi-user.target

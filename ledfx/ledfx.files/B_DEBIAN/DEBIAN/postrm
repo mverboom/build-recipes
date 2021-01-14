@@ -1,0 +1,5 @@
+#!/bin/sh
+
+systemctl stop ledfx > /dev/null || true
+userdel --force ledfx > /dev/null || true
+groupdel ledfx > /dev/null || true

@@ -1,0 +1,22 @@
+#!/bin/bash
+ 
+if test "$1" = "configure"; then
+   # Create a ledfx system group
+   if ! getent group ledfx > /dev/null; then
+       addgroup --quiet --system ledfx
+   fi
+   
+   # Create a ledfx system user
+   if ! getent passwd ledfx > /dev/null; then
+       adduser --quiet --system \
+           --ingroup ledfx \
+           --home /var/lib/ledfx \
+           --disabled-password \
+           ledfx
+       usermod -c "ledfx user" ledfx
+   fi
+   chown -R ledfx:ledfx /var/lib/ledfx
+   systemctl enable ledfx
+fi
+
+systemctl restart ledfx
