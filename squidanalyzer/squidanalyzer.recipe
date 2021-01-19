@@ -1,0 +1,37 @@
+[VERSION]
+B_GITVER https://github.com/darold/squidanalyzer
+
+[INFO]
+arch=amd64
+
+[REQUIRED]
+make perl
+
+[BUILD]
+B_GET git https://github.com/darold/squidanalyzer squidanalyzer
+cd squidanalyzer
+git checkout v$B_VERSION
+LOGFILE=/var/log/squid/access.log \
+ BINDIR=/usr/bin \
+ CONFDIR=/etc/squidanalyzer \
+ HTMLDIR=/var/www/html/squidreport \
+ BASEURL=/squidreport \
+ MANDIR=/usr/share/man/man3 \
+ DOCDIR=/usr/share/doc/squidanalyzer perl Makefile.PL
+make
+sed -i "s#/usr#$B_INSTALLDIR/usr#g; s#/etc#$B_INSTALLDIR/etc#g; s#/var#$B_INSTALLDIR/var#g" install_all.sh
+make install DESTDIR=$B_INSTALLDIR
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: squidanalyzer
+Version: B_VERSION
+Section: squidanalyzer
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: squidanalyzer custom B_ORG build
+Homepage: https://github.com/darold/squidanalyzer
