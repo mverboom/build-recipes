@@ -1,0 +1,25 @@
+[INFO]
+arch=all
+
+[VERSION]
+B_GITVER https://github.com/kanboard/plugin-calendar
+
+[BUILD]
+B_GET git https://github.com/kanboard/plugin-calendar Calendar
+mkdir -p $B_INSTALLDIR/var/lib/kanboard/plugins
+tar cfB - Calendar | ( cd $B_INSTALLDIR/var/lib/kanboard/plugins ; tar xfB - )
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: kanboard-plugin-calendar
+Version: B_VERSION
+Section: kanboard-plugin-calendar
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: Kanboard plugin calendar custom B_ORG build
+Homepage: https://github.com/kanboard/plugin-calendar
+Depends: kanboard-B_PF
