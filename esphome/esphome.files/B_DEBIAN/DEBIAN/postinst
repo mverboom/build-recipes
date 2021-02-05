@@ -8,10 +8,11 @@ if test "$1" = "configure"; then
    
    # Create a esphome system user
    if ! getent passwd esphome > /dev/null; then
-       adduser --quiet --system \
+       adduser --quiet \
            --ingroup esphome \
            --home /var/lib/esphome \
            --disabled-password \
+           --gecos "ESPHome user" \
            esphome
        usermod -c "ESPHome user" esphome
    fi
@@ -33,3 +34,4 @@ if test "$1" = "configure"; then
        -days 3650
    fi
 fi
+systemctl restart esphome.service
