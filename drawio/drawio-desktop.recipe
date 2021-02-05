@@ -4,20 +4,19 @@ arch=amd64
 [VERSION]
 B_GITHUBREL https://github.com/jgraph/drawio-desktop
 
-[REQUIRED]
-nodejs-lts-B_PF rpm
-
 [BUILD]
-B_GET git -s https://github.com/jgraph/drawio-desktop.git drawio-desktop
-B_GET http https://github.com/jgraph/drawio-desktop/archive/v${B_VERSION}.tar.gz
-cd drawio-desktop
-git checkout v$B_VERSION
-npm install
-cd drawio
-npm install
-npm install electron
-npm run release-linux
-cp dist/draw.io-amd64-${B_VERSION}.deb $B_INSTALLDIR
+#B_GET git -s https://github.com/jgraph/drawio-desktop.git drawio-desktop
+#B_GET http https://github.com/jgraph/drawio-desktop/archive/v${B_VERSION}.tar.gz
+#cd drawio-desktop
+#git checkout v$B_VERSION
+#npm install
+#cd drawio
+#npm install
+#npm install electron
+#npm run release-linux
+#cd ..
+#cp dist/draw.io-amd64-*.deb $B_INSTALLDIR
+wget -q -O $B_INSTALLDIR/draw.io-amd64-$B_VERSION.deb https://github.com/jgraph/drawio-desktop/releases/download/v$B_VERSION/draw.io-amd64-$B_VERSION.deb
 
 [PKG]
 type=deb
