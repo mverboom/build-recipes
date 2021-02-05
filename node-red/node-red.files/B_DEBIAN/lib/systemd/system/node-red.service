@@ -8,7 +8,7 @@ EnvironmentFile=-/etc/default/node-red
 User=node-red
 Group=node-red
 ExecStart=/opt/node-red/bin/node-red-pi
-PIDFile=/var/run/snapserver/pid
+PIDFile=/var/run/node-red/pid
 Restart=always
 
 [Install]
