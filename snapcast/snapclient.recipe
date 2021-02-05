@@ -5,7 +5,7 @@ arch=amd64,armhf
 B_GITVER https://github.com/badaix/snapcast
 
 [REQUIRED]
-build-essential libasound2-dev libvorbisidec-dev libvorbis-dev libflac-dev alsa-utils libavahi-client-dev avahi-daemon libopus-dev libsoxr-dev
+build-essential libasound2-dev libvorbisidec-dev libvorbis-dev libflac-dev alsa-utils libavahi-client-dev avahi-daemon libopus-dev libsoxr-dev libpulse-dev
 
 [BUILD]
 B_GET git -s https://github.com/badaix/snapcast.git snapcast
@@ -19,7 +19,7 @@ popd
 cd snapcast
 git checkout v$B_VERSION
 cd client
-make ADD_CFLAGS="-I../../boost -DBOOST_ERROR_CODE_HEADER_ONLY" -j $(nproc)
+make ADD_CFLAGS="-I../../boost -DBOOST_ERROR_CODE_HEADER_ONLY" #-j $(nproc)
 mkdir -p $B_INSTALLDIR/usr/bin $B_INSTALLDIR/usr/share/man/man1
 cp snapclient $B_INSTALLDIR/usr/bin
 cp snapclient.1 $B_INSTALLDIR/usr/share/man/man1

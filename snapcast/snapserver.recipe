@@ -23,7 +23,7 @@ make ADD_CFLAGS="-I../../boost" -j $(nproc)
 mkdir -p $B_INSTALLDIR/usr/bin $B_INSTALLDIR/usr/share/man/man1 $B_INSTALLDIR/etc
 cp snapserver $B_INSTALLDIR/usr/bin
 cp snapserver.1 $B_INSTALLDIR/usr/share/man/man1
-cp etc/snapserver.conf $B_INSTALLDIR/etc
+cp etc/snapserver.conf $B_INSTALLDIR/etc/snapserver.conf.example
 gzip $B_INSTALLDIR/usr/share/man/man1/snapserver.1
 
 [PKG]
