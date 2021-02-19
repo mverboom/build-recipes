@@ -1,0 +1,32 @@
+[VERSION]
+B_GITVER https://github.com/rhaas80/pa_volume pa_volume
+
+[INFO]
+arch=amd64
+
+[REQUIRED]
+gcc make pkg-config libpulse-dev pandoc
+
+[BUILD]
+B_GET git https://github.com/rhaas80/pa_volume pa_volume
+cd pa_volume
+git checkout v$B_VERSION
+make
+mkdir -p $B_INSTALLDIR/usr/bin $B_INSTALLDIR/usr/share/man/man1
+cp pa_volume $B_INSTALLDIR/usr/bin
+gzip pa_volume.1
+cp pa_volume.1.gz $B_INSTALLDIR/usr/share/man/man1
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: pavolume
+Version: B_VERSION
+Section: pavolume
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: pavolume custom B_ORG build
+Homepage: https://github.com/rhaas80/pa_volume
