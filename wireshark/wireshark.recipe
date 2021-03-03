@@ -1,0 +1,37 @@
+[INFO]
+arch=amd64
+
+[VERSION]
+B_GITVER https://gitlab.com/wireshark/wireshark
+
+[REQUIRED]
+cmake make gcc g++ flex bison libglib2.0-dev qttools5-dev qttools5-dev-tools libqt5svg5-dev qtmultimedia5-dev qt5-default libc-ares-dev libpcap-dev python3 perl libgcrypt-dev
+libnl-3-dev libkrb5-dev libsmi2-dev asciidoctor libsbc-dev liblua5.2-dev libnl-cli-3-dev libparse-yapp-perl libcap-dev liblz4-dev libsnappy-dev libzstd-dev libspandsp-dev libxml2-dev libminizip-dev git ninja-build xsltproc libspeexdsp-dev
+
+[BUILD]
+B_GET git https://gitlab.com/wireshark/wireshark wireshark
+cd wireshark
+git checkout v${B_VERSION}
+mkdir build
+cd build
+cmake -DCMAKE_INSTALL_PREFIX:PATH=/opt/wireshark ..
+make -j $(nproc)
+make -j $(nproc) all_guides
+make install DESTDIR=$B_INSTALLDIR
+B_LINKFILES /opt/wireshark/bin /usr/bin
+B_LINKFILES /opt/wireshark/share/man/man1 /usr/share/man/man1
+B_LINKFILES /opt/wireshark/share/man/man4 /usr/share/man/man4
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: wireshark
+Version: B_VERSION
+Section: wireshark
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: wireshark custom B_ORG build
+Depends: libc6, libgcc1, libglib2.0-0, libnl-3-200, libnl-genl-3-200, libnl-route-3-200, libpcap0.8, libqt5core5a, libqt5gui5, libqt5multimedia5, libqt5printsupport5, libqt5widgets5, libstdc++6, zlib1g, libsmi2ldbl

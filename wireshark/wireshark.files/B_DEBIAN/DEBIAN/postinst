@@ -1,0 +1,15 @@
+#!/bin/sh
+
+GROUP=wireshark
+DUMPCAP=/opt/wireshark/bin/dumpcap
+
+if test "$1" = "configure"; then
+   if ! addgroup --quiet --system $GROUP; then
+      if ! getent group wireshark > /dev/null; then
+         echo "Unable to add wireshark group"
+         exit 1
+      fi
+   fi
+   chown root:$GROUP $DUMPCAP
+   setcap cap_net_raw,cap_net_admin=eip $DUMPCAP
+fi

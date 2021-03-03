@@ -1,0 +1,14 @@
+#!/bin/sh
+
+GROUP=wireshark
+DUMPCAP=/opt/wireshark/bin/dumpcap
+
+if test "$1" = "purge"; then
+   if getent group $GROUP >/dev/null; then
+             if [ -x /usr/sbin/delgroup ]; then
+                 if ! delgroup --quiet --system $GROUP; then
+                     echo "Delete group $GROUP failed."
+                 fi
+             fi
+   fi
+fi
