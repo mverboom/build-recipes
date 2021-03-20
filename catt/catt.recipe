@@ -1,0 +1,29 @@
+[VERSION]
+B_GITVER https://github.com/skorokithakis/catt
+
+[INFO]
+arch=amd64
+
+[REQUIRED]
+python3 python3-pip python3-protobuf python3-certifi python3-chardet
+
+[BUILD]
+B_GET git https://github.com/skorokithakis/catt catt
+cd catt
+git checkout v$B_VERSION
+pip3 install --system --prefix=$B_INSTALLDIR/opt/catt catt==$B_VERSION
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: catt
+Version: B_VERSION
+Section: catt
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: catt custom B_ORG build
+Homepage: https://github.com/skorokithakis/catt
+Depends: python3, python3-protobuf, python3-certifi, python3-chardet

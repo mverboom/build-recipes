@@ -1,0 +1,3 @@
+#!/bin/sh
+PYTHONPATH=/opt/catt/lib/python3.7/site-packages /opt/catt/bin/catt "$@"
+
