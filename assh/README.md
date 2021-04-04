@@ -1,0 +1,2 @@
+# ASSH
+A transparent wrapper that adds support for regex, aliases, gateways, dynamic hostnames, graphviz, json output, yaml configuration, and more to SSH.

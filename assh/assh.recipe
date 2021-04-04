@@ -1,0 +1,25 @@
+[INFO]
+arch=amd64
+
+[VERSION]
+B_GITVER https://github.com/moul/assh.git
+
+[BUILD]
+mkdir -p $B_INSTALLDIR/bin
+wget -q -O $B_INSTALLDIR/bin/assh https://github.com/moul/assh/releases/download/v$B_VERSION/assh_linux_$B_ARCH
+chmod 0755 $B_INSTALLDIR/bin/assh
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: assh
+Version: B_VERSION
+Section: assh
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Homepage: https://github.com/moul/assh
+Description: ASSH B_PF custom build
+Depends: ssh
