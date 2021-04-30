@@ -1,0 +1,31 @@
+[INFO]
+arch=amd64
+
+[VERSION]
+B_GITVER -i release -R s/release-// https://github.com/NLnetLabs/unbound
+
+[REQUIRED]
+gcc make libssl-dev libexpat1-dev
+
+[BUILD]
+B_GET git https://github.com/NLnetLabs/unbound unbound
+cd unbound
+git checkout release-$B_VERSION
+./configure --prefix=/opt/unbound --sysconfdir=/etc --localstatedir=/var --mandir=/usr/share/man
+make -j $(nproc)
+make install DESTDIR=$B_INSTALLDIR
+B_LINKFILES /opt/unbound/sbin /usr/sbin
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: unbound
+Version: B_VERSION
+Section: unbound
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: Unbound custom B_ORG build
+Homepage: https://www.nlnetlabs.nl/projects/unbound

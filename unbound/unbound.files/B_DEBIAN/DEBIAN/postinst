@@ -1,0 +1,28 @@
+#!/bin/sh
+
+set -e
+
+# Create a unbound system group
+if ! getent group unbound > /dev/null; then
+    addgroup --quiet --system unbound
+fi
+
+# Create a unbound system user
+if ! getent passwd unbound > /dev/null; then
+    adduser --quiet --system \
+        --ingroup unbound \
+        --home /opt/unbound \
+        --no-create-home \
+        --disabled-password --shell /bin/bash \
+        unbound
+    usermod -c "Unbound daemon" unbound
+fi
+
+chmod 600 /etc/unbound/*
+chown -R unbound:unbound /etc/unbound
+
+if [ ! -f /etc/unbound/unbound_control.key ]; then
+   unbound-control-setup 1>/dev/null 2>&1 || true
+fi
+systemctl enable unbound
+systemctl start unbound
