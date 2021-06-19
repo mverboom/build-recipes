@@ -16,7 +16,7 @@ B_GITHUBREL https://github.com/jgraph/drawio-desktop
 #npm run release-linux
 #cd ..
 #cp dist/draw.io-amd64-*.deb $B_INSTALLDIR
-wget -q -O $B_INSTALLDIR/draw.io-amd64-$B_VERSION.deb https://github.com/jgraph/drawio-desktop/releases/download/v$B_VERSION/draw.io-amd64-$B_VERSION.deb
+wget -q -O $B_INSTALLDIR/draw.io-amd64-$B_VERSION.deb https://github.com/jgraph/drawio-desktop/releases/download/v$B_VERSION/drawio-amd64-$B_VERSION.deb
 
 [PKG]
 type=deb
