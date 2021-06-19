@@ -10,6 +10,7 @@ golang-B_PF gcc nodejs-B_PF yarn-B_PF g++
 [BUILD]
 # 20200207 MV: Prevent memory debug error
 GODEBUG=asyncpreemptoff=1
+export PUPPETEER_SKIP_DOWNLOAD=1
 
 export GOROOT=/opt/go
 export PATH=${PATH}:${GOROOT}/bin
