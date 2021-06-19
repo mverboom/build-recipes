@@ -8,6 +8,8 @@ B_GITVER -e 'dev' https://github.com/go-gitea/gitea.git
 golang-B_PF libpam0g-dev gcc go-bindata nodejs-B_PF
 
 [BUILD]
+export GOROOT=/opt/go
+export PATH=${PATH}:${GOROOT}/bin
 B_GET git https://github.com/go-gitea/gitea.git gitea
 cd gitea
 git checkout v$B_VERSION
