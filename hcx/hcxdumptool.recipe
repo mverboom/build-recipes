@@ -5,7 +5,7 @@ arch=amd64
 B_GITVER https://github.com/ZerBea/hcxdumptool
 
 [REQUIRED]
-make gcc libssl-dev
+make gcc libssl-dev pkg-config
 
 [BUILD]
 B_GET git https://github.com/ZerBea/hcxdumptool hcxdumptool
