@@ -5,7 +5,7 @@ arch=amd64
 B_GITVER https://libwebsockets.org/repo/libwebsockets
 
 [REQUIRED]
-cmake libssl-dev
+cmake libssl-dev g++
 
 [BUILD]
 B_GET git https://libwebsockets.org/repo/libwebsockets libwebsockets
