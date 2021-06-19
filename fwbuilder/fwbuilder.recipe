@@ -6,16 +6,21 @@ excludefromall=1
 B_GITVER https://github.com/fwbuilder/fwbuilder
 
 [REQUIRED]
-make g++ automake autoconf libtool libxml2-dev libxslt-dev libsnmp-dev qt5-default qttools5-dev-tools
+make g++ automake autoconf libtool libxml2-dev libxslt-dev libsnmp-dev qt5-default qttools5-dev-tools cmake
 
 [BUILD]
 B_GET git https://github.com/fwbuilder/fwbuilder fwbuilder
 cd fwbuilder
 git checkout tags/v$B_VERSION
-./autogen.sh
-./configure --prefix=/opt/fwbuilder
-make
-make install INSTALL_ROOT=$B_INSTALLDIR
+mkdir build
+cd build
+cmake -DCMAKE_INSTALL_PREFIX:PATH=/opt/fwbuilder ..
+make -j $(nproc)
+make install DESTDIR=$B_INSTALLDIR
+#./autogen.sh
+#./configure --prefix=/opt/fwbuilder
+#make
+#make install INSTALL_ROOT=$B_INSTALLDIR
 B_LINKFILES /opt/fwbuilder/bin /usr/bin
 B_LINKFILES /opt/fwbuilder/share/man/man1 /usr/share/man/man1
 
