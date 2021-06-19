@@ -13,7 +13,7 @@ cd guacamole-server
 git checkout ${B_VERSION}
 
 autoreconf -fi
-./configure --with-systemd-dir=/lib/systemd/system --prefix=/opt/guacamole --with-ssh --with-rdp --with-vnc --with-terminal --with-telnet --with-webp
+./configure --with-systemd-dir=/lib/systemd/system --prefix=/opt/guacamole --with-ssh --with-rdp --with-vnc --with-terminal --with-telnet --with-webp --enable-allow-freerdp-snapshots
 make
 make install DESTDIR=$B_INSTALLDIR
 mkdir -p $B_INSTALLDIR/var/lib/guacamole
