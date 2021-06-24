@@ -1,0 +1,12 @@
+#!/bin/sh
+
+set -e
+
+if [ "$1" = "purge" ] ; then
+    systemctl stop authelia
+    if getent passwd authelia >/dev/null; then
+        if which deluser >/dev/null 2>&1; then
+            deluser --quiet --system authelia || echo "Could not remove authelia user."
+        fi
+    fi
+fi

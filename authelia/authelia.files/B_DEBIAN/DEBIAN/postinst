@@ -1,0 +1,31 @@
+#!/bin/sh
+
+set -e
+
+# Create a authelia system group
+if ! getent group authelia > /dev/null; then
+    addgroup --quiet --system authelia
+fi
+
+# Create a authelia system user
+if ! getent passwd authelia > /dev/null; then
+    adduser --quiet --system \
+        --ingroup authelia \
+        --home /opt/authelia \
+        --no-create-home \
+        --disabled-password --shell /bin/bash \
+        authelia
+    usermod -c "Authelia daemon" authelia
+fi
+
+chmod 700 /etc/authelia /var/lib/authelia
+chmod 600 /etc/authelia/*
+chown -R authelia:authelia /etc/authelia /var/lib/authelia /var/log/authelia
+
+if grep JWT_SECRET /etc/authelia/configuration.yml > /dev/null 2>&1 ; then
+   sec=`cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -1`
+   sed -i "s/JWT_SECRET/$sec/" /etc/authelia/configuration.yml
+fi
+
+systemctl enable authelia
+systemctl start authelia

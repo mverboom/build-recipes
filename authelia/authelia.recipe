@@ -1,0 +1,42 @@
+[INFO]
+arch=amd64
+
+[VERSION]
+B_GITVER https://github.com/authelia/authelia
+
+[REQUIRED]
+golang-B_PF devscripts equivs yarn-B_PF nodejs-B_PF
+
+[BUILD]
+B_GET git https://github.com/authelia/authelia authelia
+cd authelia
+pushd web
+yarn install --frozen-lockfile
+yarn build
+popd
+rm -rf internal/server/public_html
+mv web/build internal/server/public_html
+cp -R api internal/server/public_html/
+sed -i "s/__BUILD_TAG__/v${B_VERSION}/" cmd/authelia/constants.go
+sed -i "s/__BUILD_COMMIT__/$(git rev-parse --verify v${B_VERSION})/" cmd/authelia/constants.go
+export GOROOT=/opt/go
+export PATH=${PATH}:${GOROOT}/bin
+export GOPATH
+go build -ldflags '-w' -trimpath -o authelia cmd/authelia/*.go
+install -Dm755 "authelia" "$B_INSTALLDIR/opt/authelia/bin/authelia"
+install -Dm755 "config.template.yml" "$B_INSTALLDIR/etc/authelia/configuration.template.yml"
+B_LINKFILES /opt/authelia/bin /usr/bin
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: authelia
+Version: B_VERSION
+Section: authelia
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: Authelia custom B_ORG build
+Homepage: https://www.authelia.com/
