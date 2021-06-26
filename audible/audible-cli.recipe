@@ -1,0 +1,35 @@
+[VERSION]
+B_GITVER https://github.com/mkb79/audible-cli
+
+[INFO]
+arch=all
+
+[REQUIRED]
+python3-virtualenv virtualenv
+
+[BUILD]
+B_GET git https://github.com/mkb79/audible-cli audible-cli
+cd audible-cli
+git checkout $B_GITVER
+DEST=$B_INSTALLDIR/opt/audible-cli
+virtualenv  -p python3 $DEST
+source $DEST/bin/activate
+python -m pip install .
+virtualenv --relocatable -p python3 $DEST
+sed -i "s#$B_INSTALLDIR##" $DEST/bin/activate*
+deactivate
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: audible-cli
+Version: B_VERSION
+Section: audible_cli
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: audible_cli saver custom B_ORG build
+Homepage: https://github.com/mkb79/audible-cli
+Depends: python3

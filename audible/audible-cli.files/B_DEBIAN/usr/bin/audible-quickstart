@@ -1,0 +1,4 @@
+#!/bin/sh
+. /opt/audible-cli/bin/activate
+audible-quickstart "$@"
+deactivate
