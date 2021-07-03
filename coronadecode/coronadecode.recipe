@@ -1,0 +1,37 @@
+[INFO]
+arch=amd64
+
+[VERSION]
+echo "20210627"
+
+[REQUIRED]
+golang-B_PF
+
+[BUILD]
+export PATH=/opt/go/bin:$PATH
+export GOPATH=$(pwd)
+mkdir -p src/github.com/stapelberg
+cd src/github.com/stapelberg
+B_GET git https://github.com/stapelberg/coronaqr coronaqr
+cd coronaqr
+go build
+cd cmd/coronadecode
+go build
+
+mkdir -p $B_INSTALLDIR/usr/bin
+cp coronadecode $B_INSTALLDIR/usr/bin
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: coronadecode
+Version: B_VERSION
+Section: coronadecode
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Homepage: https://github.com/stapelberg/coronaqr
+Description: coronadecode B_PF custom build
+Depends: zbar-tools
