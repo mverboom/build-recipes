@@ -1,0 +1,30 @@
+[INFO]
+arch=amd64
+
+[VERSION]
+wget --no-check-certificate -O - -q https://www.stunnel.org/downloads.html | awk '/downloads\/stunnel-.*.tar.gz"/ { ver=substr($0, index($0,"stunnel-")+8); print substr(ver,1,index(ver,".tar.gz")-1)}'
+
+[REQUIRED]
+gcc libssl-dev make
+
+[BUILD]
+B_GET http https://www.stunnel.org/downloads/stunnel-$B_VERSION.tar.gz stunnel-$B_VERSION.tar.gz
+mkdir stunnel
+tar xzf stunnel-$B_VERSION.tar.gz -C stunnel --strip-components 1
+cd stunnel
+./configure --prefix=$DESTDIR
+make
+make install DESTDIR=$B_INSTALLDIR
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: stunnel
+Version: B_VERSION
+Section: stunnel
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: Stunnel custom B_ORG build

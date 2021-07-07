@@ -1,0 +1,42 @@
+#!/bin/sh
+# Start/stop the cron daemon.
+#
+### BEGIN INIT INFO
+# Provides:          stunnel
+# Required-Start:    $remote_fs $syslog $time
+# Required-Stop:     $remote_fs $syslog $time
+# Should-Start:      $network 
+# Should-Stop:       $network 
+# Default-Start:     2 3 4 5
+# Default-Stop:
+# Short-Description: Stunnel daemon
+# Description:       Stunnel daemon
+### END INIT INFO
+
+PATH=/bin:/usr/bin:/sbin:/usr/sbin:/opt/stunnel/bin
+DESC="stunnel daemon"
+NAME=stunnel
+DAEMON=/opt/stunnel/bin/stunnel
+PIDFILE=/var/run/stunnel.pid
+SCRIPTNAME=/etc/init.d/"$NAME"
+
+test -f $DAEMON || exit 0
+
+. /lib/lsb/init-functions
+
+case "$1" in
+start)	log_daemon_msg "Starting tunnel service" "stunnel"
+        start_daemon -p $PIDFILE $DAEMON $EXTRA_OPTS
+        log_end_msg $?
+	;;
+stop)	log_daemon_msg "Stopping tunnel service" "stunnel"
+        killproc -p $PIDFILE $DAEMON
+        RETVAL=$?
+        [ $RETVAL -eq 0 ] && [ -e "$PIDFILE" ] && rm -f $PIDFILE
+        log_end_msg $RETVAL
+        ;;
+*)	log_action_msg "Usage: /etc/init.d/stunnel {start|stop}"
+        exit 2
+        ;;
+esac
+exit 0
