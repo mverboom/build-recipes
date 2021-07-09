@@ -6,7 +6,7 @@ excludefromall=1
 B_GITVER https://github.com/greenbone/gsa
 
 [REQUIRED]
-gvm-libs-B_PF cmake libmicrohttpd-dev libxml2-dev libglib2.0-dev libxml2-dev libxslt1-dev libpcap-dev libgpgme-dev libssh-gcrypt-dev libhiredis-dev python-polib xsltproc xmltoman nodejs-lts-B_PF yarn-B_PF uuid-dev
+gvm-libs-B_PF cmake libmicrohttpd-dev libxml2-dev libglib2.0-dev libxml2-dev libxslt1-dev libpcap-dev libgpgme-dev libssh-gcrypt-dev libhiredis-dev python-polib xsltproc xmltoman nodejs-lts-B_PF yarn-B_PF uuid-dev g++
 
 [BUILD DEBIAN]
 B_GET git https://github.com/greenbone/gsa gsa

@@ -14,7 +14,7 @@ cd openvas-smb
 #git checkout tags/v$B_VERSION
 mkdir build
 cd build
-cmake -DCMAKE_INSTALL_PREFIX=/opt/gvm ..
+cmake -DCMAKE_INSTALL_PREFIX=/opt/gvm -DCMAKE_BUILD_TYPE=Release ..
 make
 make install DESTDIR=$B_INSTALLDIR
 B_LINKFILES /opt/gvm/bin /usr/bin

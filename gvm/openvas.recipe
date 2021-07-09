@@ -3,24 +3,25 @@ arch=amd64
 excludefromall=1
 
 [VERSION]
-B_GITVER https://github.com/greenbone/openvas-scanner
+B_GITVER https://github.com/greenbone/openvas
 
 [REQUIRED]
 cmake gcc pkg-config libssh-gcrypt-dev libgnutls28-dev libglib2.0-dev libpcap-dev libgpgme-dev bison libksba-dev libsnmp-dev libgcrypt20-dev gvm-libs-B_PF libhiredis-dev xmltoman clang-format uuid-dev
 
 [BUILD DEBIAN]
-B_GET git https://github.com/greenbone/openvas-scanner openvas-scanner
-cd openvas-scanner
+B_GET git https://github.com/greenbone/openvas openvas
+cd openvas
 git checkout tags/v$B_VERSION
 export PKG_CONFIG_PATH=/opt/gvm/lib/pkgconfig:$PKG_CONFIG_PATH
 sed -i "/^set (OPENVAS_STATE_DIR/ s/openvas/gvm/" CMakeLists.txt
 sed -i "/^set (OPENVAS_SYSCONF_DIR/ s/openvas/gvm/" CMakeLists.txt
 mkdir build
 cd build
-cmake -DCMAKE_INSTALL_PREFIX=/opt/gvm -DSYSCONFDIR=/etc -DLOCALSTATEDIR=/var ..
+cmake -DCMAKE_INSTALL_PREFIX=/opt/gvm -DCMAKE_BUILD_TYPE=Release -DSYSCONFDIR=/etc -DLOCALSTATEDIR=/var ..
 make
 make install DESTDIR=$B_INSTALLDIR
 sed -i "/^OPENVAS_SYSCONF_DIR/ s/openvas/gvm/" $B_INSTALLDIR/opt/gvm/bin/greenbone-nvt-sync
+sed -i '/^OPENVAS_FEED_LOCK_PATH/ s#/var/run#/tmp#' $B_INSTALLDIR/opt/gvm/bin/greenbone-nvt-sync
 B_LINKFILES /opt/gvm/bin /usr/bin
 B_LINKFILES /opt/gvm/sbin /usr/sbin
 B_LINKFILES /opt/gvm/share/man/man1 /usr/share/man/man1

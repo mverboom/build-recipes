@@ -6,15 +6,15 @@ excludefromall=1
 B_GITVER https://github.com/greenbone/gvm-libs
 
 [REQUIRED]
-cmake pkg-config libglib2.0-dev libgpgme-dev libgnutls28-dev uuid-dev libssh-gcrypt-dev libhiredis-dev bison libksba-dev libpcap-dev xmltoman libxml2-dev
+cmake pkg-config libglib2.0-dev libgpgme-dev libgnutls28-dev uuid-dev libssh-gcrypt-dev libhiredis-dev bison libksba-dev libpcap-dev xmltoman libxml2-dev doxygen libnet1-dev
 
 [BUILD DEBIAN]
 B_GET git https://github.com/greenbone/gvm-libs gvm-libs
 cd gvm-libs
-git checkout tags/v$B_VERSION
+git checkout v$B_VERSION
 mkdir build
 cd build
-cmake -DCMAKE_INSTALL_PREFIX=/opt/gvm -DSYSCONF_INSTALL_DIR=/etc -DGVM_PID_DIR=/var/run/gvm ..
+cmake -DCMAKE_INSTALL_PREFIX=/opt/gvm -DCMAKE_BUILD_TYPE=Release -DSYSCONF_INSTALL_DIR=/etc -DGVM_PID_DIR=/var/run/gvm ..
 make
 make install DESTDIR=$B_INSTALLDIR
 
@@ -31,3 +31,4 @@ Architecture: B_ARCH
 Maintainer: B_MAIL
 Description: Greenbone gvm-libs custom B_ORG build
 Homepage: https://github.com/greenbone/gvm-libs
+Depends: libnet1
