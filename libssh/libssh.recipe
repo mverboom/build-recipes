@@ -1,0 +1,32 @@
+[INFO]
+arch=amd64
+
+[VERSION]
+B_GITVER -F libssh- https://git.libssh.org/projects/libssh.git/
+
+[REQUIRED]
+cmake gcc zlib1g-dev libssl-dev g++
+
+[BUILD]
+B_GET git https://git.libssh.org/projects/libssh.git libssh
+cd libssh
+git checkout libssh-$B_VERSION
+mkdir build
+cd build
+cmake -DCMAKE_INSTALL_PREFIX:PATH=/opt/libssh ..
+make
+make install DESTDIR=$B_INSTALLDIR
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: libssh
+Version: B_VERSION
+Section: libssh
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: Libssh custom B_ORG build
+Homepage: https://www.libssh.org
