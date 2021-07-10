@@ -37,14 +37,3 @@ Maintainer: B_MAIL
 Description: Greenbone Security Assistant custom B_ORG build
 Homepage: https://github.com/greenbone/gsa
 Depends: gvm-libs-B_PF,gvmd-B_PF,libmicrohttpd12,libhiredis0.14,libssh-gcrypt-4,openssl
-
-[DEB STRETCH]
-Package: gsa
-Version: B_VERSION
-Section: greenbone
-Priority: optional
-Architecture: B_ARCH
-Maintainer: B_MAIL
-Description: Greenbone Security Assistant custom B_ORG build
-Homepage: https://github.com/greenbone/gsa
-Depends: gvm-libs-B_PF,gvmd-B_PF,libmicrohttpd12,libhiredis0.13,libssh-gcrypt-4,openssl

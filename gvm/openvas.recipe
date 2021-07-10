@@ -6,13 +6,13 @@ excludefromall=1
 B_GITVER https://github.com/greenbone/openvas
 
 [REQUIRED]
-cmake gcc pkg-config libssh-gcrypt-dev libgnutls28-dev libglib2.0-dev libpcap-dev libgpgme-dev bison libksba-dev libsnmp-dev libgcrypt20-dev gvm-libs-B_PF libhiredis-dev xmltoman clang-format uuid-dev
+cmake gcc pkg-config libssh-B_PF libgnutls28-dev libglib2.0-dev libpcap-dev libgpgme-dev bison libksba-dev libsnmp-dev libgcrypt20-dev gvm-libs-B_PF libhiredis-dev xmltoman clang-format uuid-dev
 
 [BUILD DEBIAN]
 B_GET git https://github.com/greenbone/openvas openvas
 cd openvas
 git checkout tags/v$B_VERSION
-export PKG_CONFIG_PATH=/opt/gvm/lib/pkgconfig:$PKG_CONFIG_PATH
+export PKG_CONFIG_PATH=/opt/gvm/lib/pkgconfig:/opt/libssh/lib/pkgconfig:$PKG_CONFIG_PATH
 sed -i "/^set (OPENVAS_STATE_DIR/ s/openvas/gvm/" CMakeLists.txt
 sed -i "/^set (OPENVAS_SYSCONF_DIR/ s/openvas/gvm/" CMakeLists.txt
 mkdir build
@@ -41,15 +41,4 @@ Architecture: B_ARCH
 Maintainer: B_MAIL
 Description: Greenbone OpenVAS test custom B_ORG build
 Homepage: https://github.com/greenbone/openvas-scanner
-Depends: nmap-B_PF(>=5.51),gvm-libs-B_PF,redis-server,libssh-gcrypt-4,libhiredis0.14,libsnmp30,libpcap0.8,libgpgme11,rsync
-
-[DEB STRETCH]
-Package: openvas
-Version: B_VERSION
-Section: greenbone
-Priority: optional
-Architecture: B_ARCH
-Maintainer: B_MAIL
-Description: Greenbone OpenVAS custom B_ORG build
-Homepage: https://github.com/greenbone/openvas-scanner
-Depends: nmap-B_PF(>=5.51),gvm-libs-B_PF,redis-server,libssh-gcrypt-4,libhiredis0.13,libsnmp30,libpcap0.8,libgpgme11,rsync
+Depends: nmap-B_PF(>=5.51),gvm-libs-B_PF,redis-server,libssh-gcrypt-4,libhiredis0.14,libsnmp30,libpcap0.8,libgpgme11,rsync,libssh-B_PF

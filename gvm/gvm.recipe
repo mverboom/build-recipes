@@ -15,7 +15,8 @@ case $B_VERSION in
 ;;
 21.04)
    build $opt -b -p -r gvm-libs@21.4.1 \
-                       python-gvm@21.4.0
+                       python-gvm@21.4.0 \
+                       libssh
    # We need above packages for those below, so make them apt installable
    sudo apt-get -q update > /dev/null
    build $opt -b -p -r gvm-tools@21.6.1 \
@@ -38,19 +39,6 @@ case $B_VERSION in
                        openvas@20.8.0 \
                        gvmd@20.8.0 \
                        gsa@20.8.0
-;;
-11)
-   build $opt -b -p -r gvm-libs@11.0.1 \
-                       python-gvm@1.5.0
-   # We need above packages for those below, so make them apt installable
-   sudo apt-get -q update > /dev/null
-   build $opt -b -p -r gvm-tools@2.1.0 \
-                       ospd@2.0.1 \
-                       ospd-openvas@1.0.1 \
-                       openvas-smb@1.0.5 \
-                       openvas@7.0.1 \
-                       gvmd@9.0.1 \
-                       gsa@9.0.1
 ;;
 esac
 

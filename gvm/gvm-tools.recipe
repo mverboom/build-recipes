@@ -8,20 +8,6 @@ excludefromall=1
 [REQUIRED]
 python3 python3-setuptools python-gvm-B_PF python3-pip
 
-[BUILD DEBIAN STRETCH]
-B_GET git https://github.com/greenbone/gvm-tools gvm-tools
-cd gvm-tools
-git checkout v$B_VERSION
-mkdir -p $B_INSTALLDIR/opt/gvm/lib/python3.5/site-packages $B_INSTALLDIR/opt/gvm/share/gvm-tools-scripts
-export PYTHONPATH="$B_INSTALLDIR/opt/gvm/lib/python3.5/site-packages:/opt/gvm/lib/python3.5/site-packages:${PYTHONPATH}"
-python3 setup.py install --prefix $B_INSTALLDIR/opt/gvm
-pushd scripts
-tar cfB - . | ( cd $B_INSTALLDIR/opt/gvm/share/gvm-tools-scripts ; tar xfB - )
-popd
-rm -f $B_INSTALLDIR/opt/gvm/lib/python3.5/site-packages/site.py
-rm -f $B_INSTALLDIR/opt/gvm/lib/python3.5/site-packages/easy-install.pth
-B_LINKFILES /opt/gvm/bin /usr/bin
-
 [BUILD DEBIAN BUSTER]
 B_GET git https://github.com/greenbone/gvm-tools gvm-tools
 cd gvm-tools

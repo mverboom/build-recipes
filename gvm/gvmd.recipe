@@ -1,15 +1,15 @@
 [VERSION]
-B_GITVER https://github.com/greenbone/gvm
+B_GITVER https://github.com/greenbone/gvmd
 
 [INFO]
 arch=amd64
 excludefromall=1
 
 [REQUIRED]
-cmake libsqlite3-dev libgpgme-dev libssh-gcrypt-dev pkg-config gvm-libs-B_PF libglib2.0-dev libgnutls28-dev libpcap-dev libhiredis-dev xmltoman libical-dev postgresql-server-dev-all uuid-dev xsltproc doxygen xml-twig-tools
+cmake libsqlite3-dev libgpgme-dev libssh-gcrypt-dev pkg-config gvm-libs-B_PF libglib2.0-dev libgnutls28-dev libpcap-dev libhiredis-dev xmltoman libical-dev postgresql-server-dev-all uuid-dev xsltproc doxygen xml-twig-tools g++
 
 [BUILD DEBIAN]
-B_GET git https://github.com/greenbone/gvm gvm
+B_GET git https://github.com/greenbone/gvmd gvm
 cd gvm
 git checkout v$B_VERSION
 export PKG_CONFIG_PATH=/opt/gvm/lib/pkgconfig:$PKG_CONFIG_PATH
@@ -20,14 +20,16 @@ cd ..
 sed -i "/^#define OPENVAS_DEFAULT_SOCKET/ s#/tmp#/run/ospd-openvas#" src/manage_sql.c
 cd build
 make
+make doc
 make install DESTDIR=$B_INSTALLDIR
 mkdir -p $B_INSTALLDIR/var/lib/gvm/gvmd $B_INSTALLDIR/opt/gvm/var/lib/gvm
 ln -s /var/lib/gvm/gvmd $B_INSTALLDIR/opt/gvm/var/lib/gvm/gvmd
 mkdir -p $B_INSTALLDIR/opt/gvm/etc/gvm
 ln -s /etc/gvm/pwpolicy.conf $B_INSTALLDIR/opt/gvm/etc/gvm
-mkdir -p $B_INSTALLDIR/var/lib/gvm/data-objects/gvmd/20.08/report_formats
-mkdir -p $B_INSTALLDIR/var/lib/gvm/data-objects/gvmd/20.08/configs
-mkdir -p $B_INSTALLDIR/var/lib/gvm/data-objects/gvmd/20.08/port_lists
+mkdir -p $B_INSTALLDIR/var/lib/gvm/data-objects/gvmd/21.04/report_formats
+#mkdir -p $B_INSTALLDIR/var/lib/gvm/data-objects/gvmd/20.08/configs
+#mkdir -p $B_INSTALLDIR/var/lib/gvm/data-objects/gvmd/20.08/port_lists
+#mkdir -p $B_INSTALLDIR/opt/gvm/share/gvm/gvmd/report_formats
 mkdir -p $B_INSTALLDIR/opt/gvm/share/gvm/gvmd/report_formats
 B_LINKFILES /opt/gvm/bin /usr/bin
 B_LINKFILES /opt/gvm/sbin /usr/sbin
@@ -47,15 +49,4 @@ Architecture: B_ARCH
 Maintainer: B_MAIL
 Description: Greenbone gvmd custom B_ORG build
 Homepage: https://github.com/greenbone/gvm
-Depends: gnutls-bin,libgpgme11,xsltproc,libical3,postgresql-11,gvm-libs-B_PF,libssh-gcrypt-4,libhiredis0.14,rsync,ospd-openvas-B_PF,texlive-base,texlive-binaries,texlive-fonts-extra,texlive-fonts-extra-doc,texlive-fonts-recommended,texlive-latex-base,texlive-latex-extra,texlive-latex-recommended,texlive-pictures,xml-twig-tools
-
-[DEB STRETCH]
-Package: gvmd
-Version: B_VERSION
-Section: greenbone
-Priority: optional
-Architecture: B_ARCH
-Maintainer: B_MAIL
-Description: Greenbone gvmd custom B_ORG build
-Homepage: https://github.com/greenbone/gvm
-Depends: gnutls-bin,libgpgme11,xsltproc,libical2,postgresql-9.6,gvm-libs-B_PF,libssh-gcrypt-4,libhiredis0.13,rsync,ospd-openvas-B_PF,texlive-base,texlive-binaries,texlive-fonts-extra,texlive-fonts-extra-doc,texlive-fonts-recommended,texlive-latex-base,texlive-latex-extra,texlive-latex-recommended,texlive-pictures
+Depends: gnutls-bin,libgpgme11,xsltproc,libical3,postgresql-11,gvm-libs-B_PF,libssh-gcrypt-4,libhiredis0.14,rsync,ospd-openvas-B_PF,texlive-base,texlive-binaries,texlive-fonts-extra,texlive-fonts-extra-doc,texlive-fonts-recommended,texlive-latex-base,texlive-latex-extra,texlive-latex-recommended,texlive-pictures,xml-twig-tools,nsis,imagemagick,texlive-fonts-recommended
