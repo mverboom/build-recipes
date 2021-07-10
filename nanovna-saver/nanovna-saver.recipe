@@ -1,5 +1,5 @@
 [VERSION]
-B_GITVER -f 0.11 https://github.com/NanoVNA-Saver/nanovna-saver
+B_GITVER -e -pre -f 0.11 https://github.com/NanoVNA-Saver/nanovna-saver
 
 [INFO]
 arch=amd64
