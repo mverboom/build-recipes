@@ -13,7 +13,7 @@ mkdir libressl
 tar xzf libressl.tar.gz -C libressl --strip-components 1
 cd libressl
 ./configure --prefix=/opt/libressl
-make check
+make -j $(nproc) check
 make install DESTDIR=$B_INSTALLDIR
 
 [PKG]
