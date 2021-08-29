@@ -1,0 +1,35 @@
+[INFO]
+arch=amd64
+
+[VERSION]
+B_GITVER -i RELEASE. -F "^RELEASE." https://github.com/chris2511/xca/
+
+[REQUIRED]
+autoconf libssl-dev libqt4-dev g++ make pkgconf libltdl-dev
+
+[REQUIRED DEBIAN BULLSEYE]
+autoconf libssl-dev g++ make pkgconf libltdl-dev qttools5-dev
+
+[BUILD]
+B_GET git https://github.com/chris2511/xca/ xca
+cd xca
+git checkout RELEASE.$B_VERSION
+./bootstrap
+./configure --prefix=/opt/xca
+make
+make install DESTDIR=$B_INSTALLDIR
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: xca
+Version: B_VERSION
+Section: xca
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: Xca custom B_ORG build
+Homepage: http://xca.hohnstaedt.de
+Depends: libqtgui4,libssl1.1
