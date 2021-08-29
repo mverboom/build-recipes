@@ -5,7 +5,7 @@ arch=amd64
 B_GITVER -i release -R s/release-// https://github.com/NLnetLabs/unbound
 
 [REQUIRED]
-gcc make libssl-dev libexpat1-dev
+gcc make libssl-dev libexpat1-dev bison
 
 [BUILD]
 B_GET git https://github.com/NLnetLabs/unbound unbound
