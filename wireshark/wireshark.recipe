@@ -8,6 +8,9 @@ B_GITVER https://gitlab.com/wireshark/wireshark
 cmake make gcc g++ flex bison libglib2.0-dev qttools5-dev qttools5-dev-tools libqt5svg5-dev qtmultimedia5-dev qt5-default libc-ares-dev libpcap-dev python3 perl libgcrypt-dev
 libnl-3-dev libkrb5-dev libsmi2-dev asciidoctor libsbc-dev liblua5.2-dev libnl-cli-3-dev libparse-yapp-perl libcap-dev liblz4-dev libsnappy-dev libzstd-dev libspandsp-dev libxml2-dev libminizip-dev git ninja-build xsltproc libspeexdsp-dev
 
+[REQUIRED DEBIAN BULLSEYE]
+cmake make gcc g++ flex bison libglib2.0-dev qttools5-dev qttools5-dev-tools libqt5svg5-dev qtmultimedia5-dev libc-ares-dev libpcap-dev python3 perl libgcrypt-dev libnl-3-dev libkrb5-dev libsmi2-dev asciidoctor libsbc-dev liblua5.2-dev libnl-cli-3-dev libparse-yapp-perl libcap-dev liblz4-dev libsnappy-dev libzstd-dev libspandsp-dev libxml2-dev libminizip-dev git ninja-build xsltproc libspeexdsp-dev
+
 [BUILD]
 B_GET git https://gitlab.com/wireshark/wireshark wireshark
 cd wireshark
