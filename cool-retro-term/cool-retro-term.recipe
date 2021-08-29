@@ -5,14 +5,14 @@ arch=amd64
 B_GITVER https://github.com/Swordfish90/cool-retro-term
 
 [REQUIRED]
-build-essential qmlscene qt5-qmake qt5-default qtdeclarative5-dev qml-module-qtquick-controls qml-module-qtgraphicaleffects qml-module-qtquick-dialogs qml-module-qtquick-localstorage qml-module-qtquick-window2 qml-module-qt-labs-settings qml-module-qt-labs-folderlistmodel
+build-essential qmlscene qt5-qmake qtdeclarative5-dev qml-module-qtquick-controls qml-module-qtgraphicaleffects qml-module-qtquick-dialogs qml-module-qtquick-localstorage qml-module-qtquick-window2 qml-module-qt-labs-settings qml-module-qt-labs-folderlistmodel
 
 [BUILD]
 B_GET git -s https://github.com/Swordfish90/cool-retro-term crt
 cd crt
 git checkout $B_VERSION
 qmake
-make
+make -j ${nproc}
 make INSTALL_ROOT=$B_INSTALLDIR install
 
 [PKG]
