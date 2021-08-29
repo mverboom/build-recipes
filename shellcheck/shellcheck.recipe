@@ -16,7 +16,7 @@ pandoc -s -t man shellcheck.1.md -o shellcheck.1
 gzip shellcheck.1
 
 mkdir -p $B_INSTALLDIR/opt/shellcheck/bin $B_INSTALLDIR/opt/shellcheck/share/man1
-cp dist/build/shellcheck/shellcheck $B_INSTALLDIR/opt/shellcheck/bin
+find . -type f -name shellcheck | xargs -I {} cp {} $B_INSTALLDIR/opt/shellcheck/bin
 cp shellcheck.1.gz $B_INSTALLDIR/opt/shellcheck/share/man1
 
 B_LINKFILES /opt/shellcheck/share/man1 /usr/share/man/man1
