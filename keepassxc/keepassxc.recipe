@@ -69,7 +69,7 @@ Architecture: B_ARCH
 Maintainer: B_MAIL
 Description: Cross Platform Password Manager
 Homepage: https://keepassxc.org
-Depends: libargon2-0 (>= 0~20160406~), libc6 (>= 2.14), libgcrypt20 (>= 1.7.0), libqt5core5a (>= 5.7.0), libqt5dbus5 (>= 5.0.2), libqt5gui5 (>= 5.7.0), libqt5network5 (>= 5.0.2), libqt5widgets5 (>= 5.6.0~beta), libqt5x11extras5 (>= 5.6.0), libsodium23, libstdc++6 (>= 5.2), libx11-6, libxi6, libxtst6, libykpers-1-1 (>= 1.12.0), libzxcvbn0 (>= 0.20150103), zlib1g (>= 1:1.1.4), libqrencode4, libqt5concurrent5 (>=5.7.1), libquazip1
+Depends: libargon2-0 (>= 0~20160406~), libc6 (>= 2.14), libgcrypt20 (>= 1.7.0), libqt5core5a (>= 5.7.0), libqt5dbus5 (>= 5.0.2), libqt5gui5 (>= 5.7.0), libqt5network5 (>= 5.0.2), libqt5widgets5 (>= 5.6.0~beta), libqt5x11extras5 (>= 5.6.0), libsodium23, libstdc++6 (>= 5.2), libx11-6, libxi6, libxtst6, libykpers-1-1 (>= 1.12.0), libzxcvbn0 (>= 0.20150103), zlib1g (>= 1:1.1.4), libqrencode4, libqt5concurrent5 (>=5.7.1), libquazip1, libqt5svg5
 
 [DEB BULLSEYE]
 Package: keepassxc
@@ -80,4 +80,4 @@ Architecture: B_ARCH
 Maintainer: B_MAIL
 Description: Cross Platform Password Manager
 Homepage: https://keepassxc.org
-Depends: libargon2-1 (>= 0~20171227~), libc6 (>= 2.31), libgcrypt20 (>= 1.8.7), libqt5core5a (>= 5.15.2), libqt5dbus5 (>= 5.15.2), libqt5gui5 (>= 5.15.2), libqt5network5 (>= 5.15.2), libqt5widgets5 (>= 5.12.2), libqt5x11extras5 (>= 5.15.2), libsodium23, libstdc++6 (>= 10.2.1), libx11-6, libxi6, libxtst6, libykpers-1-1 (>= 1.20.0), zlib1g (>= 1:1.2.11), libqrencode4, libqt5concurrent5 (>=5.15.2), libquazip5-1
+Depends: libargon2-1 (>= 0~20171227~), libc6 (>= 2.31), libgcrypt20 (>= 1.8.7), libqt5core5a (>= 5.15.2), libqt5dbus5 (>= 5.15.2), libqt5gui5 (>= 5.15.2), libqt5network5 (>= 5.15.2), libqt5widgets5 (>= 5.12.2), libqt5x11extras5 (>= 5.15.2), libsodium23, libstdc++6 (>= 10.2.1), libx11-6, libxi6, libxtst6, libykpers-1-1 (>= 1.20.0), zlib1g (>= 1:1.2.11), libqrencode4, libqt5concurrent5 (>=5.15.2), libquazip5-1, libqt5svg5
