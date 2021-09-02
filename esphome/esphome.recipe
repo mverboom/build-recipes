@@ -10,7 +10,7 @@ python3 python3-pip
 [BUILD]
 B_GET git https://github.com/esphome/esphome esphome
 cd esphome
-git checkout v$B_VERSION
+git checkout $B_VERSION
 pip3 install --system --prefix=$B_INSTALLDIR/opt/esphome -r requirements.txt
 export PYTHONPATH="$B_INSTALLDIR/opt/esphome/lib/python3.7/site-packages"
 python3 setup.py install --prefix=$B_INSTALLDIR/opt/esphome
@@ -29,4 +29,4 @@ Maintainer: B_MAIL
 Description: ESPHome custom B_ORG build
 Homepage: https://esphome.io/
 Recommends: lighttpd
-Depends: python3,python3-setuptools,python3-six,openssl,python3-pil,python3-requests
+Depends: python3,python3-setuptools,python3-six,openssl,python3-pil,python3-requests,python3-cryptography
