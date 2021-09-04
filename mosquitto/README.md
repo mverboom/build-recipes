@@ -9,6 +9,8 @@ One recipe for the complete server and client, and one recipe for clients only.
 Web frontend to manage mosquitto's authentication and authorization for the
 Dynamic Security module.
 
+https://docs.cedalo.com/management-center/2.2/mc-overview
+
 ## Connecting
 
 Default this listens on 127.0.0.1:8088 with login admin, password admin.
