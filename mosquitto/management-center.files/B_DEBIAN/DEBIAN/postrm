@@ -1,0 +1,7 @@
+#!/bin/sh
+
+if test "$1" = "purge"; then
+   systemctl stop management-center > /dev/null || true
+   userdel --force mgmtcenter > /dev/null || true
+   groupdel mgmtcenter > /dev/null || true
+fi

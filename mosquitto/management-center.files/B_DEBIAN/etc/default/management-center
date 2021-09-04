@@ -1,0 +1,14 @@
+# Location of configuration file
+CEDALO_MC_PROXY_CONFIG_DIR=/etc/management-center
+
+# Login for the admin panel, please change from default
+CEDALO_MC_USERNAME=admin
+CEDALO_MC_PASSWORD=admin
+
+# If proxy is required to access internet
+# http_proxy=http://proxy:8080
+# https_proxy=http://proxy:8080
+
+CEDALO_MC_NAME="Cedalo Management Center"
+CEDALO_MC_PROXY_IP="127.0.0.1"
+CEDALO_MC_PROXY_PORT=8088

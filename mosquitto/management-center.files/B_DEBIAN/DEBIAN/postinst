@@ -1,0 +1,21 @@
+#!/bin/bash
+ 
+if test "$1" = "configure"; then
+   # Create a mgmtcenter system group
+   if ! getent group mgmtcenter > /dev/null; then
+       addgroup --quiet --system mgmtcenter
+   fi
+   
+   # Create a mgmtcenter system user
+   if ! getent passwd mgmtcenter > /dev/null; then
+       adduser --quiet \
+           --ingroup mgmtcenter \
+           --home /opt/management-center \
+           --disabled-password \
+           --gecos "Management Center user" \
+           mgmtcenter
+       usermod -c "Management Center user" mgmtcenter
+   fi
+   chown -R mgmtcenter:mgmtcenter /etc/management-center
+fi
+systemctl restart management-center.service

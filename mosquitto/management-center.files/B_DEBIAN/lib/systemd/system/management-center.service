@@ -1,0 +1,15 @@
+[Unit]
+Description=Cedalo Management Center
+After=network.target
+
+[Service]
+EnvironmentFile=/etc/default/management-center
+Type=simple
+User=mgmtcenter
+ExecStart=/usr/bin/node start.js
+WorkingDirectory=/opt/management-center
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+
