@@ -13,7 +13,7 @@ B_GET svn https://svn.nmap.org/nmap-releases nmap
 cd nmap
 cd *${B_VERSION}*
 ./configure --prefix=/opt/nmap --without-zenmap
-make
+make -j ${nproc}
 make install DESTDIR=$B_INSTALLDIR
 B_LINKFILES /opt/nmap/bin /usr/bin
 
