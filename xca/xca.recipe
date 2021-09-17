@@ -16,7 +16,7 @@ cd xca
 git checkout RELEASE.$B_VERSION
 ./bootstrap
 ./configure --prefix=/opt/xca
-make
+make -j $(nproc)
 make install DESTDIR=$B_INSTALLDIR
 
 [PKG]
