@@ -2,21 +2,27 @@
 
 set -e
 
-# Move a conffile without triggering a dpkg question
-mv_conffile() {
-    local OLDCONFFILE="$1"
-    local NEWCONFFILE="$2"
+# Create a tinyproxy system group
+if ! getent group tinyproxy > /dev/null; then
+    addgroup --quiet --system tinyproxy
+fi
 
-    [ -e "$OLDCONFFILE" ] || return 0
+# Create a tinyproxy system user
+if ! getent passwd tinyproxy > /dev/null; then
+    adduser --quiet --system \
+        --ingroup tinyproxy \
+        --home /run/tinyproxy \
+        --disabled-password --shell /bin/false \
+        tinyproxy
+    usermod -c "Tinyproxy daemon" tinyproxy
+fi
 
-    echo "Preserving user changes to $NEWCONFFILE ..."
-    mv -f "$NEWCONFFILE" "$NEWCONFFILE".dpkg-new
-    mv -f "$OLDCONFFILE" "$NEWCONFFILE"
-}
-
-case "$1" in
-configure)
-	:
-esac
-
-#DEBHELPER#
+# Make sure /var/log/tinyproxy is writable by the tinyproxy user
+if [ "$1" = "configure" ]; then
+    if dpkg --compare-versions "$2" lt "1.8.4-2~"; then
+        chmod 750 /var/log/tinyproxy
+        chmod 640 /var/log/tinyproxy/* 2>/dev/null || true
+        chown tinyproxy:adm /var/log/tinyproxy
+        chown tinyproxy:adm /var/log/tinyproxy/* 2>/dev/null || true
+    fi
+fi

@@ -1,0 +1,38 @@
+#!/bin/sh
+
+set -e
+
+systemctl stop tinyproxy
+
+if [ "$1" = "purge" ] ; then
+    if getent passwd tinyproxy >/dev/null; then
+        if which deluser >/dev/null 2>&1; then
+            deluser --quiet --system tinyproxy || echo "Could not remove tinyproxy user."
+        fi
+    fi
+    # Get rid of leftover logs
+    rm -rf /var/log/tinyproxy
+fi
+
+# Automatically added by dh_installinit/13.3.4
+if [ "$1" = "purge" ] ; then
+	update-rc.d tinyproxy remove >/dev/null
+fi
+# End automatically added section
+# Automatically added by dh_installdeb/13.3.4
+dpkg-maintscript-helper mv_conffile /etc/tinyproxy.conf /etc/tinyproxy/tinyproxy.conf 1.8.4-2\~ tinyproxy -- "$@"
+# End automatically added section
+# Automatically added by dh_installsystemd/13.3.4
+if [ "$1" = "remove" ]; then
+	if [ -x "/usr/bin/deb-systemd-helper" ]; then
+		deb-systemd-helper mask 'tinyproxy.service' >/dev/null || true
+	fi
+fi
+
+if [ "$1" = "purge" ]; then
+	if [ -x "/usr/bin/deb-systemd-helper" ]; then
+		deb-systemd-helper purge 'tinyproxy.service' >/dev/null || true
+		deb-systemd-helper unmask 'tinyproxy.service' >/dev/null || true
+	fi
+fi
+# End automatically added section

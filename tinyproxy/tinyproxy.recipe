@@ -13,9 +13,15 @@ cd tinyproxy
 git checkout $B_VERSION
 
 bash autogen.sh
-./configure
+./configure --prefix=/opt/tinyproxy --sysconfdir=/etc
 make -j $(nproc)
 make install DESTDIR=$B_INSTALLDIR
+# patch config file
+CFG=$B_INSTALLDIR/etc/tinyproxy/tinyproxy.conf
+sed -i "s/^User .*/User tinyproxy/" $CFG
+sed -i "s/^Group .*/Group tinyproxy/" $CFG
+sed -i "s@^#LogFile .*@LogFile \"/var/log/tinyproxy/tinyproxy.log\"@" $CFG
+sed -i "s@^#PidFile .*@PidFile \"/run/tinyproxy/tinyproxy.pid\"@" $CFG
 
 [PKG]
 

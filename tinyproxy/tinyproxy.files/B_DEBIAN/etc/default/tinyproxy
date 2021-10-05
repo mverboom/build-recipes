@@ -1,0 +1,4 @@
+# Default settings for tinyproxy
+
+CONFIG="/etc/tinyproxy/tinyproxy.conf
+FLAGS="-c $CONFIG"
