@@ -7,7 +7,7 @@ B_GITVER https://github.com/drwetter/testssl.sh
 [BUILD]
 B_GET git https://github.com/drwetter/testssl.sh testssl
 cd testssl
-git checkout $B_VERSION
+git checkout v$B_VERSION
 BIN=$B_INSTALLDIR/opt/testssl/bin
 mkdir -p $BIN
 cp testssl.sh $BIN
