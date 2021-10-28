@@ -2,7 +2,7 @@
 arch=amd64
 
 [VERSION]
-B_GITVER https://github.com/nodejs/node/
+B_GITVER -e 213123 https://github.com/nodejs/node/
 
 [REQUIRED]
 python make gcc g++ python3-distutils
