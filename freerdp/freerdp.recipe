@@ -12,7 +12,7 @@ B_GET git https://github.com/FreeRDP/FreeRDP freerdp
 cd freerdp
 git checkout $B_VERSION
 cmake -DCMAKE_BUILD_TYPE=Debug -DWITH_SSE2=ON -DWITH_JPEG=on -DWITH_GSM=ON -DWITH_LAME=ON -DWITH_FAAD2=ON -DWITH_FAAC=ON -DWITH_SOXR=ON -DCMAKE_INSTALL_PREFIX=/opt/freerdp .
-make
+make -j $(nproc)
 make install DESTDIR=$B_INSTALLDIR
 B_LINKFILES /opt/freerdp/bin /usr/bin
 B_LINKFILES /opt/freerdp/share/man/man1 /usr/share/man/man1

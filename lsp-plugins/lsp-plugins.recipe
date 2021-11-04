@@ -13,7 +13,7 @@ cd lsp-plugins
 #git checkout lsp-plugins-$B_VERSION
 git checkout $B_VERSION
 make clean
-make
+make -j $(nproc)
 make DESTDIR=$B_INSTALLDIR PREFIX=/usr install
 
 [PKG]
