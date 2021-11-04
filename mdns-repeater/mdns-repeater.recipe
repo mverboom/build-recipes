@@ -11,7 +11,7 @@ gcc make
 B_GET git https://github.com/kennylevinsen/mdns-repeater mdns-repeater
 cd mdns-repeater
 git checkout $B_VERSION
-make
+make -j $(nproc)
 mkdir -p $B_INSTALLDIR/usr/bin
 cp mdns-repeater $B_INSTALLDIR/usr/bin
 
