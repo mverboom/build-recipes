@@ -8,10 +8,14 @@ B_GITVER https://github.com/fwbuilder/fwbuilder
 [REQUIRED]
 make g++ automake autoconf libtool libxml2-dev libxslt-dev libsnmp-dev qt5-default qttools5-dev-tools cmake
 
+[REQUIRED DEBIAN BULLSEYE]
+make g++ automake autoconf libtool libxml2-dev libxslt-dev libsnmp-dev qttools5-dev-tools cmake qttools5-dev
+
+
 [BUILD]
 B_GET git https://github.com/fwbuilder/fwbuilder fwbuilder
 cd fwbuilder
-git checkout tags/v$B_VERSION
+git checkout v$B_VERSION
 mkdir build
 cd build
 cmake -DCMAKE_INSTALL_PREFIX:PATH=/opt/fwbuilder ..
@@ -38,3 +42,14 @@ Architecture: B_ARCH
 Maintainer: B_MAIL
 Description: FWBuilder custom B_ORG build
 Homepage: https://github.com/fwbuilder
+
+[DEB BULLSEYE]
+Package: fwbuilder
+Version: B_VERSION
+Section: fwbuilder
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: FWBuilder custom B_ORG build
+Homepage: https://github.com/fwbuilder
+Depends: libc6, libgcc1, libqt5network5, libqt5gui5, libqt5core5a, libsnmp40, libstdc++6, libxml2, libxslt1.1, zlib1g, libnetsnmptrapd40, libqt5printsupport5
