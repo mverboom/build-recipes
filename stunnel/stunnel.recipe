@@ -13,7 +13,7 @@ mkdir stunnel
 tar xzf stunnel-$B_VERSION.tar.gz -C stunnel --strip-components 1
 cd stunnel
 ./configure --prefix=$DESTDIR
-make
+make -j $(nproc)
 make install DESTDIR=$B_INSTALLDIR
 
 [PKG]

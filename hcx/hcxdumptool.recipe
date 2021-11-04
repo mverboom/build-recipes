@@ -11,7 +11,7 @@ make gcc libssl-dev pkg-config
 B_GET git https://github.com/ZerBea/hcxdumptool hcxdumptool
 cd hcxdumptool
 git checkout $B_VERSION
-make
+make -j $(nproc)
 mkdir -p $B_INSTALLDIR/opt/hcxdumptool
 make PREFIX=$B_INSTALLDIR/opt/hcxdumptool install
 B_LINKFILES /opt/hcxdumptool/bin /usr/bin

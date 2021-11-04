@@ -11,7 +11,7 @@ make gcc g++
 B_GET git https://github.com/hashcat/hashcat hashcat
 cd hashcat
 git checkout v${B_VERSION}
-make PREFIX=/opt/hashcat
+make PREFIX=/opt/hashcat -j $(nproc)
 make install PREFIX=/opt/hashcat DESTDIR=$B_INSTALLDIR
 B_LINKFILES /opt/hashcat/bin /usr/bin
 

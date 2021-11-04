@@ -11,7 +11,7 @@ make gcc libssl-dev zlib1g-dev libcurl4-openssl-dev pkg-config
 B_GET git https://github.com/ZerBea/hcxtools hcxtools
 cd hcxtools
 git checkout $B_VERSION
-make
+make -j $(nproc)
 mkdir -p $B_INSTALLDIR/opt/hcxtools
 make PREFIX=$B_INSTALLDIR/opt/hcxtools install
 B_LINKFILES /opt/hcxtools/bin /usr/bin

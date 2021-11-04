@@ -13,7 +13,7 @@ cd libsodium
 git checkout $B_VERSION
 ./autogen.sh
 ./configure --prefix=/opt/libsodium
-make
+make -j $(nproc)
 make install DESTDIR=$B_INSTALLDIR
 
 [PKG]

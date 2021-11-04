@@ -15,7 +15,7 @@ git checkout v$B_VERSION
 git submodule update --init --recursive
 ./autogen.sh
 ./configure --with-sodium=/opt/libsodium --prefix=/opt/shadowsocks-libev
-make
+make -j $(nproc)
 make install DESTDIR=$B_INSTALLDIR
 B_LINKFILES /opt/shadowsocks-libev/share/man/man1 /usr/share/man/man1
 B_LINKFILES /opt/shadowsocks-libev/share/man/man8 /usr/share/man/man8

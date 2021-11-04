@@ -14,7 +14,7 @@ git checkout v${B_VERSION}
 ./gradlew build
 ./gradlew installDist
 cd man
-make
+make -j $(nproc)
 cd ..
 mkdir -p ${B_INSTALLDIR}/opt
 tar xf build/distributions/signal-cli-$B_VERSION.tar -C ${B_INSTALLDIR}/opt

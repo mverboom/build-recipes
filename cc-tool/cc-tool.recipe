@@ -13,7 +13,7 @@ cd cc-tool
 git checkout v$B_VERSION
 ./bootstrap
 ./configure --prefix=/opt/cc-tool
-make
+make -j $(nproc)
 make DESTDIR=$B_INSTALLDIR install
 B_LINKFILES /opt/cc-tool/bin /usr/bin
 B_LINKFILES /opt/cc-tool/share/man/man1 /usr/share/man/man1

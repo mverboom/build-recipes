@@ -12,7 +12,7 @@ B_GET git https://github.com/netblue30/firejail firejail
 cd firejail
 git checkout tags/$B_VERSION
 ./configure --prefix=/opt/firejail --sysconfdir=/etc
-make
+make -j $(nproc)
 make install DESTDIR=$B_INSTALLDIR
 B_LINKFILES /opt/firejail/bin /usr/bin
 B_LINKFILES /opt/firejail/share/man/man1 /usr/share/man/man1
