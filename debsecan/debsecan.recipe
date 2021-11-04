@@ -11,7 +11,7 @@ make python-apt-dev
 [BUILD DEBIAN BUSTER]
 B_GET git http://git.enyo.de/fw/debian/debsecan.git debsecan
 cd debsecan
-make
+make -j $(nproc)
 make DESTDIR=$B_INSTALLDIR install
 
 [PKG]
