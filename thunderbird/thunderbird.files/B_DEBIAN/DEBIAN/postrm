@@ -1,0 +1,6 @@
+#!/bin/sh -e
+
+if [ "$1" = "remove" ]; then
+    dpkg-divert --package thunderbird-en --rename --remove /usr/bin/thunderbird
+    dpkg-divert --package thunderbird-en --rename --remove /usr/bin/mail-reader
+fi
