@@ -1,0 +1,30 @@
+[INFO]
+arch=amd64
+
+[VERSION]
+B_GITVER https://github.com/zealdocs/zeal.git
+
+[REQUIRED]
+cmake extra-cmake-modules qtbase5-dev libqt5webkit5-dev libarchive-dev libqt5x11extras5-dev libxcb-keysyms1-dev libsqlite3-dev qtwebengine5-dev
+
+[BUILD]
+B_GET git https://github.com/zealdocs/zeal.git zeal
+cd zeal
+mkdir build && cd build
+cmake ..
+make
+make install
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: zealdocs
+Version: B_VERSION
+Section: zeal
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Homepage: https://github.com/zealdocs/zeal.git
+Description: ZEALDOCS B_PF custom build
