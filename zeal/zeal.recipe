@@ -20,7 +20,7 @@ type=deb
 torepo=y
 
 [DEB]
-Package: zealdocs
+Package: zeal
 Version: B_VERSION
 Section: zeal
 Priority: optional
