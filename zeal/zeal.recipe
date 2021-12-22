@@ -5,15 +5,15 @@ arch=amd64
 B_GITVER https://github.com/zealdocs/zeal.git
 
 [REQUIRED]
-cmake extra-cmake-modules qtbase5-dev libqt5webkit5-dev libarchive-dev libqt5x11extras5-dev libxcb-keysyms1-dev libsqlite3-dev qtwebengine5-dev
+build-essential cmake extra-cmake-modules qtbase5-dev libqt5webkit5-dev libarchive-dev libqt5x11extras5-dev libxcb-keysyms1-dev libsqlite3-dev qtwebengine5-dev
 
 [BUILD]
 B_GET git https://github.com/zealdocs/zeal.git zeal
 cd zeal
 mkdir build && cd build
-cmake ..
+cmake -DCMAKE_INSTALL_PREFIX:PATH=/opt/zeal ..
 make
-make install
+make install DESTDIR=$B_INSTALLDIR
 
 [PKG]
 type=deb
@@ -27,4 +27,4 @@ Priority: optional
 Architecture: B_ARCH
 Maintainer: B_MAIL
 Homepage: https://github.com/zealdocs/zeal.git
-Description: ZEALDOCS B_PF custom build
+Description: Simple offline API documentation browser - B_PF custom build
