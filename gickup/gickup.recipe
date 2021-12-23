@@ -1,0 +1,38 @@
+[INFO]
+arch=amd64
+
+[VERSION]
+B_GITVER https://github.com/cooperspencer/gickup.git
+
+[REQUIRED]
+golang-B_PF
+
+[BUILD]
+export GOROOT=/opt/go
+export PATH=${PATH}:${GOROOT}/bin
+export GOPATH=$(pwd)
+
+mkdir -p src/github.com/gickup
+cd src/github.com/gickup
+B_GET git https://github.com/cooperspencer/gickup gickup
+cd gickup
+git checkout v$B_VERSION
+go build .
+mkdir -p $B_INSTALLDIR/opt/gickup/ $B_INSTALLDIR/usr/bin/
+cp gickup $B_INSTALLDIR/opt/gickup/
+ln -s /opt/gickup/gickup $B_INSTALLDIR/usr/bin/gickup
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: gickup
+Version: B_VERSION
+Section: gickup
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Homepage: https://github.com/cooper-spencer/gickup
+Description: Gickup B_PF custom build
+Depends: ssh, git
