@@ -1,0 +1,40 @@
+[VERSION]
+#B_GITVER https://github.com/Cropi/usbguard-notifier.git
+B_GITHUBVER https://github.com/Cropi/usbguard-notifier master
+
+[REQUIRED]
+usbguard-dev-B_PF libnotify-dev librsvg2-dev asciidoc dh-autoreconf g++ make
+
+[INFO]
+arch=amd64
+
+[BUILD]
+B_GET git https://github.com/Cropi/usbguard-notifier.git usbguard-notifier
+
+cd usbguard-notifier
+#git checkout $B_VERSION # Enable when version > 0.0.6, else it's broken
+bash autogen.sh
+./configure --with-bundled-catch --prefix=/opt/usbguard-notifier --with-usbguard-devel=/opt/usbguard-dev
+make
+make install DESTDIR=$B_INSTALLDIR
+
+B_LINKFILES /opt/usbguard-notifier/bin/ /usr/bin/
+B_LINKFILES /opt/usbguard-notifier/share/man/ /usr/share/man/
+
+[PKG]
+
+type=deb
+torepo=y
+
+[DEB]
+Package: usbguard-notifier
+Version: B_VERSION
+Section: security
+Depends: usbguard-B_PF, libnotify4, librsvg2-2
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description:  USBGuard Notifier is a software framework mainly for detecting usbguard policy
+ modifications as well as device presence changes. In a nutshell, the purpose of this project
+ is to create user-friendly notifications in form of quick pop-up messages.
+Homepage: https://github.com/Cropi/usbguard-notifier

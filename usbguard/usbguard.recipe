@@ -1,0 +1,39 @@
+[VERSION]
+B_GITVER https://github.com/usbguard/usbguard.git | cut -d- -f2
+
+[REQUIRED]
+libprotobuf-dev libseccomp-dev libcap-ng-dev protobuf-compiler libpolkit-gobject-1-dev make g++ gcc libdbus-1-dev libdbus-glib-1-dev libgio2.0-cil-dev asciidoctor dh-autoreconf libqb-dev libsodium-dev libaudit-dev libumockdev-dev libxml2-utils xsltproc
+
+[INFO]
+arch=amd64
+
+[BUILD]
+B_GET git https://github.com/usbguard/usbguard.git usbguard
+cd usbguard
+git checkout usbguard-$B_VERSION
+
+bash autogen.sh
+./configure --with-crypto-library=sodium --with-bundled-catch --with-bundled-pegtl --prefix=/opt/usbguard --enable-systemd --with-dbus
+make
+make check
+make install DESTDIR=$B_INSTALLDIR
+
+B_LINKFILES /opt/usbguard/bin/ /usr/bin/
+B_LINKFILES /opt/usbguard/etc/usbguard /etc/usbguard/
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: usbguard
+Version: B_VERSION
+Section: security
+Depends: dbus, libcap-ng0, libgcc-s1, libglib2.0-0, libseccomp2, libstdc++6, libumockdev0
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: USB device authorization policy framework
+ The USBGuard software framework helps to protect your computer against rogue
+ USB devices (a.k.a. BadUSB) by implementing basic allow- and blocklisting
+ capabilities based on device attributes.
