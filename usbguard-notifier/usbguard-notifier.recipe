@@ -3,7 +3,7 @@
 B_GITHUBVER https://github.com/Cropi/usbguard-notifier master
 
 [REQUIRED]
-usbguard-dev-B_PF libnotify-dev librsvg2-dev asciidoc dh-autoreconf g++ make
+usbguard-dev-B_PF libnotify-dev librsvg2-dev asciidoc dh-autoreconf g++ make libqb-dev libprotobuf-dev libsodium-dev
 
 [INFO]
 arch=amd64
@@ -22,7 +22,6 @@ B_LINKFILES /opt/usbguard-notifier/bin/ /usr/bin/
 B_LINKFILES /opt/usbguard-notifier/share/man/ /usr/share/man/
 
 [PKG]
-
 type=deb
 torepo=y
 
