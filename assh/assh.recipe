@@ -6,7 +6,9 @@ B_GITVER https://github.com/moul/assh.git
 
 [BUILD]
 mkdir -p $B_INSTALLDIR/bin
-wget -q -O $B_INSTALLDIR/bin/assh https://github.com/moul/assh/releases/download/v$B_VERSION/assh_linux_$B_ARCH
+wget https://github.com/moul/assh/releases/download/v$B_VERSION/assh_${B_VERSION}_linux_$B_ARCH.tar.gz
+tar xzf assh_${B_VERSION}_linux_$B_ARCH.tar.gz
+cp assh $B_INSTALLDIR/bin/assh
 chmod 0755 $B_INSTALLDIR/bin/assh
 
 [PKG]
