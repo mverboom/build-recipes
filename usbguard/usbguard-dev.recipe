@@ -2,7 +2,7 @@
 B_GITVER https://github.com/usbguard/usbguard.git | cut -d- -f2
 
 [REQUIRED]
-libprotobuf-dev libseccomp-dev libcap-ng-dev protobuf-compiler libpolkit-gobject-1-dev make gcc libdbus-1-dev libdbus-glib-1-dev libgio2.0-cil-dev asciidoctor
+libprotobuf-dev libseccomp-dev libcap-ng-dev protobuf-compiler libpolkit-gobject-1-dev make g++ gcc libdbus-1-dev libdbus-glib-1-dev libgio2.0-cil-dev asciidoctor dh-autoreconf libqb-dev libsodium-dev libaudit-dev libumockdev-dev libxml2-utils xsltproc
 
 [INFO]
 arch=amd64
