@@ -1,0 +1,8 @@
+#!/bin/sh -e
+
+if [ "$1" = "configure" ] || [ "$1" = "abort-upgrade" ] ; then
+    update-alternatives --install /usr/bin/mail-reader \
+        mail-reader /opt/thunderbird/thunderbird 70
+    update-alternatives --install /usr/bin/thunderbird \
+        thunderbird /opt/thunderbird/thunderbird 70
+fi

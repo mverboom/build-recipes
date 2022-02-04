@@ -1,0 +1,25 @@
+[INFO]
+arch=amd64
+
+[VERSION]
+wget -O - -q http://ftp.mozilla.org/pub/thunderbird/releases/ | grep releases | cut -d '>' -f3 | cut -d'/' -f1 | grep -E '^[0-9\.]+$' | sort -n | tail -1
+
+[BUILD]
+B_GET http http://ftp.mozilla.org/pub/mozilla.org/thunderbird/releases/$B_VERSION/linux-$(uname -m)/en-US/thunderbird-$B_VERSION.tar.bz2 thunderbird-$B_VERSION.tar.bz2
+mkdir -p $B_INSTALLDIR/opt/thunderbird
+tar xjf thunderbird-$B_VERSION.tar.bz2 -C $B_INSTALLDIR/opt/thunderbird --strip-components 1
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: thunderbird
+Version: B_VERSION
+Provides: lightning, mail-reader
+Section: thunderbird
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: Thunderbird custom B_ORG build
+Depends: libgtk-3-0,libdbus-glib-1-2

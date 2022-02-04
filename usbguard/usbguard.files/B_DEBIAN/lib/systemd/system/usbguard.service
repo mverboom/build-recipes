@@ -1,0 +1,35 @@
+# /lib/systemd/system/usbguard.service
+[Unit]
+Description=USBGuard daemon
+Wants=systemd-udevd.service local-fs.target
+Documentation=man:usbguard-daemon(8)
+
+[Service]
+AmbientCapabilities=
+CapabilityBoundingSet=CAP_CHOWN CAP_FOWNER
+DevicePolicy=closed
+ExecStart=/opt/usbguard/sbin/usbguard-daemon -f -s -c /opt/usbguard/etc/usbguard/usbguard-daemon.conf
+IPAddressDeny=any
+LockPersonality=yes
+MemoryDenyWriteExecute=yes
+NoNewPrivileges=yes
+PIDFile=/run/usbguard.pid
+PrivateDevices=yes
+PrivateTmp=yes
+ProtectControlGroups=yes
+ProtectHome=yes
+ProtectKernelModules=yes
+ProtectSystem=yes
+ReadOnlyPaths=-/
+ReadWritePaths=-/dev/shm -/opt/usbguard/var/log/usbguard -/tmp -/opt/usbguard/etc/usbguard/ -/var/run
+Restart=on-failure
+RestrictAddressFamilies=AF_UNIX AF_NETLINK
+RestrictNamespaces=yes
+RestrictRealtime=yes
+SystemCallArchitectures=native
+SystemCallFilter=@system-service
+Type=forking
+UMask=0077
+
+[Install]
+WantedBy=basic.target
