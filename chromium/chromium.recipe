@@ -1,0 +1,32 @@
+[INFO]
+arch=amd64
+
+[VERSION]
+curl -s -S "https://www.googleapis.com/download/storage/v1/b/chromium-browser-snapshots/o/Linux_x64%2FLAST_CHANGE?alt=media"
+
+[BUILD]
+
+B_GET http "https://www.googleapis.com/download/storage/v1/b/chromium-browser-snapshots/o/Linux_x64%2F$B_VERSION%2Fchrome-linux.zip?alt=media" chromium.zip
+dest=$B_INSTALLDIR/opt/chromium
+mkdir -p $dest
+unzip chromium.zip -d $dest
+cd $dest
+mv chrome-linux/* .
+rmdir chrome-linux
+ln chrome chromium
+B_LINKFILE /opt/chromium/chromium /usr/bin
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: chromium
+Version: B_VERSION
+Provides: gnome-www-browser, www-browser
+Section: chromium
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: Chromium custom B_ORG build
+Conflicts: chromium
