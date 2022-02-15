@@ -1,0 +1,32 @@
+[VERSION]
+B_GITVER https://github.com/jupyter/notebook
+
+[INFO]
+arch=amd64
+excludefromall=1
+
+[REQUIRED]
+python3 python3-pip
+
+[BUILD DEBIAN]
+PYVER=$( python3 -c "import sys; print(f'{sys.version_info.major}.{sys.version_info.minor}')" )
+prefix="$B_INSTALLDIR/opt/jupyter-notebook"
+dst="$prefix/lib/python${PYVER}/site-packages"
+mkdir -p $dst
+export PYTHONPATH="$dst:${PYTHONPATH}"
+pip install --system --prefix=$prefix notebook==$B_VERSION
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: jupyter-notebook
+Version: B_VERSION
+Section: jupyter-notebook
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: jupyter-notebook custom B_ORG build
+Homepage: https://jupyter.org/
+Depends: python3

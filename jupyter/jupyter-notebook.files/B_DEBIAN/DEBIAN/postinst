@@ -1,0 +1,57 @@
+#!/bin/bash
+
+USER=notebook
+HOMEDIR=/var/lib/jupyter-notebook
+
+if test "$1" = "configure"; then
+  # Create a notebook system group
+  if ! getent group $USER > /dev/null; then
+      addgroup --quiet --system $USER
+  fi
+
+  # Create a notebook system user
+  if ! getent passwd $USER > /dev/null; then
+      adduser --quiet --system \
+          --ingroup $USER \
+          --home $HOMEDIR \
+          --disabled-password --shell /bin/bash \
+          $USER
+      usermod -c "Notebook user" $USER
+      mkdir -p $HOMEDIR
+      chown $USER:$USER $HOMEDIR
+  fi
+
+ 
+  cat /etc/default/jupyter-notebook | sed "s/^/export /" > $HOMEDIR/.bash_profile
+
+  su - $USER -c "jupyter notebook --generate-config"
+  sed -i '/^# c.NotebookApp.ip /a c.NotebookApp.ip = "*"' $HOMEDIR/.jupyter/jupyter_notebook_config.py
+  su - $USER -c "python3 -m notebook.auth password secret"
+
+  if ! test -e $HOMEDIR/.jupyter/privkey.pem; then
+      openssl req \
+       -newkey rsa:2048 \
+       -x509 \
+       -nodes \
+       -out $HOMEDIR/.jupyter/fullchain.pem \
+       -new \
+       -keyout $HOMEDIR/.jupyter/privkey.pem \
+       -subj /CN=$(hostname --fqdn) \
+       -reqexts SAN \
+       -extensions SAN \
+       -config <(cat /etc/ssl/openssl.cnf \
+           <(printf '[SAN]\nsubjectAltName=DNS:'$(hostname --fqdn))) \
+       -sha256 \
+       -days 3650
+
+     chown $USER:$USER $HOMEDIR/.jupyter/*.pem
+  fi
+  sed -i '/^# c.NotebookApp.certfile /a c.NotebookApp.certfile = "/var/lib/jupyter-notebook/.jupyter/fullchain.pem"' $HOMEDIR/.jupyter/jupyter_notebook_config.py
+  sed -i '/^# c.NotebookApp.keyfile /a c.NotebookApp.keyfile = "/var/lib/jupyter-notebook/.jupyter/privkey.pem"' $HOMEDIR/.jupyter/jupyter_notebook_config.py
+ 
+  systemctl enable jupyter-notebook
+  systemctl start jupyter-notebook
+
+else
+  systemctl restart jupyter-notebook
+fi

@@ -1,0 +1,15 @@
+[Unit]
+Description=Jupyter notebook
+
+[Service]
+EnvironmentFile=-/etc/default/jupyter-notebook
+Type=simple
+User=notebook
+Group=notebook
+WorkingDirectory=/var/lib/jupyter-notebook
+ExecStart=/opt/jupyter-notebook/bin/jupyter notebook $OPTIONS
+ExecReload=/bin/kill -HUP $MAINPID
+KillMode=mixed
+
+[Install]
+WantedBy=multi-user.target

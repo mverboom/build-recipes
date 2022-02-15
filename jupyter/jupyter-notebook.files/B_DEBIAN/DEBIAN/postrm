@@ -1,0 +1,3 @@
+systemctl stop jupyter-notebook
+deluser notebook || continue
+delgroup notebook || continue
