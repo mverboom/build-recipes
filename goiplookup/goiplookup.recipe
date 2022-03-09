@@ -1,0 +1,33 @@
+[INFO]
+arch=amd64
+excludefromall=1
+
+[VERSION]
+B_GITVER https://github.com/axllent/goiplookup
+
+[REQUIRED]
+golang-B_PF
+
+[BUILD]
+export PATH=${PATH}:${GOROOT}/bin
+
+B_GET git https://github.com/axllent/goiplookup goiplookup
+cd goiplookup
+git checkout $B_VERSION
+make
+mkdir -p $B_INSTALLDIR/usr/bin
+cp goiplookup $B_INSTALLDIR/usr/bin
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: goiplookup
+Version: B_VERSION
+Section: goiplookup
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Homepage: https://github.com/axllent/goiplookup
+Description: Goiplookup custom B_ORG build
