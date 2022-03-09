@@ -1,0 +1,26 @@
+Databases
+
+The build recipe for this package changes the path to the GeoIP databases. This can
+be customized if required.
+
+Configuration
+
+It is possible to, for example use this in the connect acl.
+
+Refer to the connect acl:
+
+ acl_smtp_connect = acl_check_connect
+
+An example acl using a file to lookup country codes can be found below. If the
+coutry code is in the file, it will be blocked
+
+acl_check_connect:
+        warn    set acl_c_geoip_country_code = \
+                ${dlfunc{/opt/exim-geoip6/exim-geoipv6-dlfunc.so}\
+                {geoip_country_code}{$sender_host_address}}
+        log_message  = Country: $acl_c_geoip_country_code
+        deny    condition      = ${lookup{$acl_c_geoip_country_code}lsearch{/etc/exim
+4/geo-blocklist}{yes}{no}}
+        message = We do not accept messages from your country.
+        
+        accept

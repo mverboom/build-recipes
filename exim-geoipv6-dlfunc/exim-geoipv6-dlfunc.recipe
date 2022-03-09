@@ -1,0 +1,39 @@
+[INFO]
+arch=amd64
+
+[VERSION]
+B_GITHUBVER https://github.com/andrewnimmo/exim-geoipv6-dlfunc
+
+[REQUIRED]
+make gcc exim4-dev libgeoip-dev autoconf shtool libtool libmaxminddb-dev
+
+[BUILD]
+MMDBPATH=/etc/geoip2
+MMDBCOUNTRY=${MMDBPATH}/geolite2-country.mmdb
+MMDBASN=${MMDBPATH}/geolite2-asn.mmdb
+dest="/opt/exim-geoip6"
+absdest="${B_INSTALLDIR}${dest}"
+mkdir -p "$absdest"
+B_GET git https://github.com/andrewnimmo/exim-geoipv6-dlfunc exim-geoip
+cd exim-geoip
+sed -i '/#define MAXMINDDB_COUNTRY_PATH/ s^\(.* US"\).*"^\1'${MMDBCOUNTRY}'"^' exim-geoipv6-dlfunc.c
+sed -i '/#define MAXMINDDB_ASN_PATH/ s^\(.* US"\).*"^\1'${MMDBASN}'"^' exim-geoipv6-dlfunc.c
+./bootstrap
+CPPFLAGS="-I/usr/include/exim4" ./configure --libdir=$dest
+make
+make DESTDIR=$B_INSTALLDIR install
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: exim-geoipv6-dlfunc
+Version: B_VERSION
+Section: exim-geoipv6-dlfunc
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: Exim Geoipv6 dlfunc custom B_ORG build
+Homepage: https://github.com/andrewnimmo/exim-geoipv6-dlfunc
+Depends: exim4-daemon-heavy, libmaxminddb0
