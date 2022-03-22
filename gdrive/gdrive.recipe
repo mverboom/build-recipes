@@ -1,0 +1,30 @@
+[INFO]
+arch=amd64
+
+[VERSION]
+B_GITVER https://github.com/prasmussen/gdrive
+
+[REQUIRED]
+golang-B_PF
+
+[BUILD]
+export PATH=${PATH}:${GOROOT}/bin
+export GOPATH=$(pwd)
+
+go install github.com/prasmussen/gdrive@$B_VERSION
+mkdir -p $B_INSTALLDIR/usr/bin
+cp bin/gdrive $B_INSTALLDIR/usr/bin
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: gdrive
+Version: B_VERSION
+Section: gdrive
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Homepage: https://github.com/prasmussen/gdrive
+Description: Gdrive custom B_ORG build
