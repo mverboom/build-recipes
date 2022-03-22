@@ -11,7 +11,7 @@ build-essential cmake g++ qtbase5-dev qttools5-dev qttools5-dev-tools libgcrypt2
 build-essential cmake g++ qtbase5-dev qttools5-dev qttools5-dev-tools libgcrypt20-dev libargon2-dev zlib1g-dev libxi-dev libxtst-dev libqt5x11extras5-dev libyubikey-dev libykpers-1-dev libsodium-dev libcurl4-openssl-dev libqt5svg5-dev libqrencode-dev libquazip-dev libreadline-dev ruby asciidoctor qtbase5-private-dev
 
 [REQUIRED DEBIAN BULLSEYE]
-build-essential cmake g++ qtbase5-dev qttools5-dev qttools5-dev-tools libgcrypt20-dev libargon2-dev zlib1g-dev libxi-dev libxtst-dev libqt5x11extras5-dev libyubikey-dev libykpers-1-dev libsodium-dev libcurl4-openssl-dev libqt5svg5-dev libqrencode-dev libquazip5-dev libreadline-dev ruby asciidoctor qtbase5-private-dev
+build-essential cmake g++ qtbase5-dev qttools5-dev qttools5-dev-tools libgcrypt20-dev libargon2-dev zlib1g-dev libxi-dev libxtst-dev libqt5x11extras5-dev libyubikey-dev libykpers-1-dev libsodium-dev libcurl4-openssl-dev libqt5svg5-dev libqrencode-dev libquazip5-dev libreadline-dev ruby asciidoctor qtbase5-private-dev libbotan-2-dev libpcsclite-dev libminizip-dev libusb-1.0-0-dev
 
 [BUILD]
 B_GET git https://github.com/keepassxreboot/keepassxc keepassxc
@@ -21,7 +21,6 @@ mkdir build
 cd build
 cmake -DWITH_XC_ALL=ON -DCMAKE_INSTALL_PREFIX=/opt/keepassxc ..
 make -j $(nproc) install DESTDIR=$B_INSTALLDIR
-make test
 
 B_LINKFILES /opt/keepassxc/bin/ /usr/bin/
 B_LINKFILES /opt/keepassxc/lib/ /usr/lib/
