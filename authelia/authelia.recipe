@@ -5,7 +5,7 @@ arch=amd64
 B_GITVER https://github.com/authelia/authelia
 
 [REQUIRED]
-golang-B_PF devscripts equivs yarn-B_PF nodejs-B_PF
+golang-B_PF devscripts equivs yarn-B_PF nodejs-14-B_PF
 
 [BUILD]
 B_GET git https://github.com/authelia/authelia authelia

@@ -16,7 +16,7 @@ build-essential cmake g++ qtbase5-dev qttools5-dev qttools5-dev-tools libgcrypt2
 [BUILD]
 B_GET git https://github.com/keepassxreboot/keepassxc keepassxc
 cd keepassxc
-git checkout tags/$B_VERSION
+git checkout $B_VERSION
 mkdir build
 cd build
 cmake -DWITH_XC_ALL=ON -DCMAKE_INSTALL_PREFIX=/opt/keepassxc ..
@@ -79,4 +79,4 @@ Architecture: B_ARCH
 Maintainer: B_MAIL
 Description: Cross Platform Password Manager
 Homepage: https://keepassxc.org
-Depends: libargon2-1 (>= 0~20171227~), libc6 (>= 2.31), libgcrypt20 (>= 1.8.7), libqt5core5a (>= 5.15.2), libqt5dbus5 (>= 5.15.2), libqt5gui5 (>= 5.15.2), libqt5network5 (>= 5.15.2), libqt5widgets5 (>= 5.12.2), libqt5x11extras5 (>= 5.15.2), libsodium23, libstdc++6 (>= 10.2.1), libx11-6, libxi6, libxtst6, libykpers-1-1 (>= 1.20.0), zlib1g (>= 1:1.2.11), libqrencode4, libqt5concurrent5 (>=5.15.2), libquazip5-1, libqt5svg5
+Depends: libargon2-1 (>= 0~20171227~), libc6 (>= 2.31), libgcrypt20 (>= 1.8.7), libqt5core5a (>= 5.15.2), libqt5dbus5 (>= 5.15.2), libqt5gui5 (>= 5.15.2), libqt5network5 (>= 5.15.2), libqt5widgets5 (>= 5.12.2), libqt5x11extras5 (>= 5.15.2), libsodium23, libstdc++6 (>= 10.2.1), libx11-6, libxi6, libxtst6, libykpers-1-1 (>= 1.20.0), zlib1g (>= 1:1.2.11), libqrencode4, libqt5concurrent5 (>=5.15.2), libquazip5-1, libqt5svg5, libbotan-2-17

@@ -8,15 +8,16 @@ B_GITVER https://github.com/gohugoio/hugo
 golang-B_PF gcc g++
 
 [BUILD]
-B_GET go github.com/gohugoio/hugo hugo
-cd src/github.com/gohugoio/hugo
-git checkout v$B_VERSION
-go build --tags extended
+export PATH=${PATH}:/opt/go/bin
+export GOPATH=$(pwd)
+
+go install github.com/gohugoio/hugo@v$B_VERSION
+
 mkdir -p $B_INSTALLDIR/opt/hugo/bin
-cp hugo $B_INSTALLDIR/opt/hugo/bin
+cp bin/hugo $B_INSTALLDIR/opt/hugo/bin
 B_LINKFILES /opt/hugo/bin /usr/bin
 mkdir -p $B_INSTALLDIR/opt/hugo/share/man/man1
-./hugo gen man --dir $B_INSTALLDIR/opt/hugo/share/man/man1
+./bin/hugo gen man --dir $B_INSTALLDIR/opt/hugo/share/man/man1
 B_LINKFILES /opt/hugo/share/man/man1 /usr/share/man/man1
 
 [PKG]
