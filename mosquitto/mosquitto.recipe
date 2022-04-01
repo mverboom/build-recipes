@@ -30,4 +30,4 @@ Architecture: B_ARCH
 Maintainer: B_MAIL
 Description: Mosquitto custom B_ORG build
 Homepage: https://mosquitto.org/
-Depends: libuuid1,libc-ares2,libwebsockets8,libcjson1,libwebsockets-B_PF
+Depends: libuuid1,libc-ares2,libcjson1,libwebsockets-B_PF

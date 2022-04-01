@@ -10,10 +10,10 @@ make typescript-B_PF
 [BUILD]
 B_GET git https://github.com/badaix/snapweb snapweb
 cd snapweb
-make
+make -j $(nproc)
 mkdir -p $B_INSTALLDIR/opt/snapweb
 cd dist
-tar cfB - . | ( cd $B_INSTALLDIR/opt/snapweb; tar xfB - )
+tar cf - . | tar -C $B_INSTALLDIR/opt/snapweb -xf -
 
 [PKG]
 type=deb

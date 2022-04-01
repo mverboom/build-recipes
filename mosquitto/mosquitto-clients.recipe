@@ -12,7 +12,7 @@ B_GET git https://github.com/eclipse/mosquitto mosquitto
 cd mosquitto
 git checkout tags/v$B_VERSION
 sed -i "s#prefix?=/usr/local#prefix=/opt/mosquitto-clients#" config.mk
-make WITH_WEBSOCKETS=yes CPPFLAGS=-I/opt/libwebsockets/include LDFLAGS=-L/opt/libwebsockets/lib
+make WITH_WEBSOCKETS=yes CPPFLAGS=-I/opt/libwebsockets/include LDFLAGS=-L/opt/libwebsockets/lib -j $(nproc)
 make install DESTDIR=$B_INSTALLDIR WITH_LIBWEBSOCKETS=yes
 rm -rf $B_INSTALLDIR/etc $B_INSTALLDIR/opt/mosquitto-clients/sbin $B_INSTALLDIR/opt/mosquitto-clients/include
 B_LINKFILES /opt/mosquitto-clients/bin /usr/bin

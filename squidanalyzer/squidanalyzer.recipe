@@ -18,7 +18,7 @@ LOGFILE=/var/log/squid/access.log \
  BASEURL=/squidreport \
  MANDIR=/usr/share/man/man3 \
  DOCDIR=/usr/share/doc/squidanalyzer perl Makefile.PL
-make
+make -j $(nproc)
 sed -i "s#/usr#$B_INSTALLDIR/usr#g; s#/etc#$B_INSTALLDIR/etc#g; s#/var#$B_INSTALLDIR/var#g" install_all.sh
 make install DESTDIR=$B_INSTALLDIR
 

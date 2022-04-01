@@ -8,8 +8,9 @@ B_GITVER https://github.com/platformio/platformio-core
 python3-pip
 
 [BUILD]
+PYVER=$( python3 -c "import sys; print(f'{sys.version_info.major}.{sys.version_info.minor}')" )
 pip3 install --system --prefix=$B_INSTALLDIR/opt/platformio-core platformio==$B_VERSION
-B_LINKFILES -r /opt/platformio-core/lib/python$(python3 --version | cut -d ' ' -f 2 | cut -d '.' -f 1,2)/site-packages /usr/local/lib/python3.7/dist-packages
+B_LINKFILES -r /opt/platformio-core/lib/python$(python3 --version | cut -d ' ' -f 2 | cut -d '.' -f 1,2)/site-packages /usr/local/lib/python${PYVER}/dist-packages
 B_LINKFILE /opt/platformio-core/bin/pio /usr/bin
 B_LINKFILE /opt/platformio-core/bin/piodebuggdb /usr/bin
 B_LINKFILE /opt/platformio-core/bin/platformio /usr/bin

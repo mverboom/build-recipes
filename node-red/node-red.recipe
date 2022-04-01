@@ -5,7 +5,7 @@ arch=amd64
 B_GITVER https://github.com/node-red/node-red
 
 [REQUIRED]
-nodejs-lts-B_PF g++ make
+nodejs-14-B_PF g++ make
 
 [BUILD]
 B_GET git https://github.com/node-red/node-red nodered
@@ -32,4 +32,4 @@ Architecture: B_ARCH
 Maintainer: B_MAIL
 Description: Node RED custom B_ORG build
 Homepage: http://nodered.org/
-Depends: nodejs-lts-B_PF
+Depends: nodejs-14-B_PF
