@@ -5,10 +5,7 @@ arch=all
 B_GITVER https://github.com/gchq/CyberChef
 
 [REQUIRED]
-nodejs npm
-
-[REQUIRED DEBIAN BULLSEYE]
-nodejs-10-B_PF
+nodejs-B_PF make
 
 [BUILD]
 B_GET git https://github.com/gchq/CyberChef cyberchef
