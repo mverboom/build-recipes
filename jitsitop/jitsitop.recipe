@@ -23,3 +23,4 @@ Priority: optional
 Architecture: B_ARCH
 Maintainer: B_MAIL
 Description: Jitsitop custom B_ORG build
+Depends: python3-tzlocal, python3-psutil

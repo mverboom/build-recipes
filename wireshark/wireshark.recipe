@@ -2,7 +2,7 @@
 arch=amd64
 
 [VERSION]
-B_GITVER https://gitlab.com/wireshark/wireshark
+B_GITVER https://gitlab.com/wireshark/wireshark.git/
 
 [REQUIRED]
 cmake make gcc g++ flex bison libglib2.0-dev qttools5-dev qttools5-dev-tools libqt5svg5-dev qtmultimedia5-dev qt5-default libc-ares-dev libpcap-dev python3 perl libgcrypt-dev
