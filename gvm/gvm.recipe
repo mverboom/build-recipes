@@ -14,18 +14,19 @@ case $B_VERSION in
 "none") echo "Specify GVM version to build."; exit 1;
 ;;
 21.04)
-   build $opt -b -p -r gvm-libs@21.4.1 \
-                       python-gvm@21.4.0 \
+   build $opt -b -p -r gvm-libs@21.4.4 \
+                       python-gvm@21.11.0 \
                        libssh
    # We need above packages for those below, so make them apt installable
    sudo apt-get -q update > /dev/null
-   build $opt -b -p -r gvm-tools@21.6.1 \
-                       ospd@21.4.1 \
-                       ospd-openvas@21.4.1 \
+   build $opt -b -p -r gvm-tools@21.10.0 \
+                       ospd@21.4.4 \
+                       ospd-openvas@21.4.4 \
                        openvas-smb@21.4.0 \
-                       openvas@21.4.1 \
-                       gvmd@21.4.2 \
-                       gsa@21.4.1
+                       openvas@21.4.4 \
+                       gvmd@21.4.5 \
+                       gsa@21.4.4
+                       gsad@21.4.4
 ;;
 20.08)
    build $opt -b -p -r gvm-libs@20.8.0 \
@@ -48,7 +49,7 @@ type=deb
 [DEB_DEPENDS]
 case "$B_VERSION" in
 21.04)
-   echo "python-gvm-B_PF (>=21.4.0), gvm-tools-B_PF (>=21.6.1~), openvas-smb-B_PF (>=21.4.0~), gvm-libs-B_PF (>=21.4.1~), ospd-B_PF (>=21.4.1~), ospd-openvas-B_PF (>=21.4.1), openvas-B_PF (>=21.4.1~), gvmd-B_PF (>=21.4.2~), gsa-B_PF (>=21.4.1~)"
+   echo "python-gvm-B_PF (>=21.11.0), gvm-tools-B_PF (>=21.10.0~), openvas-smb-B_PF (>=21.4.0~), gvm-libs-B_PF (>=21.4.4~), ospd-B_PF (>=21.4.4~), ospd-openvas-B_PF (>=21.4.4), openvas-B_PF (>=21.4.4~), gvmd-B_PF (>=21.4.5~), gsa-B_PF (>=21.4.4~), gsad-B_PF (>=21.4.4~)"
 ;;
 
 20.08)

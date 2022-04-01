@@ -37,3 +37,4 @@ Architecture: B_ARCH
 Maintainer: B_MAIL
 Description: Kanboard custom B_ORG build
 Homepage: https://www.kanboard.org
+Depends: apache2, libapache2-mod-php, php-cli, php-mbstring, php-sqlite3, php-opcache, php-json, php-ldap, php-gd, php-xml, php-mysql, php-pgsql, php-curl, php-zip

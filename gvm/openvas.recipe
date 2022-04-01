@@ -8,7 +8,7 @@ B_GITVER https://github.com/greenbone/openvas
 [REQUIRED]
 cmake gcc pkg-config libssh-B_PF libgnutls28-dev libglib2.0-dev libpcap-dev libgpgme-dev bison libksba-dev libsnmp-dev libgcrypt20-dev gvm-libs-B_PF libhiredis-dev xmltoman clang-format uuid-dev
 
-[BUILD DEBIAN]
+[BUILD]
 B_GET git https://github.com/greenbone/openvas openvas
 cd openvas
 git checkout tags/v$B_VERSION
@@ -31,6 +31,17 @@ mkdir -p $B_INSTALLDIR/etc/gvm
 [PKG]
 type=deb
 torepo=y
+
+[DEB BULLSEYE]
+Package: openvas
+Version: B_VERSION
+Section: greenbone
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: Greenbone OpenVAS test custom B_ORG build
+Homepage: https://github.com/greenbone/openvas-scanner
+Depends: nmap-B_PF(>=5.51),gvm-libs-B_PF,redis-server,libssh-gcrypt-4,libhiredis0.14,libsnmp40,libpcap0.8,libgpgme11,rsync,libssh-B_PF
 
 [DEB BUSTER]
 Package: openvas

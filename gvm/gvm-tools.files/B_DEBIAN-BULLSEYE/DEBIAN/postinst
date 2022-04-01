@@ -1,0 +1,2 @@
+grep "# gvm-pythonpath" /etc/environment || echo "export PYTHONPATH=\"/opt/gvm/lib/python3.9/site-packages/:${PYTHONPATH}\" # gvm-pythonpath" >> /etc/environment
+

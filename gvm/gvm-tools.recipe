@@ -8,19 +8,19 @@ excludefromall=1
 [REQUIRED]
 python3 python3-setuptools python-gvm-B_PF python3-pip
 
-[BUILD DEBIAN BUSTER]
+[BUILD DEBIAN]
+PYVER=$( python3 -c "import sys; print(f'{sys.version_info.major}.{sys.version_info.minor}')" )
 B_GET git https://github.com/greenbone/gvm-tools gvm-tools
 cd gvm-tools
 git checkout v$B_VERSION
-mkdir -p $B_INSTALLDIR/opt/gvm/lib/python3.7/site-packages $B_INSTALLDIR/opt/gvm/share/gvm-tools-scripts
-export PYTHONPATH="$B_INSTALLDIR/opt/gvm/lib/python3.7/site-packages:/opt/gvm/lib/python3.7/site-packages:${PYTHONPATH}"
-#python3 setup.py install --prefix $B_INSTALLDIR/opt/gvm
+mkdir -p $B_INSTALLDIR/opt/gvm/lib/python${PYVER}/site-packages $B_INSTALLDIR/opt/gvm/share/gvm-tools-scripts
+export PYTHONPATH="$B_INSTALLDIR/opt/gvm/lib/python${PYVER}/site-packages:/opt/gvm/lib/python${PYVER}/site-packages:${PYTHONPATH}"
 pip3 install --system --prefix=$B_INSTALLDIR/opt/gvm gvm-tools
 pushd scripts
 tar cfB - . | ( cd $B_INSTALLDIR/opt/gvm/share/gvm-tools-scripts ; tar xfB - )
 popd
-rm -f $B_INSTALLDIR/opt/gvm/lib/python3.7/site-packages/site.py
-rm -f $B_INSTALLDIR/opt/gvm/lib/python3.7/site-packages/easy-install.pth
+rm -f $B_INSTALLDIR/opt/gvm/lib/python${PYVER}/site-packages/site.py
+rm -f $B_INSTALLDIR/opt/gvm/lib/python${PYVER}/site-packages/easy-install.pth
 B_LINKFILES /opt/gvm/bin /usr/bin
 
 [PKG]

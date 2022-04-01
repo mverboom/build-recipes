@@ -1,13 +1,16 @@
 #!/bin/bash
 . /etc/profile
-PATH=/opt/gvm/lib:$PATH
 LOG="/tmp/$$.log"
 err=0
-#greenbone-nvt-sync > "$LOG" 2>&1
-#test "$?" -ne "0" && err=1
-/usr/sbin/greenbone-scapdata-sync >> "$LOG" 2>&1
-test "$?" -ne "0" && err=1
-/usr/sbin/greenbone-certdata-sync >> "$LOG" 2>&1
-test "$?" -ne "0" && err=1
-test "$err" = 1 && cat "$LOG"
+runcmd() {
+   "$@" >> "$LOG".tmp 2>&1
+   test "$?" -ne 0 && { echo "Error running $@"; cat "$LOG".tmp >> "$LOG"; }
+   rm -f "$LOG".tmp
+}
+
+runcmd /usr/bin/greenbone-nvt-sync
+for feed in CERT SCAP GVMD_DATA; do
+   runcmd /usr/sbin/greenbone-feed-sync --type $feed
+done
+test -e "$LOG" && cat "$LOG"
 rm -f "$LOG"

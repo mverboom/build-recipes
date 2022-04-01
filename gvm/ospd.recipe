@@ -6,19 +6,20 @@ arch=amd64
 excludefromall=1
 
 [REQUIRED]
-python3 python3-setuptools python3-nacl python3-bcrypt python3-cffi python3-cryptography python3-defusedxml python3-lxml python3-paramiko python3-pycparser python3-six gcc python3-dev
+python3 python3-setuptools python3-nacl python3-bcrypt python3-cffi python3-cryptography python3-defusedxml python3-lxml python3-paramiko python3-pycparser python3-six gcc python3-dev python3-wrapt python3-psutil python3-deprecated python3-pip
 
-[BUILD DEBIAN BUSTER]
+[BUILD DEBIAN]
+PYVER=$( python3 -c "import sys; print(f'{sys.version_info.major}.{sys.version_info.minor}')" )
 B_GET git https://github.com/greenbone/ospd ospd
 cd ospd
 git checkout v$B_VERSION
 # 20200430 MV: Force TLS1.2, otherwise communications seem to not work.
-sed -i 's/PROTOCOL_TLS/PROTOCOL_TLSv1_2/g' ospd/server.py
-mkdir -p $B_INSTALLDIR/opt/gvm/lib/python3.7/site-packages
-export PYTHONPATH="$B_INSTALLDIR/opt/gvm/lib/python3.7/site-packages:${PYTHONPATH}"
-python3 setup.py install --prefix $B_INSTALLDIR/opt/gvm
-rm -f $B_INSTALLDIR/opt/gvm/lib/python3.7/site-packages/site.py
-rm -f $B_INSTALLDIR/opt/gvm/lib/python3.7/site-packages/easy-install.pth
+#sed -i 's/PROTOCOL_TLS/PROTOCOL_TLSv1_2/g' ospd/server.py
+mkdir -p $B_INSTALLDIR/opt/gvm/lib/python${PYVER}/site-packages
+export PYTHONPATH="$B_INSTALLDIR/opt/gvm/lib/python${PYVER}/site-packages:${PYTHONPATH}"
+pip3 install --system --prefix=$B_INSTALLDIR/opt/gvm ospd
+rm -f $B_INSTALLDIR/opt/gvm/lib/python${PYVER}/site-packages/site.py
+rm -f $B_INSTALLDIR/opt/gvm/lib/python${PYVER}/site-packages/easy-install.pth
 
 [PKG]
 type=deb
@@ -33,4 +34,4 @@ Architecture: B_ARCH
 Maintainer: B_MAIL
 Description: Greenbone ospd custom B_ORG build
 Homepage: https://github.com/greenbone/ospd
-Depends: python3, python3-nacl, python3-bcrypt, python3-cffi, python3-cryptography, python3-defusedxml, python3-lxml, python3-paramiko, python3-pycparser, python3-six, python-gvm-B_PF
+Depends: python3, python3-nacl, python3-bcrypt, python3-cffi, python3-cryptography, python3-defusedxml, python3-lxml, python3-paramiko, python3-pycparser, python3-six, python-gvm-B_PF, python3-pkg-resources, python3-wrapt, python3-psutil, python3-deprecated

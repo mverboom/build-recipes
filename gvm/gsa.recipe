@@ -6,28 +6,23 @@ excludefromall=1
 B_GITVER https://github.com/greenbone/gsa
 
 [REQUIRED]
-gvm-libs-B_PF cmake libmicrohttpd-dev libxml2-dev libglib2.0-dev libxml2-dev libxslt1-dev libpcap-dev libgpgme-dev libssh-gcrypt-dev libhiredis-dev python-polib xsltproc xmltoman nodejs-lts-B_PF yarn-B_PF uuid-dev g++
+nodejs-14-B_PF yarn-B_PF
 
 [BUILD DEBIAN]
 B_GET git https://github.com/greenbone/gsa gsa
 cd gsa
 git checkout tags/v$B_VERSION
-export PKG_CONFIG_PATH=/opt/gvm/lib/pkgconfig:$PKG_CONFIG_PATH
-mkdir build
-cd build
-cmake -DCMAKE_INSTALL_PREFIX=/opt/gvm -DSYSCONFDIR=/etc -DSYSCONF_INSTALL_DIR=/etc -DLOCALSTATEDIR=/var -D GVM_RUN_DIR=/var/run/gvm -DLOGROTATE_DIR=/etc/logrotate.d -DDEFAULT_CONFIG_DIR=/etc/default -DSYSTEMD_SERVICE_DIR=/lib/systemd/system ..
-make
-make install DESTDIR=$B_INSTALLDIR
-B_LINKFILES /opt/gvm/sbin /usr/sbin
-B_LINKFILES /opt/gvm/share/man/man8 /usr/share/man/man8
-mkdir -p $B_INSTALLDIR/var/lib/gvm/private/CA $B_INSTALLDIR/var/lib/gvm/CA
-rm $B_INSTALLDIR/lib/systemd/system/gsad.service
+yarn
+yarn build
+dst=$B_INSTALLDIR/opt/gvm/share/gvm/gsad/web
+mkdir -p "$dst"
+cp -r build/* "$dst"
 
 [PKG]
 type=deb
 torepo=y
 
-[DEB BUSTER]
+[DEB]
 Package: gsa
 Version: B_VERSION
 Section: greenbone
@@ -36,4 +31,4 @@ Architecture: B_ARCH
 Maintainer: B_MAIL
 Description: Greenbone Security Assistant custom B_ORG build
 Homepage: https://github.com/greenbone/gsa
-Depends: gvm-libs-B_PF,gvmd-B_PF,libmicrohttpd12,libhiredis0.14,libssh-gcrypt-4,openssl
+Depends: gsad-B_PF

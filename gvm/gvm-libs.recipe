@@ -15,7 +15,7 @@ git checkout v$B_VERSION
 mkdir build
 cd build
 cmake -DCMAKE_INSTALL_PREFIX=/opt/gvm -DCMAKE_BUILD_TYPE=Release -DSYSCONF_INSTALL_DIR=/etc -DGVM_PID_DIR=/var/run/gvm ..
-make
+make -j $(nproc)
 make install DESTDIR=$B_INSTALLDIR
 
 [PKG]

@@ -1,1 +1,2 @@
-grep "# gvm-pythonpath" /etc/environment || echo "export PYTHONPATH=\"/opt/gvm/lib/python3.7/site-packages/:${PYTHONPATH}\" # gvm-pythonpath" >> /etc/environment
+PYVER=$(python3 -c "import sys; print(f'{sys.version_info.major}.{sys.version_info.minor}')")
+grep "# gvm-pythonpath" /etc/environment || echo "export PYTHONPATH=\"/opt/gvm/lib/python${PYVER}/site-packages/:${PYTHONPATH}\" # gvm-pythonpath" >> /etc/environment

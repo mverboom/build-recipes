@@ -15,11 +15,11 @@ git checkout v$B_VERSION
 export PKG_CONFIG_PATH=/opt/gvm/lib/pkgconfig:$PKG_CONFIG_PATH
 mkdir build
 cd build
-cmake -DCMAKE_INSTALL_PREFIX=/opt/gvm -DCMAKE_BUILD_TYPE=Release -DSYSCONF_INSTALL_DIR=/etc -DLOCALSTATEDIR=/var -D GVM_RUN_DIR=/run/gvm ..
+cmake -DPostgreSQL_TYPE_INCLUDE_DIR=/usr/include/postgresql -DCMAKE_INSTALL_PREFIX=/opt/gvm -DCMAKE_BUILD_TYPE=Release -DSYSCONF_INSTALL_DIR=/etc -DLOCALSTATEDIR=/var -D GVMD_RUN_DIR=/run/gvm ..
 cd ..
 sed -i "/^#define OPENVAS_DEFAULT_SOCKET/ s#/tmp#/run/ospd-openvas#" src/manage_sql.c
 cd build
-make
+make -j $(nproc)
 make doc
 make install DESTDIR=$B_INSTALLDIR
 mkdir -p $B_INSTALLDIR/var/lib/gvm/gvmd $B_INSTALLDIR/opt/gvm/var/lib/gvm
@@ -39,6 +39,17 @@ B_LINKFILES /opt/gvm/share/man/man1 /usr/share/man/man8
 [PKG]
 type=deb
 torepo=y
+
+[DEB BULLSEYE]
+Package: gvmd
+Version: B_VERSION
+Section: greenbone
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: Greenbone gvmd custom B_ORG build
+Homepage: https://github.com/greenbone/gvm
+Depends: gnutls-bin,libgpgme11,xsltproc,libical3,postgresql-13,gvm-libs-B_PF,libssh-gcrypt-4,libhiredis0.14,rsync,ospd-openvas-B_PF,texlive-base,texlive-binaries,texlive-fonts-extra,texlive-fonts-extra-doc,texlive-fonts-recommended,texlive-latex-base,texlive-latex-extra,texlive-latex-recommended,texlive-pictures,xml-twig-tools,nsis,imagemagick,texlive-fonts-recommended
 
 [DEB BUSTER]
 Package: gvmd
