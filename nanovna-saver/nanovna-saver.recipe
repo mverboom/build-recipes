@@ -5,7 +5,7 @@ B_GITVER -e -pre -f 0.11 https://github.com/NanoVNA-Saver/nanovna-saver
 arch=amd64
 
 [REQUIRED]
-python3-virtualenv virtualenv
+python3-virtualenv virtualenv virtualenv-make-relocatable-B_PF
 
 [BUILD]
 B_GET git https://github.com/NanoVNA-Saver/nanovna-saver nanovna-saver
@@ -17,9 +17,10 @@ source $DEST/bin/activate
 pip install -r requirements.txt
 python -m pip install .
 ln -s /usr/lib/x86_64-linux-gnu/libxcb-util.so.0 $DEST/lib/libxcb-util.so.1
-virtualenv --relocatable -p python3 $DEST
-sed -i "s#$B_INSTALLDIR##" $DEST/bin/activate*
+#virtualenv --relocatable -p python3 $DEST
+#sed -i "s#$B_INSTALLDIR##" $DEST/bin/activate*
 deactivate
+virtualenv-make-relocatable $DEST
 
 [PKG]
 type=deb
