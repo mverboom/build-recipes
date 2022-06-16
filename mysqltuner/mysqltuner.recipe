@@ -7,7 +7,7 @@ git ls-remote --tags https://github.com/major/MySQLTuner-perl | grep -v '{}' | c
 [BUILD]
 B_GET git https://github.com/major/MySQLTuner-perl mysqltuner
 cd mysqltuner
-git checkout tags/$B_VERSION
+git checkout ${B_VERSION} || git checkout v${B_VERSION}
 sed -i 's_/usr/share/mysqltuner_/opt/mysqltuner_' mysqltuner.pl
 mkdir -p $B_INSTALLDIR/opt/mysqltuner/bin
 cp mysqltuner.pl $B_INSTALLDIR/opt/mysqltuner/bin/mysqltuner
