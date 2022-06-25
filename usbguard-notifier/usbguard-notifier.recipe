@@ -14,7 +14,7 @@ B_GET git https://github.com/Cropi/usbguard-notifier.git usbguard-notifier
 cd usbguard-notifier
 #git checkout $B_VERSION # Enable when version > 0.0.6, else it's broken
 bash autogen.sh
-./configure --with-bundled-catch --prefix=/opt/usbguard-notifier --with-usbguard-devel=/opt/usbguard-dev
+./configure --with-bundled-catch --prefix=/opt/usbguard-notifier --with-usbguard-devel=/opt/usbguard-dev --with-permanent-notifications=/tmp/usbguard-notifier
 make
 make install DESTDIR=$B_INSTALLDIR
 
