@@ -1,0 +1,14 @@
+[INFO]
+arch=amd64
+
+[VERSION]
+B_GITVER https://github.com/jitsi/jitsi-meet-electron
+
+[BUILD]
+B_GET http https://github.com/jitsi/jitsi-meet-electron/releases/download/v${B_VERSION}/jitsi-meet-amd64.deb jitsi-meet_${B_VERSION}_${B_ARCH}.deb
+mv jitsi-meet_${B_VERSION}_${B_ARCH}.deb ${B_INSTALLDIR}
+
+[PKG]
+type=deb
+pkgready=y
+torepo=y
