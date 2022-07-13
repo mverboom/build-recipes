@@ -25,7 +25,7 @@ Version: B_VERSION
 Section: system
 Priority: optional
 Architecture: all
-Depends: php, php-common, php-gd, php-intl, php-curl, php-json, php-mysqlnd | php-mysql, php-sqlite3, php-pgsql, php-cgi | php-fpm | libapache2-mod-php, apache2 (>= 2.4.0), php-xml, php-mbstring, php-zip, php-imagick, php-ldap
+Depends: sudo, php, php-common, php-gd, php-intl, php-curl, php-json, php-mysqlnd | php-mysql, php-sqlite3, php-pgsql, php-cgi | php-fpm | libapache2-mod-php, apache2 (>= 2.4.0), php-xml, php-mbstring, php-zip, php-imagick, php-ldap
 Maintainer: B_MAIL
 Description: nextCloud - Building self-hosted products that allow you to be productive without losing control
 Homepage: https://nextcloud.com

@@ -3,3 +3,4 @@
 cd /var/www/nextcloud
 mkdir data
 chown -R www-data: apps data config
+sudo -u www-data env php  /var/www/nextcloud/occ upgrade
