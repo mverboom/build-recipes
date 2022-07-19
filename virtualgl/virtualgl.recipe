@@ -1,0 +1,38 @@
+[INFO]
+arch=amd64
+
+[VERSION]
+B_GITVER https://github.com/VirtualGL/virtualgl
+
+[REQUIRED]
+g++-multilib libxv-dev libxtst-dev libx11-xcb-dev libxcb-keysyms1-dev libegl1-mesa-dev libglu1-mesa-dev cmake libturbojpeg0-dev ocl-icd-opencl-dev libxcb-glx0-dev
+
+[BUILD]
+B_GET git https://github.com/VirtualGL/virtualgl virtualgl
+cd virtualgl
+git checkout ${B_VERSION}
+mkdir build
+cd build
+cmake -G"Unix Makefiles" ..
+make -j $(nproc)
+make install DESTDIR=${B_INSTALLDIR}
+mkdir -p "${B_INSTALLDIR}/usr/bin"
+for file in vglserver_config vglclient vglgenkey vgllogin vglconnect vglrun vglconfig; do
+B_LINKFILE /opt/VirtualGL/bin/$file /usr/bin
+done
+B_LINKFILES /opt/VirtualGL/lib64 /usr/lib
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: virtualgl
+Version: B_VERSION
+Section: virtualgl
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: Virtualgl custom B_ORG build
+Homepage: https://www.virtualgl.org/
+Depends: libxtst6, libxv1, libglu1-mesa, libegl1-mesa
