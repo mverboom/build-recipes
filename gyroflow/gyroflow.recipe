@@ -1,0 +1,27 @@
+[INFO]
+arch=amd64
+
+[VERSION]
+B_GITVER https://github.com/gyroflow/gyroflow
+
+[BUILD]
+B_GET http https://github.com/gyroflow/gyroflow/releases/download/v${B_VERSION}/Gyroflow-linux64.tar.gz gyroflow.tar.gz
+dst="${B_INSTALLDIR}/opt/gyroflow"
+mkdir -p $dst
+tar -xvf gyroflow.tar.gz --strip-components 1 -C "$dst"
+B_LINKFILE /opt/gyroflow/gyroflow /usr/bin
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: gyroflow
+Version: B_VERSION
+Section: gyroflow
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: Gyroflow custom B_ORG build
+Homepage: https://gyroflow.xyz/
+Depends: libc++1-11,libflac8,libvorbisenc2,libmd0,libsndfile1,libgl1
