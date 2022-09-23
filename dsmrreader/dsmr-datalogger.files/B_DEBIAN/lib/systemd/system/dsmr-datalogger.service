@@ -1,0 +1,18 @@
+[Unit]
+Description=DSMR Client
+After=network.target
+
+[Service]
+Type=simple
+User=dsmr
+Group=dsmr
+StandardOutput=null
+StandardError=journal
+WorkingDirectory=/opt/dsmr-datalogger
+PIDFile=/var/tmp/dsmrreader--dsmr_datalogger.pid
+ExecStart=/opt/dsmr-datalogger/.venv/bin/python3 -u /opt/dsmr-datalogger/bin/dsmr_datalogger_api_client.py
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target

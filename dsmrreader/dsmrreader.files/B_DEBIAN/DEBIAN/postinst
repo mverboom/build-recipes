@@ -1,0 +1,32 @@
+#!/bin/sh
+ 
+if test "$1" = "configure"; then
+  # Create a dsmr system group
+  if ! getent group dsmr > /dev/null; then
+      addgroup --quiet --system dsmr
+  fi
+  
+  # Create a dsmr system user
+  if ! getent passwd dsmr > /dev/null; then
+      adduser --quiet --system \
+          --ingroup dsmr \
+          --home /opt/dsmrreader \
+          --no-create-home \
+          --disabled-password --shell /bin/bash \
+          dsmr
+      usermod -c "DSMR user" dsmr
+  fi
+
+  chown -R dsmr:dsmr /opt/dsmrreader /var/www/dsmrreader /etc/dsmrreader /var/lib/dsmrreader
+
+  su - dsmr -c ". .venv/bin/activate; ./tools/generate-secret-key.sh; . .env; ./manage.py migrate; ./manage.py collectstatic --noinput; ./manage.py dsmr_superuser"
+
+  systemctl enable dsmr_backend.service dsmr_datalogger.service dsmr_webinterface.service
+  systemctl start dsmr_backend.service dsmr_datalogger.service dsmr_webinterface.service
+  rm /etc/nginx/sites-enabled/default
+  cp /etc/dsmrreader/nginx.example /etc/nginx/sites-available/dsmrreader.conf
+  ln -s /etc/nginx/sites-available/dsmrreader.conf /etc/nginx/sites-enabled
+  systemctl reload nginx
+else
+  systemctl restart dsmr_backend.service dsmr_datalogger.service dsmr_webinterface.service
+fi

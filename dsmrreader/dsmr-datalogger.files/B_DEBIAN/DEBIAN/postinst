@@ -1,0 +1,26 @@
+#!/bin/sh
+ 
+if test "$1" = "configure"; then
+  # Create a dsmr system group
+  if ! getent group dsmr > /dev/null; then
+      addgroup --quiet --system dsmr
+  fi
+  
+  # Create a dsmr system user
+  if ! getent passwd dsmr > /dev/null; then
+      adduser --quiet --system \
+          --ingroup dsmr \
+          --home /opt/dsmr-datalogger \
+          --no-create-home \
+          --disabled-password --shell /bin/bash \
+          dsmr
+      usermod -c "DSMR user" dsmr
+      usermod -a -G dialout dsmr
+  fi
+
+  chown -R dsmr:dsmr /opt/dsmr-datalogger /etc/dsmr-datalogger
+
+  systemctl enable dsmr-datalogger.service
+else
+  systemctl restart dsmr_datalogger.service
+fi

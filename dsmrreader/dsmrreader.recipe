@@ -1,0 +1,60 @@
+[VERSION]
+B_GITVER https://github.com/dsmrreader/dsmr-reader
+
+[INFO]
+arch=amd64
+
+[REQUIRED]
+python3 python3-psycopg2 python3-pip python3-venv python3-dev default-libmysqlclient-dev build-essential
+
+[BUILD]
+B_GET git https://github.com/dsmrreader/dsmr-reader dsmrreader
+cd dsmrreader
+git checkout v$B_VERSION
+DEST=$B_INSTALLDIR/opt/dsmrreader
+VIRT=$DEST/.venv
+mkdir -p $VIRT
+python3 -m venv "$VIRT"
+. $VIRT/bin/activate
+cp dsmrreader/provisioning/django/settings.py.template dsmrreader/settings.py
+mkdir -p "$B_INSTALLDIR"/etc/dsmrreader
+sed -i "s/^DJANGO_DATABASE_HOST/#DJANGO_DATABASE_HOST/" .env.template
+sed -i "s/^DJANGO_DATABASE_PORT/#DJANGO_DATABASE_PORT/" .env.template
+sed -i "s/^DJANGO_DATABASE_USER/#DJANGO_DATABASE_USER/" .env.template
+sed -i "s/^DJANGO_DATABASE_PASSWORD/#DJANGO_DATABASE_PASSWORD/" .env.template
+sed -i "s|^DJANGO_DATABASE_ENGINE=.*|DJANGO_DATABASE_ENGINE=django.db.backends.sqlite3|" .env.template
+sed -i "s|^DJANGO_DATABASE_NAME=.*|DJANGO_DATABASE_NAME=/var/lib/dsmrreader/db.sqlite|" .env.template
+echo "DSMRREADER_ADMIN_USER=admin" >> .env.template
+echo "DSMRREADER_ADMIN_PASSWORD=admin" >> .env.template
+mv .env.template "$B_INSTALLDIR"/etc/dsmrreader/env
+tools/generate-secret-key.sh # ToDo
+pip3 install -r dsmrreader/provisioning/requirements/base.txt
+pip3 install mysqlclient
+deactivate
+pushd "$VIRT/bin"
+shopt -s extglob
+sed -i "s|$VIRT|/opt/dsmrreader/.venv|g" !(__pycache__)
+popd
+ln -s /etc/dsmrreader/env $B_INSTALLDIR/opt/dsmrreader/.env
+rm -rf .git
+mv dsmrreader/provisioning/nginx/dsmr-webinterface $B_INSTALLDIR/etc/dsmrreader/nginx.example
+mkdir -p "$B_INSTALLDIR"/lib/systemd/system
+cat dsmrreader/provisioning/systemd/dsmr_backend.service | sed "s|/home/dsmr/dsmr-reader|/opt/dsmrreader|g" > "$B_INSTALLDIR"/lib/systemd/system/dsmr_backend.service
+cat dsmrreader/provisioning/systemd/dsmr_datalogger.service | sed "s|/home/dsmr/dsmr-reader|/opt/dsmrreader|g" > "$B_INSTALLDIR"/lib/systemd/system/dsmr_datalogger.service
+cat dsmrreader/provisioning/systemd/dsmr_webinterface.service | sed "s|/home/dsmr/dsmr-reader|/opt/dsmrreader|g" > "$B_INSTALLDIR"/lib/systemd/system/dsmr_webinterface.service
+tar cfB - . | ( cd $DEST ; tar xfB - )
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: dsmrreader
+Version: B_VERSION
+Section: dsmrreader
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: dsmrreader saver custom B_ORG build
+Homepage: https://github.com/dsmrreader/dsmr-reader
+Depends: python3,nginx,libmariadb3
