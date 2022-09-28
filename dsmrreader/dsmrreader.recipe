@@ -38,6 +38,8 @@ popd
 ln -s /etc/dsmrreader/env $B_INSTALLDIR/opt/dsmrreader/.env
 rm -rf .git
 mv dsmrreader/provisioning/nginx/dsmr-webinterface $B_INSTALLDIR/etc/dsmrreader/nginx.example
+mv dsmrreader/settings.py "$B_INSTALLDIR"/etc/dsmrreader
+ln -s /etc/dsmrreader/settings.py dsmrreader/settings.py
 mkdir -p "$B_INSTALLDIR"/lib/systemd/system
 cat dsmrreader/provisioning/systemd/dsmr_backend.service | sed "s|/home/dsmr/dsmr-reader|/opt/dsmrreader|g" > "$B_INSTALLDIR"/lib/systemd/system/dsmr_backend.service
 cat dsmrreader/provisioning/systemd/dsmr_datalogger.service | sed "s|/home/dsmr/dsmr-reader|/opt/dsmrreader|g" > "$B_INSTALLDIR"/lib/systemd/system/dsmr_datalogger.service

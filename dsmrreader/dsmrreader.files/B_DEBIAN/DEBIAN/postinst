@@ -19,14 +19,19 @@ if test "$1" = "configure"; then
 
   chown -R dsmr:dsmr /opt/dsmrreader /var/www/dsmrreader /etc/dsmrreader /var/lib/dsmrreader
 
-  su - dsmr -c ". .venv/bin/activate; ./tools/generate-secret-key.sh; . .env; ./manage.py migrate; ./manage.py collectstatic --noinput; ./manage.py dsmr_superuser"
+  if ! grep -q "^DJANGO_SECRET_KEY" /etc/dsmrreader/env ; then
+     su - dsmr -c ". .venv/bin/activate; ./tools/generate-secret-key.sh;"
+  fi
+  su - dsmr -c ". .venv/bin/activate; . .env; ./manage.py migrate; ./manage.py collectstatic --noinput; ./manage.py dsmr_superuser"
 
   systemctl enable dsmr_backend.service dsmr_datalogger.service dsmr_webinterface.service
-  systemctl start dsmr_backend.service dsmr_datalogger.service dsmr_webinterface.service
-  rm /etc/nginx/sites-enabled/default
-  cp /etc/dsmrreader/nginx.example /etc/nginx/sites-available/dsmrreader.conf
-  ln -s /etc/nginx/sites-available/dsmrreader.conf /etc/nginx/sites-enabled
-  systemctl reload nginx
+  systemctl restart dsmr_backend.service dsmr_datalogger.service dsmr_webinterface.service
+  if test ! -e /etc/nginx/sites-available/dsmrreader.conf; then
+     rm -f /etc/nginx/sites-enabled/default
+     cp /etc/dsmrreader/nginx.example /etc/nginx/sites-available/dsmrreader.conf
+     ln -s /etc/nginx/sites-available/dsmrreader.conf /etc/nginx/sites-enabled
+     systemctl reload nginx
+  fi
 else
   systemctl restart dsmr_backend.service dsmr_datalogger.service dsmr_webinterface.service
 fi
