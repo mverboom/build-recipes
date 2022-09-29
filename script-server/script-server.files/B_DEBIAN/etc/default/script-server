@@ -1,0 +1,2 @@
+# Settings for script-server
+OPTS="-d /etc/script-server -l /var/log/script-server -t /var/lib/script-server"

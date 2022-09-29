@@ -1,0 +1,26 @@
+#!/bin/sh
+ 
+if test "$1" = "configure"; then
+  # Create a script system group
+  if ! getent group script > /dev/null; then
+      addgroup --quiet --system script
+  fi
+  
+  # Create a script system user
+  if ! getent passwd script > /dev/null; then
+      adduser --quiet --system \
+          --ingroup script \
+          --home /opt/script-server \
+          --no-create-home \
+          --disabled-password --shell /bin/bash \
+          script
+      usermod -c "Script server user" script
+  fi
+
+  chown -R script:script /etc/script-server /var/log/script-server /var/lib/script-server
+
+  systemctl enable script-server.service
+  systemctl restart script-server.service
+else
+  systemctl restart script-server.service
+fi

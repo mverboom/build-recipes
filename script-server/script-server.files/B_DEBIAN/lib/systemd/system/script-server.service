@@ -1,0 +1,19 @@
+[Unit]
+Description=Script server
+After=network.target
+
+[Service]
+Type=simple
+User=script
+Group=script
+StandardOutput=null
+StandardError=journal
+EnvironmentFile=-/etc/default/script-server
+WorkingDirectory=/opt/script-server/
+ExecStart=/opt/script-server/launcher.py $OPTS
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
+

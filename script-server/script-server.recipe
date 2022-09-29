@@ -1,0 +1,41 @@
+[VERSION]
+B_GITVER https://github.com/bugy/script-server
+
+[INFO]
+arch=amd64
+
+[REQUIRED]
+python3
+
+[BUILD]
+B_GET git https://github.com/bugy/script-server script-server
+cd script-server
+git checkout $B_VERSION
+DEST=$B_INSTALLDIR/opt/script-server
+mkdir -p "$DEST"
+tools/init.py --no-npm
+mkdir -p "$B_INSTALLDIR"/etc/script-server
+sed -i 's#"filename": "logs/server.log"#"filename": "/var/log/script-server/server.log"#' conf/logging.json
+mv conf/* "$B_INSTALLDIR"/etc/script-server
+rmdir conf
+#ln -s /etc/script-server conf
+#mkdir -p "$B_INSTALLDIR"/var/log/script-server
+#ln -s /var/log/script-server logs
+rm -rf logs web-src temp tools
+rm requirements.txt
+mv * "$DEST"
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: script-server
+Version: B_VERSION
+Section: script-server
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: script-server custom B_ORG build
+Homepage: https://github.com/bugy/script-server
+Depends: python3-tornado,python3-pycurl
