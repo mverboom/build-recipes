@@ -18,9 +18,6 @@ mkdir -p "$B_INSTALLDIR"/etc/script-server
 sed -i 's#"filename": "logs/server.log"#"filename": "/var/log/script-server/server.log"#' conf/logging.json
 mv conf/* "$B_INSTALLDIR"/etc/script-server
 rmdir conf
-#ln -s /etc/script-server conf
-#mkdir -p "$B_INSTALLDIR"/var/log/script-server
-#ln -s /var/log/script-server logs
 rm -rf logs web-src temp tools
 rm requirements.txt
 mv * "$DEST"
