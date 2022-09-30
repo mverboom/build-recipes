@@ -1,0 +1,30 @@
+[INFO]
+arch=amd64
+
+[VERSION]
+B_GITVER https://github.com/gulpjs/gulp
+
+[REQUIRED]
+nodejs-B_PF
+
+[BUILD]
+B_GET git https://github.com/gulpjs/gulp gulp
+cd gulp
+git checkout tags/v$B_VERSION
+export npm_config_prefix=$B_INSTALLDIR/opt/gulp
+npm install -g gulp
+B_LINKFILES /opt/gulp/bin /usr/bin
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: gulp
+Version: B_VERSION
+Section: gulp
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: Gulp custom B_ORG build
+Homepage: https://github.com/gulpjs/gulp
