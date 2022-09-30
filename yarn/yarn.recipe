@@ -1,0 +1,30 @@
+[INFO]
+arch=amd64
+
+[VERSION]
+B_GITVER https://github.com/yarnpkg/yarn/
+
+[REQUIRED]
+golang-B_PF make nodejs-B_PF gulp-B_PF
+
+[BUILD]
+B_GET git https://github.com/yarnpkg/yarn/ yarn
+cd yarn
+git checkout v$B_VERSION
+export npm_config_prefix=$B_INSTALLDIR/opt/yarn
+npm install -g yarn
+B_LINKFILES /opt/yarn/bin /usr/bin
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: yarn
+Version: B_VERSION
+Section: yarn
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: Yarn custom B_ORG build
+Homepage: https://github.com/yarnpkg/yarn/
