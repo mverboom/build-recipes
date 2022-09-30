@@ -14,9 +14,10 @@ git checkout $B_VERSION
 DEST=$B_INSTALLDIR/opt/script-server
 mkdir -p "$DEST"
 tools/init.py --no-npm
-mkdir -p "$B_INSTALLDIR"/etc/script-server
+mkdir -p "$B_INSTALLDIR"/etc/script-server/theme
 sed -i 's#"filename": "logs/server.log"#"filename": "/var/log/script-server/server.log"#' conf/logging.json
 mv conf/* "$B_INSTALLDIR"/etc/script-server
+cp samples/themes/orange/theme.css "$B_INSTALLDIR"/etc/script-server/theme/theme.css
 rmdir conf
 rm -rf logs web-src temp tools
 rm requirements.txt
