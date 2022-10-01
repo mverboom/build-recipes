@@ -1,0 +1,14 @@
+[Unit]
+Description=zwave-js-ui
+After=network.target
+
+[Install]
+WantedBy=multi-user.target
+
+[Service]
+ExecStart=/usr/bin/npm start
+WorkingDirectory=/opt/zwavejsui
+StandardOutput=inherit
+StandardError=inherit
+Restart=always
+User=zwavejsui

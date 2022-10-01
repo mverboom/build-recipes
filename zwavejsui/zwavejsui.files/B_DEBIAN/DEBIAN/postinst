@@ -1,0 +1,23 @@
+#!/bin/sh
+ 
+if test "$1" = "configure"; then
+   # Create a zwavejsui system group
+   if ! getent group zwavejsui > /dev/null; then
+       addgroup --quiet --system zwavejsui
+   fi
+   
+   # Create a zwavejsui system user
+   if ! getent passwd zwavejsui > /dev/null; then
+       adduser --quiet --system \
+           --ingroup zwavejsui \
+           --home /var/lib/zwavejsui \
+           --no-create-home \
+           --disabled-password --shell /usr/sbin/nologin \
+           zwavejsui
+       usermod -c "Z-wave JS UI user" zwavejsui
+       adduser zwavejsui dialout
+   fi
+   chown -R zwavejsui.zwavejsui /var/lib/zwavejsui #/var/log/zwave-js-ui
+   systemctl enable zwavejsui
+fi
+systemctl restart zwavejsui
