@@ -5,15 +5,18 @@ arch=amd64
 B_GITVER -i release -R s/release-// https://github.com/NLnetLabs/unbound
 
 [REQUIRED]
-gcc make libssl-dev libexpat1-dev bison
+gcc make libssl-dev libexpat1-dev bison libnghttp2-dev libevent-dev
 
 [BUILD]
 B_GET git https://github.com/NLnetLabs/unbound unbound
 cd unbound
 git checkout release-$B_VERSION
-./configure --prefix=/opt/unbound --sysconfdir=/etc --localstatedir=/var --mandir=/usr/share/man
+./configure --with-libnghttp2 --with-libevent \
+   --prefix=/opt/unbound --sysconfdir=/etc --localstatedir=/var --mandir=/usr/share/man
 make -j $(nproc)
 make install DESTDIR=$B_INSTALLDIR
+make dohclient
+cp dohclient "$B_INSTALLDIR"/opt/unbound/sbin
 B_LINKFILES /opt/unbound/sbin /usr/sbin
 
 [PKG]
@@ -29,3 +32,4 @@ Architecture: B_ARCH
 Maintainer: B_MAIL
 Description: Unbound custom B_ORG build
 Homepage: https://www.nlnetlabs.nl/projects/unbound
+Depends: libevent-2.1-7
