@@ -5,12 +5,13 @@ arch=amd64
 B_GITVER https://github.com/InfiniTimeOrg/InfiniSim
 
 [REQUIRED]
-cmake libsdl2-dev g++ libpng-dev
+cmake libsdl2-dev g++ libpng-dev npm
 
 [BUILD]
 B_GET git -s https://github.com/InfiniTimeOrg/InfiniSim infinisim
 cd infinisim
 git checkout v$B_VERSION
+npm install lv_font_conv@1.5.2 ts-node@10.9.1 @swc/core lv_img_conv@0.3.0
 cmake -S . -B build
 cmake --build build -j$(nproc)
 dst="$B_INSTALLDIR/usr/bin"
