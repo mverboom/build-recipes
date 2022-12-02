@@ -21,7 +21,7 @@ if test "$1" = "configure"; then
   chown -R dsmr:dsmr /opt/dsmr-datalogger /etc/dsmr-datalogger
 
   systemctl enable dsmr-datalogger.service
-  systemctl restart dsmr_datalogger.service
+  systemctl restart dsmr-datalogger.service
 else
-  systemctl restart dsmr_datalogger.service
+  systemctl restart dsmr-datalogger.service
 fi
