@@ -21,6 +21,7 @@ mv config.default.php ../../etc/kanboard
 ln -s ../../etc/kanboard/config.php config.php
 ln -s ../../var/lib/kanboard/data data
 ln -s ../../var/lib/kanboard/plugins plugins
+echo $B_VERSION > app/version.txt
 cd ../..
 tar cf - . | (cd $B_INSTALLDIR ; tar xf - )
 
