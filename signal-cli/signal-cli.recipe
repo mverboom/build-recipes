@@ -5,7 +5,7 @@ arch=amd64
 B_GITVER https://github.com/AsamK/signal-cli
 
 [REQUIRED]
-gradle default-jdk-headless make asciidoc
+gradle openjdk-17-jre-headless make asciidoc
 
 [BUILD]
 B_GET git https://github.com/AsamK/signal-cli signal-cli
@@ -14,13 +14,14 @@ git checkout v${B_VERSION}
 ./gradlew build
 ./gradlew installDist
 cd man
-make -j $(nproc)
+make
 cd ..
 mkdir -p ${B_INSTALLDIR}/opt
 tar xf build/distributions/signal-cli-$B_VERSION.tar -C ${B_INSTALLDIR}/opt
 mv ${B_INSTALLDIR}/opt/signal* ${B_INSTALLDIR}/opt/signal-cli
-mkdir -p ${B_INSTALLDIR}/usr/bin ${B_INSTALLDIR}/usr/share/man/man1
-cp man/signal-cli.1 ${B_INSTALLDIR}/usr/share/man/man1
+mkdir -p ${B_INSTALLDIR}/usr/bin ${B_INSTALLDIR}/usr/share/man/man1 ${B_INSTALLDIR}/usr/share/man/man5
+cp man/*.1 ${B_INSTALLDIR}/usr/share/man/man1
+cp man/*.5 ${B_INSTALLDIR}/usr/share/man/man5
 B_LINKFILES /opt/signal-cli/bin /usr/bin
 
 [PKG]
@@ -36,4 +37,4 @@ Architecture: B_ARCH
 Maintainer: B_MAIL
 Description: signal-cli custom B_ORG build
 Homepage: https://github.com/AsamK/signal-cli
-Depends: default-jre-headless
+Depends: openjdk-17-jre-headless
