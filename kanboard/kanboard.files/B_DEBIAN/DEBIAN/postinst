@@ -2,6 +2,6 @@
  
 if test "$1" = "configure"; then
    test -e /var/lib/kanboard/data/db.sqlite || touch /var/lib/kanboard/data/db.sqlite
-   chown -R www-data.www-data /var/lib/kanboard/plugins /var/lib/kanboard/data /etc/kanboard/config.php
+   chown -R www-data.www-data /var/lib/kanboard/plugins /var/lib/kanboard/data /etc/kanboard/config.php /etc/kanboard/data
    chmod 755 /etc/cron.daily/kanboard
 fi
