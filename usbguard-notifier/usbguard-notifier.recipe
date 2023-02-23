@@ -1,9 +1,8 @@
 [VERSION]
-#B_GITVER https://github.com/Cropi/usbguard-notifier.git
-B_GITHUBVER https://github.com/Cropi/usbguard-notifier master
+B_GITVER https://github.com/Cropi/usbguard-notifier.git | rev | cut -d- -f1 | rev
 
 [REQUIRED]
-usbguard-dev-B_PF libnotify-dev librsvg2-dev asciidoc dh-autoreconf g++ make libqb-dev libprotobuf-dev libsodium-dev
+usbguard-dev-B_PF libnotify-dev librsvg2-dev asciidoc dh-autoreconf g++ make libqb-dev libprotobuf-dev libsodium-dev libumockdev-dev
 
 [INFO]
 arch=amd64
