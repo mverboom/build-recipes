@@ -5,8 +5,7 @@ arch=amd64
 B_GITVER https://github.com/grafana/grafana
 
 [REQUIRED]
-#golang-B_PF gcc nodejs-lts-B_PF yarn-B_PF g++ make
-golang-B_PF gcc nodejs g++ make yarn-B_PF
+golang-B_PF gcc nodejs-lts-B_PF yarn-B_PF g++ make
 
 [BUILD]
 # 20200207 MV: Prevent memory debug error
@@ -18,19 +17,27 @@ export PATH=${PATH}:${GOROOT}/bin
 export GOPATH=$(pwd)
 
 mkdir -p src/github.com/grafana
-cd src/github.com/grafana
+pushd src/github.com/grafana
 B_GET git https://github.com/grafana/grafana grafana
 cd grafana
 git checkout v$B_VERSION
 make gen-go
 go run build.go setup
 go run build.go build
+export NODE_OPTIONS="--max_old_space_size=8000"
+export NODE_ENV=production
 yarn install
-yarn dev
+yarn build
 
-mkdir -p $B_INSTALLDIR/opt/grafana/bin
-cp bin/linux-amd64/grafana-server bin/linux-amd64/grafana-cli $B_INSTALLDIR/opt/grafana/bin
+mkdir -p $B_INSTALLDIR/opt/grafana/bin $B_INSTALLDIR/etc/grafana
 tar cfB - public | (cd $B_INSTALLDIR/opt/grafana ; tar xfB - )
+cd conf
+tar cfB - defaults.ini provisioning | (cd $B_INSTALLDIR/etc/grafana; tar xfB - )
+cd ..
+cp bin/linux-amd64/grafana-server $B_INSTALLDIR/opt/grafana/bin
+cp bin/linux-amd64/grafana-cli $B_INSTALLDIR/opt/grafana/bin
+cp bin/linux-amd64/grafana $B_INSTALLDIR/opt/grafana/bin
+popd
 ln -s /etc/grafana $B_INSTALLDIR/opt/grafana/conf
 
 [PKG]
