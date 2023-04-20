@@ -1,0 +1,33 @@
+[INFO]
+arch=amd64
+
+[VERSION]
+B_GITVER https://github.com/influxdata/influx-cli
+
+[REQUIRED]
+golang-B_PF make
+
+[BUILD]
+export PATH=/opt/pkg-config-go/bin:${PATH}:/opt/go/bin
+export GOPATH=$(pwd)
+B_GET git https://github.com/influxdata/influx-cli influx-cli
+cd influx-cli
+git checkout v$B_VERSION
+make
+dst=$B_INSTALLDIR/usr/bin
+mkdir -p $dst
+cp bin/linux/amd64/influx $dst
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: influx-cli
+Version: B_VERSION
+Section: influx-cli
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: Influx-cli custom B_ORG build
+Homepage: https://www.influxdata.com/
