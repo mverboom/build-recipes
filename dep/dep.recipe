@@ -1,0 +1,30 @@
+[INFO]
+arch=amd64
+
+[VERSION]
+B_GITVER https://github.com/golang/dep
+
+[REQUIRED]
+golang-B_PF
+
+[BUILD]
+B_GET git https://github.com/golang/dep dep
+cd dep
+git checkout tags/v$B_VERSION
+mkdir -p $B_INSTALLDIR/opt/dep/bin
+INSTALL_DIRECTORY=$B_INSTALLDIR/opt/dep/bin ./install.sh
+B_LINKFILES /opt/dep/bin /usr/bin
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: dep
+Version: B_VERSION
+Section: dep
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: Dep custom B_ORG build
+Homepage: https://github.com/golang/dep
