@@ -5,36 +5,18 @@ arch=amd64
 B_GITVER -f 9.9.9 https://github.com/influxdata/influxdb
 
 [REQUIRED]
-golang-B_PF make dep-B_PF asciidoc pkg-config
+golang-B_PF gotools-B_PF make dep-B_PF asciidoc pkg-config protobuf-compiler protoc-gen-go tmpl gcc rustc-B_PF
 
 [BUILD]
-#export GOROOT=/opt/go
-#export PATH=${PATH}:${GOROOT}/bin
-#export GOPATH=$(pwd)
+export PATH=/opt/go/bin:${PATH}
 
-#mkdir -p src/github.com/influxdata
-#cd src/github.com/influxdata
-#B_GET git https://github.com/influxdata/influxdb influxdb
-#cd influxdb
-
-B_GET go github.com/influxdata/influxdb influxdb
-cd src/github.com/influxdata/influxdb
-
+B_GET git https://github.com/influxdata/influxdb influxdb
+cd influxdb
 git checkout v$B_VERSION
-go get ./...
-go install ./...
-#sed -i 's/run("{}/run("\/usr/' build.py 
-#python3 ./build.py
-mkdir -p $B_INSTALLDIR/opt/influxdb/bin
-cp $GOPATH/bin/* $B_INSTALLDIR/opt/influxdb/bin
-B_LINKFILES /opt/influxdb/bin /usr/bin
-pushd man
 make
-popd
-mkdir -p $B_INSTALLDIR/opt/influxdb/man/man1
-cp man/*.1 $B_INSTALLDIR/opt/influxdb/man/man1
-gzip $B_INSTALLDIR/opt/influxdb/man/man1/*.1
-B_LINKFILES /opt/influxdb/man/man1 /usr/share/man/man1
+mkdir -p $B_INSTALLDIR/opt/influxdb/bin
+cp bin/linux/influxd $B_INSTALLDIR/opt/influxdb/bin
+B_LINKFILES /opt/influxdb/bin /usr/bin
 
 [PKG]
 type=deb
@@ -49,3 +31,4 @@ Architecture: B_ARCH
 Maintainer: B_MAIL
 Description: Influxdb custom B_ORG build
 Homepage: https://www.influxdata.com/
+Depends: influx-cli-B_PF

@@ -1,0 +1,2 @@
+INFLUXD_CONFIG_PATH="/etc/influxdb/influxdb.conf"
+INFLUXD_OPTS=""
