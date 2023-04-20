@@ -1,0 +1,34 @@
+[INFO]
+arch=amd64
+
+[VERSION]
+B_GITVER -e 1.66 https://github.com/rust-lang/rust
+
+[REQUIRED]
+make gcc g++ cmake ninja-build libssl-dev pkg-config
+
+[BUILD]
+B_GET git https://github.com/rust-lang/rust rust
+cd rust
+git checkout ${B_VERSION}
+sed 's#^\#prefix = .*#prefix = "'$B_INSTALLDIR'/opt/rustc"#;
+     s/^#channel = .*/channel = \"stable\"/;
+     s/^#sysconfdir = .*/sysconfdir = \"etc\"/;
+     s/^#extended = .*/extended = true/' config.toml.example > config.toml
+python3 ./x.py build
+python3 ./x.py install
+B_LINKFILES /opt/rustc/bin /usr/bin
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: rustc
+Version: B_VERSION
+Section: rustc
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: rustc custom B_ORG build
+Homepage: https://www.rust-lang.org

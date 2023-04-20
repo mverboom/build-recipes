@@ -1,0 +1,30 @@
+[INFO]
+arch=amd64
+
+[VERSION]
+B_GITVER -e weekly -e pre -f "^gopls\/v" https://go.googlesource.com/tools
+
+[REQUIRED]
+golang-B_PF
+
+[BUILD]
+export PATH=/opt/go/bin:${PATH}
+export GOPATH=$(pwd)
+go install golang.org/x/tools/...@latest
+mkdir -p $B_INSTALLDIR/opt/go-tools
+tar cfB - bin | ( cd $B_INSTALLDIR/opt/go-tools ; tar xfB - )
+B_LINKFILES /opt/go-tools/bin /usr/bin
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: gotools
+Version: B_VERSION
+Section: gotools
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Homepage: https://go.googlesource.com/tools
+Description: Gotools B_ORG custom build
