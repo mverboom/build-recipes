@@ -13,17 +13,14 @@ case "$1" in
         adduser grafana grafana
         fi
 
-    if [ -d /var/lib/grafana ]; then
-        chown -R grafana:grafana /var/lib/grafana
-    fi
+    ! test -d /var/lib/grafana  && mkdir /var/lib/grafana
+    chown -R grafana:grafana /var/lib/grafana
 
-    if [ -d /var/log/grafana ]; then
-        chown -R grafana:grafana /var/log/grafana
-    fi
+    ! test -d /var/log/grafana && mkdir /var/log/grafana
+    chown -R grafana:grafana /var/log/grafana
 
-    if [ -d /etc/grafana ]; then
-        chgrp -R grafana /etc/grafana
-    fi
+    ! test -d /etc/grafana && mkdir /etc/grafana
+    chgrp -R grafana /etc/grafana
 
     # create rundir
     mkdir -p /var/run/grafana
