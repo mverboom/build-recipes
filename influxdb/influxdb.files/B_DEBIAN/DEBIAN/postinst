@@ -13,13 +13,11 @@ case "$1" in
         adduser influxdb influxdb
         fi
 
-    if [ -d /var/lib/influxdb ]; then
-        chown -R influxdb:influxdb /var/lib/influxdb
-    fi
+    ! test -d /var/lib/influxdb && mkdir /var/lib/influxdb
+    chown -R influxdb:influxdb /var/lib/influxdb
 
-    if [ -d /var/log/influxdb ]; then
-        chown -R influxdb:influxdb /var/log/influxdb
-    fi
+    ! test -d /var/log/influxdb && mkdir /var/log/influxdb
+    chown -R influxdb:influxdb /var/log/influxdb
 
     # create rundir
     mkdir -p /var/run/influxdb
