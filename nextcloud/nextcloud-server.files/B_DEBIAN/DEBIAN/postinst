@@ -1,6 +1,17 @@
 #!/bin/bash
 
 cd /var/www/nextcloud
-mkdir data
+mkdir -p data
 chown -R www-data: apps data config
-sudo -u www-data env php  /var/www/nextcloud/occ upgrade
+
+STATUS=$(sudo -u www-data env php  /var/www/nextcloud/occ status | grep installed | cut -d: -f2 | xargs)
+
+if [ $STATUS == 'true' ]
+then
+    sudo -u www-data env php  /var/www/nextcloud/occ upgrade
+else
+    PASSWORD=$(head -n1 /dev/urandom | hexdump | md5sum | cut -d' ' -f1)
+    echo $PASSWORD > /root/nextcloud-admin-pass
+    sudo -u www-data env php  /var/www/nextcloud/occ maintenance:install --admin-pass=$PASSWORD
+    echo "Nextcloud is installed, please find the admin password at /root/nextcloud-admin-pass"
+fi
