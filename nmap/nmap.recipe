@@ -1,5 +1,6 @@
 [INFO]
 arch=amd64
+excludefromall=1
 
 [VERSION]
 svn list https://svn.nmap.org/nmap-releases/ | tr -d '/' | grep -v -e BETA -e TEST | sed "s/nmap-//" | sort -t. -k 1,1n -k 2,2n -k 3,3n | tail -1
@@ -13,7 +14,7 @@ B_GET svn https://svn.nmap.org/nmap-releases nmap
 cd nmap
 cd *${B_VERSION}*
 ./configure --prefix=/opt/nmap --without-zenmap
-make -j ${nproc}
+make DEFS+="-DOPENSSL_API_COMPAT=10101" -j ${nproc}
 make install DESTDIR=$B_INSTALLDIR
 B_LINKFILES /opt/nmap/bin /usr/bin
 

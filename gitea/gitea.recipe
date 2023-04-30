@@ -5,7 +5,7 @@ arch=amd64
 B_GITVER -e 'dev' https://github.com/go-gitea/gitea.git
 
 [REQUIRED]
-golang-B_PF libpam0g-dev gcc go-bindata nodejs-lts-B_PF
+make golang-B_PF libpam0g-dev gcc  nodejs-lts-B_PF
 
 [BUILD]
 export GOROOT=/opt/go

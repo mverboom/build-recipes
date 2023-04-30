@@ -19,7 +19,7 @@ mkdir build
 cd build
 cmake -DCMAKE_INSTALL_PREFIX:PATH=/opt/wireshark ..
 make -j $(nproc)
-make -j $(nproc) all_guides
+#make -j $(nproc) all_guides
 make install DESTDIR=$B_INSTALLDIR
 B_LINKFILES /opt/wireshark/bin /usr/bin
 B_LINKFILES /opt/wireshark/share/man/man1 /usr/share/man/man1

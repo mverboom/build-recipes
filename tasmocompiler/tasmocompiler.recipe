@@ -2,14 +2,15 @@
 arch=amd64
 
 [VERSION]
-B_GITHUBVER https://github.com/benzino77/tasmocompiler
+B_GITVER https://github.com/benzino77/tasmocompiler
 
 [REQUIRED]
-nodejs-B_PF yarn-B_PF
+nodejs-12-B_PF yarn-B_PF
 
 [BUILD]
 B_GET git https://github.com/benzino77/tasmocompiler tasmocompiler
 cd tasmocompiler
+git checkout v${B_VERSION}
 yarn install
 yarn build
 rm -rf .git .github .gitignore .gitpod.Dockerfile .gitpod.yml .yarnrc src build_docker.sh README.md TRANSLATION.md .vscode yarn.lock ADVANCED.md Dockerfile Pipfile Pipfile.lock
@@ -31,4 +32,4 @@ Architecture: B_ARCH
 Maintainer: B_MAIL
 Description: Tasmocompiler custom B_ORG build
 Homepage: https://github.com/benzino77/tasmocompiler
-Depends: platformio-core-B_PF, nodejs-B_PF, git
+Depends: platformio-core-B_PF, nodejs-12-B_PF, git

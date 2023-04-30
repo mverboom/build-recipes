@@ -5,17 +5,19 @@ arch=amd64
 B_GITVER https://github.com/cedalo/management-center
 
 [REQUIRED]
-yarn-B_PF nodejs-B_PF
+yarn-B_PF nodejs-lts-B_PF
 
 [BUILD]
 B_GET git https://github.com/cedalo/management-center management-center
 cd management-center
 git checkout $B_VERSION
 # Patch to make same as in backend/src/client/BaseMosquittoClient.js
-sed -i "/^const uuid/cconst { v1: uuid } = require(\'uuid\');" frontend/src/client/BaseMosquittoProxyClient.js
-patch backend/start.js < $B_FILES/patch-listen-ip
+##sed -i "/^const uuid/cconst { v1: uuid } = require(\'uuid\');" frontend/src/client/BaseMosquittoProxyClient.js
+#patch backend/start.js < $B_FILES/patch-listen-ip
 npm install react-scripts
-yarn workspace @cedalo/management-center-frontend run build
+#yarn workspace @cedalo/management-center-frontend run build
+export PUBLIC_URL=/mosquitto-management-center
+yarn workspace @cedalo/management-center-frontend run build-with-base-path
 mkdir -p $B_INSTALLDIR/opt/management-center
 
 DST=$B_INSTALLDIR/opt/management-center
@@ -24,9 +26,9 @@ cp yarn.lock $DST
 cd $DST
 yarn install --prod --frozen-lockfile
 cd -
-rm backend/public
 mv backend/* $B_INSTALLDIR/opt/management-center
-mv frontend/build $B_INSTALLDIR/opt/management-center/public
+# Only when doing yarn run build
+#mv frontend/build $B_INSTALLDIR/opt/management-center/public
 mkdir -p $B_INSTALLDIR/etc/management-center
 cp config/config.json $B_INSTALLDIR/etc/management-center/config.json-example
 touch $B_INSTALLDIR/etc/management-center/settings.json $B_INSTALLDIR/etc/management-center/db.json
@@ -46,4 +48,4 @@ Architecture: B_ARCH
 Maintainer: B_MAIL
 Description: Management-center custom B_ORG build
 Homepage: https://cedalo.com/
-Depends: nodejs-B_PF
+Depends: nodejs-lts-B_PF

@@ -59,4 +59,4 @@ Architecture: B_ARCH
 Maintainer: B_MAIL
 Description: dsmrreader saver custom B_ORG build
 Homepage: https://github.com/dsmrreader/dsmr-reader
-Depends: python3,nginx,libmariadb3
+Depends: python3,nginx,libmariadb3,mariadb-client-10.5

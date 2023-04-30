@@ -6,7 +6,7 @@ After=network.target
 EnvironmentFile=-/etc/default/tasmocompiler
 Type=simple
 User=tasmocompiler
-ExecStart=node /opt/tasmocompiler/server/server.js
+ExecStart=node /opt/tasmocompiler/server/app.js
 
 [Install]
 WantedBy=multi-user.target
