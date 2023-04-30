@@ -2,7 +2,7 @@
 arch=all
 
 [VERSION]
-B_GITVER https://gitlab.com/mojo42/Jirafeau
+B_GITVER https://gitlab.com/mojo42/Jirafeau.git/
 
 [BUILD]
 B_GET git https://gitlab.com/mojo42/Jirafeau jirafeau

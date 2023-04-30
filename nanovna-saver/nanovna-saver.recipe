@@ -11,6 +11,7 @@ python3-virtualenv virtualenv virtualenv-make-relocatable-B_PF
 B_GET git https://github.com/NanoVNA-Saver/nanovna-saver nanovna-saver
 cd nanovna-saver
 git checkout v$B_VERSION
+touch CHANGELOG.md
 DEST=$B_INSTALLDIR/opt/nanovna-saver
 virtualenv  -p python3 $DEST
 source $DEST/bin/activate

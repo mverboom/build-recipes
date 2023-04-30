@@ -8,10 +8,13 @@ B_GITVER https://github.com/libressl-portable/portable
 make gcc autoconf libtool
 
 [BUILD]
-B_GET http https://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-$B_VERSION.tar.gz libressl.tar.gz
-mkdir libressl
-tar xzf libressl.tar.gz -C libressl --strip-components 1
+#B_GET http https://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-$B_VERSION.tar.gz libressl.tar.gz
+B_GET git https://github.com/libressl-portable/portable libressl
+#mkdir libressl
+#tar xzf libressl.tar.gz -C libressl --strip-components 1
 cd libressl
+git checkout v${B_VERSION}
+./autogen.sh
 ./configure --prefix=/opt/libressl
 make -j $(nproc)
 make install DESTDIR=$B_INSTALLDIR

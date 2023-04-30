@@ -1,5 +1,6 @@
 [INFO]
 arch=amd64
+excludefromall=1
 
 [VERSION]
 B_GITVER -r s/lsp-plugins-// https://github.com/sadko4u/lsp-plugins
@@ -12,6 +13,7 @@ B_GET git https://github.com/sadko4u/lsp-plugins lsp-plugins
 cd lsp-plugins
 #git checkout lsp-plugins-$B_VERSION
 git checkout $B_VERSION
+make config
 make clean
 make -j $(nproc)
 make DESTDIR=$B_INSTALLDIR PREFIX=/usr install

@@ -1,5 +1,5 @@
 [VERSION]
-B_GITHUBVER https://github.com/ledfx/ledfx
+B_GITVER https://github.com/ledfx/ledfx
 
 [INFO]
 arch=amd64
@@ -19,7 +19,6 @@ python -m pip install .
 #sed -i "s#$B_INSTALLDIR##" $DEST/bin/activate*
 deactivate
 virtualenv-make-relocatable $DEST
-
 
 [PKG]
 type=deb
