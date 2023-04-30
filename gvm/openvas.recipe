@@ -6,7 +6,7 @@ excludefromall=1
 B_GITVER https://github.com/greenbone/openvas
 
 [REQUIRED]
-cmake gcc pkg-config libssh-B_PF libgnutls28-dev libglib2.0-dev libpcap-dev libgpgme-dev bison libksba-dev libsnmp-dev libgcrypt20-dev gvm-libs-B_PF libhiredis-dev xmltoman clang-format uuid-dev
+cmake gcc pkg-config libssh-B_PF libgnutls28-dev libglib2.0-dev libpcap-dev libgpgme-dev bison libksba-dev libsnmp-dev libgcrypt20-dev gvm-libs-B_PF libhiredis-dev xmltoman clang-format uuid-dev libjson-glib-dev libbsd-dev libpaho-mqtt-dev
 
 [BUILD]
 B_GET git https://github.com/greenbone/openvas openvas

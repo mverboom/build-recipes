@@ -6,7 +6,7 @@ arch=amd64
 excludefromall=1
 
 [REQUIRED]
-python3 python3-setuptools python3-nacl python3-redis python3-bcrypt python3-cffi python3-cryptography python3-lxml ospd-B_PF python3-paramiko python3-pycparser python3-defusedxml gcc python3-dev python3-pyparsing python3-packaging python3-pip
+python3 python3-setuptools python3-nacl python3-redis python3-bcrypt python3-cffi python3-cryptography python3-lxml python3-paramiko python3-pycparser python3-defusedxml gcc python3-dev python3-pyparsing python3-packaging python3-pip python-gvm-B_PF
 
 [BUILD DEBIAN]
 PYVER=$( python3 -c "import sys; print(f'{sys.version_info.major}.{sys.version_info.minor}')" )
@@ -18,7 +18,8 @@ export PYTHONPATH="$B_INSTALLDIR/opt/gvm/lib/python${PYVER}/site-packages:/opt/g
 pip3 install --system --prefix=$B_INSTALLDIR/opt/gvm ospd-openvas
 rm -f $B_INSTALLDIR/opt/gvm/lib/python${PYVER}/site-packages/site.py
 rm -f $B_INSTALLDIR/opt/gvm/lib/python${PYVER}/site-packages/easy-install.pth
-rm -rf $B_INSTALLDIR/opt/gvm/lib/python${PYVER}/site-packages/ospd $B_INSTALLDIR/opt/gvm/lib/python${PYVER}/site-packages/ospd-*
+rm -rf $B_INSTALLDIR/opt/gvm/lib/python${PYVER}/site-packages/__pycache__
+#rm -rf $B_INSTALLDIR/opt/gvm/lib/python${PYVER}/site-packages/ospd $B_INSTALLDIR/opt/gvm/lib/python${PYVER}/site-packages/ospd-*
 B_LINKFILES /opt/gvm/bin /usr/bin
 
 [PKG]
@@ -34,5 +35,4 @@ Architecture: B_ARCH
 Maintainer: B_MAIL
 Description: Greenbone ospd-scanner custom B_ORG build
 Homepage: https://github.com/greenbone/ospd-scanner
-Depends: python3, ospd-B_PF, openvas-B_PF, python3-nacl, python3-redis, python3-bcrypt, python3-cffi, python3-cryptography, python3-lxml, python3-paramiko, python3-psutil, python3-pycparser, python3-defusedxml, sudo, python3-pyparsing, python3-packaging
-
+Depends: python3, openvas-B_PF, python3-nacl, python3-redis, python3-bcrypt, python3-cffi, python3-cryptography, python3-lxml, python3-paramiko, python3-psutil, python3-pycparser, python3-defusedxml, sudo, python3-pyparsing, python3-packaging, libjson-glib-1.0-0, python-gvm-B_PF, libpaho-mqtt1.3, mosquitto

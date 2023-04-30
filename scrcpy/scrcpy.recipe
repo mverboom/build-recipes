@@ -11,6 +11,7 @@ make gcc pkg-config meson ninja-build libavcodec-dev libavformat-dev libavutil-d
 B_GET git https://github.com/Genymobile/scrcpy scrcpy
 cd scrcpy
 git checkout v$B_VERSION
+patch -p1 < ${B_FILES}/patch
 wget -q -O server/scrcpy-server.jar https://github.com/Genymobile/scrcpy/releases/download/v${B_VERSION}/scrcpy-server-v${B_VERSION}
 meson x --buildtype release --strip -Db_lto=true --prefix=/opt/scrcpy -Dprebuilt_server=server/scrcpy-server.jar
 cd x

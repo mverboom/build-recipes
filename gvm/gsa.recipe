@@ -12,6 +12,8 @@ nodejs-14-B_PF yarn-B_PF
 B_GET git https://github.com/greenbone/gsa gsa
 cd gsa
 git checkout tags/v$B_VERSION
+unset http_proxy
+unset https_proxy
 yarn
 yarn build
 dst=$B_INSTALLDIR/opt/gvm/share/gvm/gsad/web

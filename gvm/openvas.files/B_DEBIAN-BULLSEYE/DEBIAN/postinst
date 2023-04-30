@@ -21,7 +21,7 @@ if test "$1" = "configure"; then
           gvm
       usermod -c "GVM user" gvm
   fi
-  chown -R gvm:gvm /var/lib/gvm
+  chown -R gvm:gvm /var/lib/gvm /var/lib/notus
 
   # Add gvm to redis group
   if ! $( getent group redis | grep gvm > /dev/null ); then

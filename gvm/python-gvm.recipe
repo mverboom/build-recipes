@@ -17,6 +17,7 @@ mkdir -p $B_INSTALLDIR/opt/gvm/lib/python${PYVER}/site-packages
 export PYTHONPATH="$B_INSTALLDIR/opt/gvm/lib/python${PYVER}/site-packages:${PYTHONPATH}"
 #python3 setup.py install --prefix $B_INSTALLDIR/opt/gvm
 pip3 install --system --prefix=$B_INSTALLDIR/opt/gvm python-gvm
+pip3 install --system --prefix=$B_INSTALLDIR/opt/gvm psutil==5.9.2 paho_mqtt==1.6.1 python_gnupg==0.5.0 tomli==2.0.1
 rm -f $B_INSTALLDIR/opt/gvm/lib/python${PYVER}/site-packages/easy-install.pth
 
 [PKG]

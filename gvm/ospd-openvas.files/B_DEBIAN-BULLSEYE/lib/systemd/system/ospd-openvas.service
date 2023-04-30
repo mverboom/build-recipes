@@ -1,5 +1,6 @@
 [Unit]
 Description=OSP Daemon
+After=redis-server.service
 
 [Service]
 EnvironmentFile=-/etc/default/ospd-openvas
