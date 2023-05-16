@@ -1,0 +1,34 @@
+[INFO]
+arch=amd64
+
+[VERSION]
+B_GITVER https://github.com/rusty-snake/fireurl
+
+[REQUIRED]
+rustc-B_PF gcc
+
+[BUILD]
+B_GET git https://github.com/rusty-snake/fireurl fireurl
+cd fireurl
+git checkout v${B_VERSION}
+cargo build --release
+mkdir -p $B_INSTALLDIR/opt/fireurl/bin $B_INSTALLDIR/usr/bin
+install -Dm0755 target/release/fireurl $B_INSTALLDIR/opt/fireurl/bin/fireurl
+install -Dm0755 target/release/fireurld $B_INSTALLDIR/opt/fireurl/bin/fireurld
+cp systemd/fireurld.service $B_INSTALLDIR/opt/fireurl
+B_LINKFILE /opt/fireurl/bin/fireurl /usr/bin
+
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: fireurl
+Version: B_VERSION
+Section: fireurl
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: Fireurl server custom B_ORG build
+Homepage: https://github.com/rusty-snake/fireurl
