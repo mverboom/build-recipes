@@ -14,7 +14,7 @@ git checkout ${B_VERSION}
 sed 's#^\#prefix = .*#prefix = "'$B_INSTALLDIR'/opt/rustc"#;
      s/^#channel = .*/channel = \"stable\"/;
      s/^#sysconfdir = .*/sysconfdir = \"etc\"/;
-     s/^#extended = .*/extended = true/' config.toml.example > config.toml
+     s/^#extended = .*/extended = true/' config.example.toml > config.toml
 python3 ./x.py build
 python3 ./x.py install
 B_LINKFILES /opt/rustc/bin /usr/bin
