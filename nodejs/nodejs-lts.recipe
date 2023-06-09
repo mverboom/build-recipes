@@ -5,7 +5,7 @@ arch=amd64,armhf
 wget -q -O - https://nodejs.org/en/download/ | sed '/Latest LTS Version/!d; s/.*<strong>\([0-9.]\+\)<.*/\1/'
 
 [REQUIRED]
-python make gcc g++ python3-distutils
+python3 make gcc g++ python3-distutils
 
 [BUILD]
 B_GET git https://github.com/nodejs/node/ nodejs
