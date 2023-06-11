@@ -4,8 +4,12 @@ arch=amd64
 [VERSION]
 B_GITVER -a https://github.com/FreeRDP/FreeRDP
 
-[REQUIRED]
+[REQUIRED DEBIAN BULLSEYE]
 build-essential git-core debhelper cdbs dpkg-dev autotools-dev cmake pkg-config xmlto libssl-dev docbook-xsl xsltproc libxkbfile-dev libx11-dev libwayland-dev libxrandr-dev libxi-dev libxrender-dev libxext-dev libxinerama-dev libxfixes-dev libxcursor-dev libxv-dev libxdamage-dev libxtst-dev libcups2-dev libpcsclite-dev libasound2-dev libpulse-dev libjpeg-dev libgsm1-dev libusb-1.0-0-dev libudev-dev libdbus-glib-1-dev uuid-dev libxml2-dev libgstreamer1.0-dev libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev libgstreamer-plugins-base1.0-dev libavutil-dev libavcodec-dev libxkbcommon-dev libwayland-dev libavresample-dev libcairo2-dev libmp3lame-dev libfaad-dev libfaac-dev libsoxr-dev
+
+[REQUIRED DEBIAN BOOKWORM]
+build-essential git debhelper cdbs dpkg-dev autotools-dev cmake pkg-config xmlto libssl-dev docbook-xsl xsltproc libxkbfile-dev libx11-dev libwayland-dev libxrandr-dev libxi-dev libxrender-dev libxext-dev libxinerama-dev libxfixes-dev libxcursor-dev libxv-dev libxdamage-dev libxtst-dev libcups2-dev libpcsclite-dev libasound2-dev libpulse-dev libjpeg-dev libgsm1-dev libusb-1.0-0-dev libudev-dev libdbus-glib-1-dev uuid-dev libxml2-dev libgstreamer1.0-dev libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev libgstreamer-plugins-base1.0-dev libavutil-dev libavcodec-dev libxkbcommon-dev libwayland-dev libcairo2-dev libmp3lame-dev libfaad-dev libfaac-dev libsoxr-dev
+
 
 [BUILD]
 B_GET git https://github.com/FreeRDP/FreeRDP freerdp
