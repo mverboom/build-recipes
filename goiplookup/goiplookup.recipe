@@ -6,9 +6,10 @@ excludefromall=1
 B_GITVER https://github.com/axllent/goiplookup
 
 [REQUIRED]
-golang-B_PF
+golang-B_PF make
 
 [BUILD]
+GOROOT=/opt/go
 export PATH=${PATH}:${GOROOT}/bin
 
 B_GET git https://github.com/axllent/goiplookup goiplookup
