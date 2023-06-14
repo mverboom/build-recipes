@@ -1,0 +1,11 @@
+#!/bin/sh
+
+set -e
+
+if [ "$1" = "purge" ] ; then
+    if getent passwd script >/dev/null; then
+        if which deluser >/dev/null 2>&1; then
+            deluser --quiet --system script || echo "Could not remove script user."
+        fi
+    fi
+fi
