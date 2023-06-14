@@ -7,7 +7,7 @@ B_GITVER https://github.com/dashesy/cc-tool.git
 [REQUIRED]
 dh-autoreconf libusb-1.0 libboost-all-dev libglib2.0-dev
 
-[BUILD]
+[BUILD DEBIAN BULLSEYE]
 B_GET git https://github.com/dashesy/cc-tool.git cc-tool
 cd cc-tool
 git checkout v$B_VERSION

@@ -4,6 +4,9 @@ arch=amd64
 [VERSION]
 B_GITVER https://github.com/node-red/node-red
 
+[REQUIRED DEBIAN BOOKWORM]
+nodejs-lts-B_PF g++ make
+
 [REQUIRED]
 nodejs-14-B_PF g++ make
 
