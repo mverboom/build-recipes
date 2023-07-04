@@ -2,7 +2,7 @@
 arch=amd64,armhf
 
 [VERSION]
-wget -q -O - https://nodejs.org/en/download/ | sed -n '/Latest LTS Version/ s/.*<strong>\([0-9.]\+\)<.*/\1/p'
+wget -q -O - https://nodejs.org/en/download/ | sed -n '/Latest LTS Version/ s/.*<strong>\([0-9.]\+\)<.*/\1/p' | head -1
 
 [REQUIRED]
 python3 make gcc g++ python3-distutils
