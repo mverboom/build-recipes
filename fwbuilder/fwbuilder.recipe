@@ -11,6 +11,9 @@ make g++ automake autoconf libtool libxml2-dev libxslt-dev libsnmp-dev qt5-defau
 [REQUIRED DEBIAN BULLSEYE]
 make g++ automake autoconf libtool libxml2-dev libxslt-dev libsnmp-dev qttools5-dev-tools cmake qttools5-dev
 
+[REQUIRED DEBIAN BOOKWORM]
+make g++ automake autoconf libtool libxml2-dev libxslt-dev libsnmp-dev qttools5-dev-tools cmake qttools5-dev
+
 
 [BUILD]
 B_GET git https://github.com/fwbuilder/fwbuilder fwbuilder
