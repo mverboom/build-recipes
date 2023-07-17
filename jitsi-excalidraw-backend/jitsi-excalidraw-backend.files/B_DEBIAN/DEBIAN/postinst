@@ -1,0 +1,20 @@
+#!/bin/sh
+ 
+if test "$1" = "configure"; then
+  # Create a excalidraw system user
+  if ! getent passwd excalidraw > /dev/null; then
+      adduser --quiet --system \
+          --home /opt/excalidraw-backend \
+          --no-create-home \
+          --disabled-password --shell /bin/bash \
+          excalidraw
+      usermod -c "Jitsi escalidraw backedn user" excalidraw
+      mkdir /opt/excalidraw-backend/dist
+      chown -R excalidraw /opt/excalidraw-backend/dist
+  fi
+
+  systemctl enable jitsi-excalidraw-backend.service
+  systemctl start jitsi-excalidraw-backend.service
+else
+  systemctl restart jitsi-excalidraw-backend.service
+fi

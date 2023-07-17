@@ -1,0 +1,17 @@
+[Unit]
+Description=Jitsi excalidraw backend
+Requires=network.target
+After=network.target
+
+[Service]
+User=excalidraw
+WorkingDirectory=/opt/excalidraw-backend
+Type=simple
+ExecStart=/usr/bin/npm start
+Restart=on-failure
+RestartSec=30s
+TimeoutStartSec=20s
+TimeoutStopSec=1min
+
+[Install]
+WantedBy=multi-user.target
