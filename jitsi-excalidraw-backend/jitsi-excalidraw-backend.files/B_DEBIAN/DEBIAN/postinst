@@ -6,7 +6,7 @@ if test "$1" = "configure"; then
       adduser --quiet --system \
           --home /opt/excalidraw-backend \
           --no-create-home \
-          --disabled-password --shell /bin/bash \
+          --disabled-password --shell /bin/false \
           excalidraw
       usermod -c "Jitsi escalidraw backedn user" excalidraw
       mkdir /opt/excalidraw-backend/dist

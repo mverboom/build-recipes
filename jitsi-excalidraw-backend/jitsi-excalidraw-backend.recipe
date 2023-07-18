@@ -32,4 +32,4 @@ Architecture: B_ARCH
 Maintainer: B_MAIL
 Description: jitsi-excalidraw-backend lite custom B_ORG build
 Homepage:https://github.com/jitsi/excalidraw-backend
-Depends: npm
+Depends: nodejs, node-typescript
