@@ -36,3 +36,14 @@ Maintainer: B_MAIL
 Description: Node RED custom B_ORG build
 Homepage: http://nodered.org/
 Depends: nodejs-14-B_PF
+
+[DEB BOOKWORM]
+Package: node-red
+Version: B_VERSION
+Section: nodered
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: Node RED custom B_ORG build
+Homepage: http://nodered.org/
+Depends: nodejs-lts-B_PF
