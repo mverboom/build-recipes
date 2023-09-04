@@ -5,8 +5,8 @@
 #PORT="--socket /var/run/esphome/socket"
 
 # Set any environment variables required to start esphome in this file.
-PYTHONPATH="/opt/esphome/lib/python3.9/site-packages"
-PATH="$PATH:/opt/esphome/bin:/bin:/usr/bin"
+PYTHONPATH="/opt/esphome/local/lib/python3.11/dist-packages"
+PATH="$PATH:/opt/esphome/local/bin:/bin:/usr/bin"
 
 # Set any proxies to use
 # HTTP_PROXY=http://proxy:8080

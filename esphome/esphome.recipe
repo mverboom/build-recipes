@@ -7,14 +7,14 @@ arch=amd64
 [REQUIRED]
 python3 python3-pip
 
-[BUILD DEBIAN BULLSEYE]
+[BUILD]
 B_GET git https://github.com/esphome/esphome esphome
 cd esphome
 git checkout $B_VERSION
-export PATH=$B_INSTALLDIR/opt/esphome/bin:$PATH
-pip3 install --system --prefix=$B_INSTALLDIR/opt/esphome -r requirements.txt \
-   -r requirements_optional.txt
-pip3 install --system --prefix=$B_INSTALLDIR/opt/esphome esphome
+pref="$B_INSTALLDIR/opt/esphome"
+pip install --prefix="$pref" -r requirements.txt -r requirements_optional.txt
+pip install --prefix="$pref" pillow==9.5.0 reportlab svglib
+pip install --prefix="$pref" esphome==$B_VERSION
 
 [PKG]
 type=deb
@@ -30,4 +30,4 @@ Maintainer: B_MAIL
 Description: ESPHome custom B_ORG build
 Homepage: https://esphome.io/
 Recommends: lighttpd
-Depends: python3,python3-setuptools,python3-six,openssl,python3-pil,python3-requests,python3-cryptography
+Depends: python3,python3-setuptools,python3-six,openssl,python3-requests,python3-cryptography,python3-voluptuous,python3-yaml,python3-colorama,python3-tornado,python3-zeroconf,python3-serial,python3-click,python3-reportlab,python3-svglib
