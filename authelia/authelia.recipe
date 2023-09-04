@@ -4,23 +4,26 @@ arch=amd64
 [VERSION]
 B_GITVER https://github.com/authelia/authelia
 
+[REQUIRED DEBIAN BULLSEYE]
+nodejs-16-B_PF golang-B_PF pnpm-B_PF gcc
+
 [REQUIRED]
-golang-B_PF devscripts equivs yarn-B_PF nodejs-14-B_PF
+npm golang-B_PF pnpm-B_PF
 
 [BUILD]
-export GOPATH=$(pwd)
+export GOROOT=/opt/go
+export PATH=${PATH}:${GOROOT}/bin
 B_GET git https://github.com/authelia/authelia authelia
 cd authelia
-pushd web
-yarn install --frozen-lockfile
-yarn build
-popd
+git checkout v$B_VERSION
+cd web
+pnpm install
+pnpm build
+cd ..
 mv api internal/server/public_html/api
 sed -i "/^var BuildCommit/ s/\".*\"/\"$(git rev-parse --verify v${B_VERSION})\"/" internal/utils/version.go
 sed -i "/^var BuildTag/ s/\".*\"/\"v${B_VERSION}\"/" internal/utils/version.go
-export GOROOT=/opt/go
-export PATH=${PATH}:${GOROOT}/bin
-go build -ldflags '-w' -trimpath -o authelia cmd/authelia/*.go
+CGO_ENABLED=1 CGO_CPPFLAGS="-D_FORTIFY_SOURCE=2 -fstack-protector-strong" CGO_LDFLAGS="-Wl,-z,relro,-z,now"  go build -ldflags "-linkmode=external -s -w" -trimpath -buildmode=pie -o authelia ./cmd/authelia
 install -Dm755 "authelia" "$B_INSTALLDIR/opt/authelia/bin/authelia"
 install -Dm755 "config.template.yml" "$B_INSTALLDIR/etc/authelia/configuration.template.yml"
 B_LINKFILES /opt/authelia/bin /usr/bin
