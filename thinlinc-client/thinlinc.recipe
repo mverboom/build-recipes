@@ -1,3 +1,5 @@
+[INFO]
+arch=amd64,i386,armhf
 [VERSION]
 wget -q -O - https://www.cendio.com/thinlinc/download | grep "thinlinc-client" | grep ${B_ARCH}.deb | sed 's#.*/thinlinc-client_##;s#_.*##'
 [BUILD]
