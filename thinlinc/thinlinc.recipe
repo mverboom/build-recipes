@@ -1,0 +1,14 @@
+[INFO]
+arch=amd64,armhf
+
+[VERSION]
+wget -q -O - https://www.cendio.com/thinlinc/support | sed -n "/https:\/\/www.cendio.com\/downloads\/clients/ { /${B_ARCH}.deb/ s/.*thinlinc-client_\([0-9\.]\+\).*/\1/p}"
+
+[BUILD]
+B_GET http https://www.cendio.com/downloads/clients/thinlinc-client_latest_${B_ARCH}.deb thinlinc-client_${B_VERSION}_${B_ARCH}.deb
+mv thinlinc-client_${B_VERSION}_${B_ARCH}.deb ${B_INSTALLDIR}
+
+[PKG]
+type=deb
+pkgready=y
+torepo=y
