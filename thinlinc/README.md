@@ -1,3 +1,0 @@
-# thinlinc
-
-Thinlinc client
