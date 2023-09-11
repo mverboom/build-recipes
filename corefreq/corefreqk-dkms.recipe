@@ -1,0 +1,43 @@
+[INFO]
+arch=amd64
+
+[VERSION]
+B_GITVER https://github.com/cyring/CoreFreq.git
+
+[BUILD]
+B_GET git https://github.com/cyring/CoreFreq.git corefreqk
+cd corefreqk
+git checkout $B_VERSION
+rm -rf .git .gitignore
+sed -i "s/^DRV_VERSION=.*/DRV_VERSION=${B_VERSION}/" dkms.conf
+
+dst="$B_INSTALLDIR/usr/src/corefreqk-${B_VERSION}"
+mkdir -p "$dst"
+tar cfB - . | ( cd "$dst" ; tar xfB - )
+
+post="$B_RECIPEDIR/corefreqk-dkms.files/B_DEBIAN/DEBIAN"
+test -d "$post" || mkdir -p "$post"
+cat > "$post/postinst" <<EOF
+#!/bin/sh
+dkms add -m corefreqk -v ${B_VERSION}
+dkms build -m corefreqk -v ${B_VERSION} && dkms install -m corefreqk -v ${B_VERSION} || true
+EOF
+cat > "$post/prerm" <<EOF
+dkms remove -m corefreqk -v ${B_VERSION} --all || true
+EOF
+chmod 755 "$post"/*
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: corefreqk-dkms
+Version: B_VERSION
+Section: corefreqk-dkms
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: corefreqk-dkms custom B_ORG build
+Homepage: https://github.com/cyring/CoreFreq.git
+Depends: dkms

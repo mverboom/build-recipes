@@ -1,0 +1,4 @@
+#!/bin/sh
+ 
+systemctl stop corefreqd.service
+systemctl disabel corefreqd.service
