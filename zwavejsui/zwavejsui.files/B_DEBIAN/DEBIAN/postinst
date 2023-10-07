@@ -17,7 +17,7 @@ if test "$1" = "configure"; then
        usermod -c "Z-wave JS UI user" zwavejsui
        adduser zwavejsui dialout
    fi
-   chown -R zwavejsui.zwavejsui /var/lib/zwavejsui #/var/log/zwave-js-ui
+   chown -R zwavejsui:zwavejsui /var/lib/zwavejsui
    systemctl enable zwavejsui
 fi
 systemctl restart zwavejsui
