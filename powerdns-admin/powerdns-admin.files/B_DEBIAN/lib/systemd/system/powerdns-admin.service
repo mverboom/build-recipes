@@ -1,0 +1,19 @@
+[Unit]
+Description=PowerDNS-Admin
+Requires=powerdns-admin.socket
+After=network.target
+
+[Service]
+PIDFile=/run/powerdns-admin/pid
+User=pdnsadmin
+Group=pdnsadmin
+WorkingDirectory=/opt/powerdns-admin
+ExecStartPre=+mkdir -p /run/powerdns-admin/
+ExecStartPre=+chown pdnsadmin:pdnsadmin -R /run/powerdns-admin/
+ExecStart=/opt/powerdns-admin/.venv/bin/python -m gunicorn --pid /run/powerdns-admin/pid --bind unix:/run/powerdns-admin/socket 'powerdnsadmin:create_app()'
+ExecReload=/bin/kill -s HUP $MAINPID
+ExecStop=/bin/kill -s TERM $MAINPID
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target
