@@ -1,0 +1,50 @@
+#!/bin/bash
+
+if test "$1" = "configure"; then
+  # Create a pdnsadmin system group
+  if ! getent group pdnsadmin > /dev/null; then
+      addgroup --quiet --system pdnsadmin
+  fi
+  
+  # Create a pdnsadmin system user
+  if ! getent passwd pdnsadmin > /dev/null; then
+      adduser --quiet --system \
+          --ingroup pdnsadmin \
+          --home /opt/powerdns-admin \
+          --no-create-home \
+          --disabled-password --shell /bin/bash \
+          pdnsadmin
+      usermod -c "Powerdns-admin user" pdnsadmin
+  fi
+
+  # create an initial production.py config file
+  cp /opt/powerdns-admin/configs/development.py /etc/powerdns-admin/production.py
+
+  # generate a random SECRET_KEY
+  sed -i "s/SECRET_KEY = .*/SECRET_KEY = '$(tr -dc A-Za-z0-9 < /dev/urandom | head -c 32 ; echo '')'/g" /etc/powerdns-admin/production.py
+fi
+
+cd /opt/powerdns-admin
+
+# activate python environment and flask configuration
+source ./.venv/bin/activate
+export FLASK_CONF=../configs/production.py
+
+# do the DB migration
+test -d /var/lib/powerdns-admin || mkdir /var/lib/powerdns-admin
+export FLASK_APP=powerdnsadmin/__init__.py
+flask db upgrade
+
+# generate asset files
+yarn install --pure-lockfile
+flask assets build
+
+chown -R pdnsadmin:pdnsadmin /opt/powerdns-admin
+chown -R pdnsadmin:pdnsadmin /var/lib/powerdns-admin
+
+if test -L /etc/nginx/sites-enabled/default; then
+  unlink /etc/nginx/sites-enabled/default
+fi
+
+systemctl enable powerdns-admin.socket
+systemctl restart powerdns-admin.socket

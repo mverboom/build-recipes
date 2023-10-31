@@ -14,6 +14,7 @@ git checkout $B_VERSION
 pref="$B_INSTALLDIR/opt/esphome"
 pip install --prefix="$pref" -r requirements.txt -r requirements_optional.txt
 pip install --prefix="$pref" pillow==9.5.0 reportlab svglib
+pip install --prefix="$pref" idf_component_manager
 pip install --prefix="$pref" esphome==$B_VERSION
 
 [PKG]

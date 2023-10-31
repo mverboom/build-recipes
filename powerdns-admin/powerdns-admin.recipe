@@ -1,0 +1,47 @@
+[VERSION]
+B_GITVER https://github.com/PowerDNS-Admin/PowerDNS-Admin
+
+[INFO]
+arch=amd64
+
+[REQUIRED]
+pkg-config python3-dev libsasl2-dev libldap2-dev python3-venv libmariadb-dev build-essential curl libpq-dev libxmlsec1-dev nodejs-lts-B_PF yarn-B_PF
+
+[BUILD]
+B_GET git https://github.com/PowerDNS-Admin/PowerDNS-Admin powerdns-admin
+cd powerdns-admin
+git checkout v$B_VERSION
+DEST=$B_INSTALLDIR/opt/powerdns-admin
+VIRT=$DEST/.venv
+mkdir -p $VIRT
+python3 -m venv "$VIRT"
+. $VIRT/bin/activate
+pip install --upgrade pip
+sed -i 's/PyYAML==5.4/PyYAML==5.3.1/g' requirements.txt # temporary workaround, see https://github.com/yaml/pyyaml/issues/724
+pip install -r requirements.txt
+deactivate
+pushd "$VIRT/bin"
+shopt -s extglob
+sed -i "s|$VIRT|/opt/powerdns-admin/.venv|g" !(__pycache__)
+popd
+#mkdir -p "$B_INSTALLDIR"/etc/powerdns-admin
+#cp configs/development.py "$B_INSTALLDIR"/etc/powerdns-admin/production.py
+tar cf - . | ( cd $DEST ; tar xf - )
+cd $B_INSTALLDIR
+ln -s /etc/powerdns-admin/production.py opt/powerdns-admin/configs/production.py
+ln -s /var/lib/powerdns-admin/pdns.db opt/powerdns-admin/configs/pdns.db
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: powerdns-admin
+Version: B_VERSION
+Section: powerdns-admin
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: powerdns-admin saver custom B_ORG build
+Homepage: https://github.com/PowerDNS-Admin/PowerDNS-Admin
+Depends: nginx,nodejs-lts-B_PF,yarn-B_PF
