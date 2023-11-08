@@ -5,7 +5,7 @@ arch=amd64,armhf
 B_GITVER https://github.com/zwave-js/zwave-js-ui.git
 
 [REQUIRED]
-nodejs-14-B_PF yarn-B_PF
+nodejs-lts-B_PF yarn-B_PF
 
 [BUILD]
 B_GET git https://github.com/zwave-js/zwave-js-ui.git zwavejsui
@@ -31,4 +31,4 @@ Architecture: B_ARCH
 Maintainer: B_MAIL
 Description: Z-wave JS UI custom B_ORG build
 Homepage: https://github.com/zwave-js/zwave-js-ui
-Depends: nodejs-14-B_PF
+Depends: nodejs-lts-B_PF
