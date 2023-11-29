@@ -1,0 +1,40 @@
+[INFO]
+arch=amd64
+
+[VERSION]
+echo "1.0"
+
+[REQUIRED]
+lua5.4 luarocks cmake libssl-dev liblua5.4-dev
+
+[BUILD]
+B_GET git https://github.com/evanlabs/luacrypto luacrypto
+luaver=5.4
+cd luacrypto
+# ugly patches, but seems to work
+sed -i '/Lua51 REQUIRED/d' dist.cmake
+sed -i -r "s#(lua.h|lauxlib.h)#/usr/include/lua${luaver}/\1#" src/lcrypto.c
+PREFIX=$B_INSTALLDIR/usr/local
+sed -i 's/LUA_PREFIX/CMAKE_INSTALL_PREFIX/' rockspecs/luacrypto-git-1.rockspec
+sed -i 's/SHLIB_VERSION_NUMBER/SSLEAY_VERSION_NUMBER/' src/lcrypto.c
+luarocks --lua-version ${luaver} --tree $PREFIX make
+mv $B_INSTALLDIR/usr/local/lib/lua/${luaver}/lua/crypto.so $B_INSTALLDIR/usr/local/lib/lua/${luaver}/crypto.so
+rmdir $B_INSTALLDIR/usr/local/lib/lua/${luaver}/lua
+luarocks --lua-version ${luaver} install --tree $B_INSTALLDIR/usr/local inspect
+luarocks --lua-version ${luaver} install --tree $B_INSTALLDIR/usr/local net-url
+luarocks --lua-version ${luaver} install --tree $B_INSTALLDIR/usr/local basexx
+luarocks --lua-version ${luaver} install --tree $B_INSTALLDIR/usr/local lua-cjson 2.1.0-1
+luarocks --lua-version ${luaver} install --tree $B_INSTALLDIR/usr/local luajwtjitsi
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: luajwtjitsi-lua54
+Version: B_VERSION
+Section: luajwtjitsi-lua54
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: luajwtjitsi-lua54 custom B_ORG build
