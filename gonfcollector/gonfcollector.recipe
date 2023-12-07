@@ -1,0 +1,39 @@
+[INFO]
+arch=amd64
+
+[VERSION]
+B_GITHUBVER https://github.com/javadmohebbi/goNfCollector
+
+[REQUIRED]
+golang-B_PF
+
+[BUILD]
+export GOROOT=/opt/go
+export PATH=/opt/go/bin:${PATH}
+export GOPATH=$(pwd)
+
+B_GET git https://github.com/javadmohebbi/goNfCollector gonfcollector
+cd gonfcollector
+sed -i 's#"/opt/oi24/netflow-collector/etc/"#"/etc/nfcollector/"#' cmd/collector/main.go
+go build -o nfcollector cmd/collector/main.go
+sed -i 's#"/opt/nfcollector/etc/"#"/etc/nfcollector/"#' cmd/updater/main.go
+go build -o nfupdater cmd/updater/main.go
+dst="$B_INSTALLDIR/opt/nfcollector"
+mkdir -p "$dst/bin" "$B_INSTALLDIR/etc/nfcollector"
+mv nfcollector "$dst/bin"
+mv nfupdater "$dst/bin"
+B_LINKFILES /opt/nfcollector/bin /usr/bin
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: gonfcollector
+Version: B_VERSION
+Section: gonfcollector
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: Gonfcollector custom B_ORG build
+Homepage: https://github.com/javadmohebbi/goNfCollector
