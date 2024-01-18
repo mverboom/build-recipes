@@ -11,9 +11,10 @@ build-essential libpthread-stubs0-dev
 B_GET git https://github.com/cyring/CoreFreq.git corefreq
 cd corefreq
 git checkout $B_VERSION
+mkdir build
 make corefreqd corefreq-cli
 mkdir -p "${B_INSTALLDIR}/usr/bin"
-cp corefreq-cli corefreqd "${B_INSTALLDIR}/usr/bin"
+cp build/corefreq-cli build/corefreqd "${B_INSTALLDIR}/usr/bin"
 mkdir -p "${B_INSTALLDIR}/lib/systemd/system"
 cp corefreqd.service "${B_INSTALLDIR}/lib/systemd/system"
 
