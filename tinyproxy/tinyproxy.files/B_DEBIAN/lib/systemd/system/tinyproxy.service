@@ -6,7 +6,7 @@ Documentation=man:tinyproxy(8) man:tinyproxy.conf(5)
 [Service]
 EnvironmentFile=-/etc/default/tinyproxy
 Type=forking
-ExecStartPre=mkdir /run/tinyproxy
+ExecStartPre=mkdir -p /run/tinyproxy
 ExecStart=/opt/tinyproxy/bin/tinyproxy $FLAGS
 PIDFile=/run/tinyproxy/tinyproxy.pid
 PrivateDevices=yes
