@@ -1,0 +1,38 @@
+[INFO]
+arch=all
+
+[VERSION]
+B_GITVER https://github.com/antedebaas/DMARC-SMTPTLS-Reports
+
+[REQUIRED]
+php-cli composer php-curl php-imap php-xml
+
+[BUILD]
+B_GET git https://github.com/antedebaas/DMARC-SMTPTLS-Reports dmarc-smtptls-reports
+cd dmarc-smtptls-reports
+git checkout v${B_VERSION}
+
+composer update
+composer install
+php bin/console cache:clear
+#php bin/console doctrine:migrations:migrate --no-interaction --query-time
+php bin/console assets:install public
+php bin/console cache:warmup
+
+mkdir -p $B_INSTALLDIR/opt/dmarc-smtptls-reports
+tar cf - . | (cd $B_INSTALLDIR/opt/dmarc-smtptls-reports ; tar xf - )
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: dmarc-smtptls-reports
+Version: B_VERSION
+Section: dmarc-smtptls-reports
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: dmarc-smtptls-reports custom B_ORG build
+Homepage: https://github.com/antedebaas/DMARC-SMTPTLS-Reports
+Depends: php-cli, php-curl, php-imap, php-xml
