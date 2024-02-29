@@ -1,0 +1,7 @@
+#!/bin/sh
+
+set -e
+
+cd /opt/dmarc-smtptls-reports
+php bin/console doctrine:migrations:migrate --no-interaction --query-time
+chown -R www-data:www-data /opt/dmarc-smtptls-reports/var/cache /var/lib/dmarc-smtptls-reports /etc/dmarc-smtptls-reports

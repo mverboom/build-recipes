@@ -5,12 +5,14 @@ arch=all
 B_GITVER https://github.com/antedebaas/DMARC-SMTPTLS-Reports
 
 [REQUIRED]
-php-cli composer php-curl php-imap php-xml
+php-cli composer php-curl php-imap php-xml php-sqlite3
 
 [BUILD]
 B_GET git https://github.com/antedebaas/DMARC-SMTPTLS-Reports dmarc-smtptls-reports
 cd dmarc-smtptls-reports
 git checkout v${B_VERSION}
+
+sed -i 's#DATABASE_URL=.*#DATABASE_URL="sqlite:////var/lib/dmarc-smtptls-reports/database.sqlite"#' .env
 
 composer update
 composer install
@@ -19,7 +21,17 @@ php bin/console cache:clear
 php bin/console assets:install public
 php bin/console cache:warmup
 
+mkdir -p $B_INSTALLDIR/var/lib/dmarc-smtptls-reports/imap
+mkdir -p $B_INSTALLDIR/var/log/dmarc-smtptls-reports
+rmdir var/log
+ln -s /var/log/dmarc-smtptls-reports var/log
+ln -s /var/lib/dmarc-smtptls-reports/imap var/imap
+
+ln -s /etc/dmarc-smtptls-reports/config .env.local
+
 mkdir -p $B_INSTALLDIR/opt/dmarc-smtptls-reports
+rm -rf .git .github
+rm -f .env.test
 tar cf - . | (cd $B_INSTALLDIR/opt/dmarc-smtptls-reports ; tar xf - )
 
 [PKG]
@@ -35,4 +47,4 @@ Architecture: B_ARCH
 Maintainer: B_MAIL
 Description: dmarc-smtptls-reports custom B_ORG build
 Homepage: https://github.com/antedebaas/DMARC-SMTPTLS-Reports
-Depends: php-cli, php-curl, php-imap, php-xml
+Depends: php-cli, php-curl, php-imap, php-xml, php-sqlite3

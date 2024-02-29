@@ -1,0 +1,14 @@
+# Should be named config for production
+
+APP_ENV=prod
+#APP_SECRET=verysecret
+
+#MAILER_DSN=smtp://user:password@smtpserver:port
+
+DATABASE_TYPE="sqlite"
+DATABASE_URL="sqlite:////var/lib/dmarc-smtptls-reports/database.sqlite"
+
+#MAILBOX_CONNECTION="imapserver:993/imap/ssl"
+#MAILBOX_USERNAME="imapuser"
+#MAILBOX_PASSWORD="password"
+#DELETE_PROCESSED_MAILS=false
