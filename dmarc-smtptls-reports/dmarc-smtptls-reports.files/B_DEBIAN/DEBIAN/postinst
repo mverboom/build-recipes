@@ -4,4 +4,5 @@ set -e
 
 cd /opt/dmarc-smtptls-reports
 php bin/console doctrine:migrations:migrate --no-interaction --query-time
+sh upgradefiles/upgrade.sh
 chown -R www-data:www-data /opt/dmarc-smtptls-reports/var/cache /var/lib/dmarc-smtptls-reports /etc/dmarc-smtptls-reports
