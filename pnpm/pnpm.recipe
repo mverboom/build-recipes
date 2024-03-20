@@ -1,0 +1,27 @@
+[INFO]
+arch=amd64
+
+[VERSION]
+B_GITVER https://github.com/pnpm/pnpm
+
+[REQUIRED]
+npm
+
+[BUILD]
+export npm_config_prefix=$B_INSTALLDIR/opt/pnpm
+npm install -g pnpm@$B_VERSION
+B_LINKFILES /opt/pnpm/bin /usr/bin
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: pnpm
+Version: B_VERSION
+Section: pnpm
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: Pnpm custom B_ORG build
+Homepage: https://github.com/pnpm/pnpm
