@@ -5,10 +5,10 @@ arch=amd64
 B_GITVER https://github.com/evpo/EncryptPad
 
 [REQUIRED]
-make qtbase5-dev qt5-default gcc g++ make python zlib1g-dev pkg-config libbz2-dev libbotan-2-dev
+make qtbase5-dev qt5-default gcc g++ make python zlib1g-dev pkg-config libbz2-dev libbotan-2-dev libqt5svg5-dev
 
-[REQUIRED DEBIAN BULLSEYE]
-make qttools5-dev gcc g++ make python zlib1g-dev pkg-config libbz2-dev libbotan-2-dev
+[REQUIRED DEBIAN BOOKWORM]
+make qttools5-dev gcc g++ make python3 zlib1g-dev pkg-config libbz2-dev libbotan-2-dev
 
 [BUILD]
 B_GET git https://github.com/evpo/EncryptPad encryptpad
