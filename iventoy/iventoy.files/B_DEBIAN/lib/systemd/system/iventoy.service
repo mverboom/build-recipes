@@ -1,0 +1,14 @@
+[Unit]
+Description=iventoy
+After=network.target
+
+[Service]
+Type=simple
+Restart=always
+WorkingDirectory=/opt/iventoy
+ExecStart=/usr/bin/bash /opt/iventoy/iventoy.sh -R -A start
+ExecStop=/usr/bin/bash /opt/iventoy/iventoy.sh stop
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target

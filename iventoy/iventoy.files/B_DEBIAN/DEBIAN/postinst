@@ -1,0 +1,6 @@
+#!/bin/sh
+
+set -e
+readable=/sys/devices/virtual/dmi/id/product_uuid
+
+test -r "$readable" || { echo "File $readable is not readable, and is required by iventoy."; exit 1; }

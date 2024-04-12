@@ -1,0 +1,33 @@
+[INFO]
+arch=amd64
+excludefromall=1
+
+[VERSION]
+B_GITVER https://github.com/ventoy/PXE
+
+[BUILD]
+B_GET http https://github.com/ventoy/PXE/releases/download/v${B_VERSION}/iventoy-${B_VERSION}-linux-free.tar.gz iventoy.tar.gz
+mkdir -p $B_INSTALLDIR/opt/iventoy "$B_INSTALLDIR/var/log/iventoy/history" "$B_INSTALLDIR/var/lib/iventoy/iso" "$B_INSTALLDIR/etc/iventoy"
+tar xzf iventoy.tar.gz -C $B_INSTALLDIR/opt/iventoy --strip-components 2
+cd $B_INSTALLDIR/opt/iventoy
+rm -rf log
+ln -s /var/log/iventoy log
+rmdir iso
+ln -s /var/lib/iventoy/iso iso
+mv data/* $B_INSTALLDIR/etc/iventoy
+rmdir data
+ln -s /etc/iventoy data
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: iventoy
+Version: B_VERSION
+Section: iventoy
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: iventoy custom B_ORG build
+Homepage: https://www.iventoy.com/
