@@ -1,5 +1,5 @@
 [VERSION]
-B_GITVER -r s/dev// https://github.com/mkb79/audible-cli
+B_GITVER -D -e test https://github.com/mkb79/audible-cli
 
 [INFO]
 arch=all

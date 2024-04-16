@@ -25,4 +25,4 @@ Architecture: B_ARCH
 Maintainer: B_MAIL
 Description: aaxtomp3 custom B_ORG build
 Homepage: https://github.com/KrumpetPirate/AAXtoMP3
-Depends: ffmpeg,libav-tools,x264,x265,bc
+Depends: ffmpeg,x264,x265,bc
