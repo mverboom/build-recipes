@@ -11,8 +11,9 @@ python3 make gcc g++ python3-distutils
 B_GET git https://github.com/nodejs/node/ nodejs
 cd nodejs
 git checkout v$B_VERSION
+test "$B_ARCH" = "armhf" && export CXXFLAGS="-march=armv6k -mfpu=vfpv2"
 ./configure --prefix=/opt/nodejs
-make -j $(nproc)
+make -j 2
 make install DESTDIR=$B_INSTALLDIR
 B_LINKFILES /opt/nodejs/bin /usr/bin
 
