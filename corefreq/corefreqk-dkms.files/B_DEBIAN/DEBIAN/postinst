@@ -1,2 +1,2 @@
-dkms add -m corefreqk -v 1.96.5
-dkms build -m corefreqk -v 1.96.5 && dkms install -m corefreqk -v 1.96.5 || true
+dkms add -m corefreqk -v 1.97.1
+dkms build -m corefreqk -v 1.97.1 && dkms install -m corefreqk -v 1.97.1 || true
