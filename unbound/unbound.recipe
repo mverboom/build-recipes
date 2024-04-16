@@ -5,7 +5,7 @@ arch=amd64
 B_GITVER -i release -R s/release-// https://github.com/NLnetLabs/unbound
 
 [REQUIRED]
-gcc make libssl-dev libexpat1-dev bison libnghttp2-dev libevent-dev libpython3-dev swig
+gcc make libssl-dev libexpat1-dev bison libnghttp2-dev libevent-dev libpython3-dev swig flex
 
 [BUILD]
 B_GET git https://github.com/NLnetLabs/unbound unbound
@@ -18,12 +18,24 @@ make install DESTDIR=$B_INSTALLDIR
 make dohclient
 cp dohclient "$B_INSTALLDIR"/opt/unbound/sbin
 B_LINKFILES /opt/unbound/sbin /usr/sbin
+mv "$B_INSTALLDIR"/etc/unbound/unbound.conf "$B_INSTALLDIR"/etc/unbound/unbound.conf.example
 
 [PKG]
 type=deb
 torepo=y
 
-[DEB]
+[DEB BOOKWORM]
+Package: unbound
+Version: B_VERSION
+Section: unbound
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: Unbound custom B_ORG build
+Homepage: https://www.nlnetlabs.nl/projects/unbound
+Depends: libevent-2.1-7,libpython3.11
+
+[DEB BULLSEYE]
 Package: unbound
 Version: B_VERSION
 Section: unbound
