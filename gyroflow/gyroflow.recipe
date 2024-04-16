@@ -24,4 +24,4 @@ Architecture: B_ARCH
 Maintainer: B_MAIL
 Description: Gyroflow custom B_ORG build
 Homepage: https://gyroflow.xyz/
-Depends: libc++1-11,libflac8,libvorbisenc2,libmd0,libsndfile1,libgl1
+Depends: libc++1,libflac12,libvorbisenc2,libmd0,libsndfile1,libgl1
