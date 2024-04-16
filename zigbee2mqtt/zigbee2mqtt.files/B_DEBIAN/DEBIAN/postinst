@@ -17,7 +17,7 @@ if test "$1" = "configure"; then
        usermod -c "Zigbee2mqtt user" zigbee2mqtt
        adduser zigbee2mqtt dialout
    fi
-   chown -R zigbee2mqtt.zigbee2mqtt /var/lib/zigbee2mqtt /var/log/zigbee2mqtt /etc/zigbee2mqtt/configuration.yaml
+   chown -R zigbee2mqtt:zigbee2mqtt /var/lib/zigbee2mqtt /var/log/zigbee2mqtt /etc/zigbee2mqtt/configuration.yaml
    systemctl enable zigbee2mqtt
 fi
 systemctl restart zigbee2mqtt
