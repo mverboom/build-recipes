@@ -2,7 +2,7 @@
 arch=amd64
 
 [VERSION]
-wget --no-check-certificate -O - -q https://www.stunnel.org/downloads.html | awk '/downloads\/stunnel-.*.tar.gz"/ { ver=substr($0, index($0,"stunnel-")+8); print substr(ver,1,index(ver,".tar.gz")-1)}'
+wget --no-check-certificate -O - -q https://www.stunnel.org/downloads.html | awk '/downloads\/stunnel-.*.tar.gz"/ { ver=substr($0, index($0,"stunnel-")+8); print substr(ver,1,index(ver,".tar.gz")-1)}' | grep -v latest
 
 [REQUIRED]
 gcc libssl-dev make
