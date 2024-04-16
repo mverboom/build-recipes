@@ -4,26 +4,25 @@ arch=amd64
 [VERSION]
 B_GITVER https://gitlab.com/wireshark/wireshark.git/
 
-[REQUIRED]
-cmake make gcc g++ flex bison libglib2.0-dev qttools5-dev qttools5-dev-tools libqt5svg5-dev qtmultimedia5-dev qt5-default libc-ares-dev libpcap-dev python3 perl libgcrypt-dev
-libnl-3-dev libkrb5-dev libsmi2-dev asciidoctor libsbc-dev liblua5.2-dev libnl-cli-3-dev libparse-yapp-perl libcap-dev liblz4-dev libsnappy-dev libzstd-dev libspandsp-dev libxml2-dev libminizip-dev git ninja-build xsltproc libspeexdsp-dev
-
-[REQUIRED DEBIAN BULLSEYE]
+[REQUIRED DEBIAN]
 cmake make gcc g++ flex bison libglib2.0-dev qttools5-dev qttools5-dev-tools libqt5svg5-dev qtmultimedia5-dev libc-ares-dev libpcap-dev python3 perl libgcrypt-dev libnl-3-dev libkrb5-dev libsmi2-dev asciidoctor libsbc-dev liblua5.2-dev libnl-cli-3-dev libparse-yapp-perl libcap-dev liblz4-dev libsnappy-dev libzstd-dev libspandsp-dev libxml2-dev libminizip-dev git ninja-build xsltproc libspeexdsp-dev
 
+[REQUIRED DEBIAN BOOKWORM]
+build-essential autoconf automake libgtk-3-dev libpcap-dev libgcrypt20-dev libgpg-error-dev qttools5-dev qttools5-dev-tools libqt5svg5-dev libtool cmake libc-ares-dev flex libssh2-1-dev libsystemd-dev liblua5.4-dev libnl-3-dev libnghttp3-dev libnl-route-3-dev libnl-genl-3-dev libnghttp2-dev libkrb5-dev libminizip-dev liblz4-dev libsnappy-dev libspandsp-dev libsbc-dev libbcg729-dev libopencore-amrnb-dev qtmultimedia5-dev libspeexdsp-dev libgnutls28-dev libopus-dev libxml2-dev libcap-dev xsltproc 
+
 [BUILD]
-B_GET git https://gitlab.com/wireshark/wireshark wireshark
+B_GET git https://gitlab.com/wireshark/wireshark/ wireshark
 cd wireshark
 git checkout v${B_VERSION}
 mkdir build
 cd build
-cmake -DCMAKE_INSTALL_PREFIX:PATH=/opt/wireshark ..
+cmake -DCMAKE_INSTALL_PREFIX:PATH=/opt/wireshark -DUSE_qt6=OFF ..
 make -j $(nproc)
 #make -j $(nproc) all_guides
 make install DESTDIR=$B_INSTALLDIR
 B_LINKFILES /opt/wireshark/bin /usr/bin
-B_LINKFILES /opt/wireshark/share/man/man1 /usr/share/man/man1
-B_LINKFILES /opt/wireshark/share/man/man4 /usr/share/man/man4
+#B_LINKFILES /opt/wireshark/share/man/man1 /usr/share/man/man1
+#B_LINKFILES /opt/wireshark/share/man/man4 /usr/share/man/man4
 
 [PKG]
 type=deb
