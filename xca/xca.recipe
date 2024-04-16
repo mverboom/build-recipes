@@ -5,19 +5,18 @@ arch=amd64
 B_GITVER -i RELEASE. -F "^RELEASE." https://github.com/chris2511/xca/
 
 [REQUIRED]
-autoconf libssl-dev libqt4-dev g++ make pkgconf libltdl-dev
-
-[REQUIRED DEBIAN BULLSEYE]
-autoconf libssl-dev g++ make pkgconf libltdl-dev qttools5-dev
+autoconf libssl-dev g++ make pkgconf libltdl-dev qttools5-dev cmake
 
 [BUILD]
 B_GET git https://github.com/chris2511/xca/ xca
 cd xca
 git checkout RELEASE.$B_VERSION
-./bootstrap
-./configure --prefix=/opt/xca
+mkdir -p "$B_INSTALLDIR/opt/xca"
+mkdir build
+cd build
+cmake -DCMAKE_INSTALL_PREFIX=$B_INSTALLDIR/opt/xca ..
 make -j $(nproc)
-make install DESTDIR=$B_INSTALLDIR
+make install
 
 [PKG]
 type=deb
