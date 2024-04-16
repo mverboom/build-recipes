@@ -1,0 +1,79 @@
+# InfluxDB config file
+#
+# For information about configuration items, see:
+# https://docs.influxdata.com/influxdb/v2/reference/config-options/
+
+# assets-path: /path/to/custom/assets-dir
+# bolt-path: ~/.influxdbv2/influxd.bolt
+bolt-path: /var/lib/influxdb/influxd.bolt
+# e2e-testing: false
+# engine-path: ~/.influxdbv2/engine
+engine-path: /var/lib/influxdb/engine
+# feature-flags:
+#   flag1: "value1"
+#   flag2: "value2"
+# flux-log-enabled: false
+# hardening-enabled: false
+# http-bind-address: ":8086"
+# http-idle-timeout: 3m0s
+# http-read-header-timeout: 10s
+# http-read-timeout: 0
+# http-write-timeout: 0
+# influxql-max-select-buckets: 0
+# influxql-max-select-point: 0
+# influxql-max-select-series: 0
+# instance-id: ":8086"
+# log-level: info
+# metrics-disabled: false
+# nats-max-payload-bytes: 1048576
+# nats-port: -1
+# no-tasks: false
+# pprof-disabled: false
+# query-concurrency: 0
+# query-initial-memory-bytes: 10485760
+# query-max-memory-bytes: 104857600
+# query-memory-bytes: 10485760
+# query-queue-size: 0
+# reporting-disabled: false
+# secret-store: bolt
+# session-length: 60
+# session-renew-disabled: false
+# sqlite-path: ~/.influxdbv2/influxd.sqlite
+sqlite-path: /var/lib/influxdb/influxd.sqlite
+# storage-cache-max-memory-size: 1073741824
+# storage-cache-snapshot-memory-size: 26214400
+# storage-cache-snapshot-write-cold-duration: 10m0s
+# storage-compact-full-write-cold-duration: 4h0m0s
+# storage-compact-throughput-burst: 50331648
+# storage-max-concurrent-compactions: 0
+# storage-max-index-log-file-size: 1048576
+# storage-no-validate-field-size: false
+# storage-retention-check-interval: 30m0s
+# storage-series-file-max-concurrent-snapshot-compactions: 0
+# storage-series-id-set-cache-size: 100
+# storage-shard-precreator-advance-period: 30m0s
+# storage-shard-precreator-check-interval: 10m0s
+# storage-tsm-use-madv-willneed: false
+# storage-validate-keys: false
+# storage-wal-fsync-delay: 0s
+# storage-wal-max-concurrent-writes: 0
+# storage-wal-max-write-delay: 10m
+# storage-write-timeout: 10s
+# store: disk
+# testing-always-allow-setup: false
+# tls-cert: "/etc/ssl/cert.pem"
+# tls-key: "/etc/ssl/key.pem"
+# tls-min-version: "1.2"
+# tls-strict-ciphers: false
+# tracing-type: log
+# ui-disabled: false
+# vault-addr: https://127.0.0.1:8200/
+# vault-cacert: /path/to/ca.pem
+# vault-capath: /path/to/certs/
+# vault-client-cert: /path/to/client_cert.pem
+# vault-client-key: /path/to/private_key.pem
+# vault-max-retries: 2
+# vault-client-timeout: 60s
+# vault-skip-verify: true
+# vault-tls-server-name: secure.example.com
+# vault-token: exAmple-t0ken-958a-f490-c7fd0eda5e9e
