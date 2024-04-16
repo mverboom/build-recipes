@@ -13,7 +13,8 @@ cd esphome
 git checkout $B_VERSION
 pref="$B_INSTALLDIR/opt/esphome"
 pip install --prefix="$pref" -r requirements.txt -r requirements_optional.txt
-pip install --prefix="$pref" pillow==9.5.0 reportlab svglib
+#pip install --prefix="$pref" pillow==9.5.0 reportlab svglib
+pip install --prefix="$pref" pillow==10.2.0 reportlab svglib
 pip install --prefix="$pref" idf_component_manager
 pip install --prefix="$pref" esphome==$B_VERSION
 
@@ -31,4 +32,4 @@ Maintainer: B_MAIL
 Description: ESPHome custom B_ORG build
 Homepage: https://esphome.io/
 Recommends: lighttpd
-Depends: python3,python3-setuptools,python3-six,openssl,python3-requests,python3-cryptography,python3-voluptuous,python3-yaml,python3-colorama,python3-tornado,python3-zeroconf,python3-serial,python3-click,python3-reportlab,python3-svglib
+Depends: python3,python3-setuptools,python3-six,openssl,python3-requests,python3-cryptography,python3-voluptuous,python3-yaml,python3-colorama,python3-tornado,python3-zeroconf,python3-serial,python3-click,python3-reportlab,python3-svglib,python3-venv
