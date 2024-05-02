@@ -2,14 +2,16 @@
 arch=amd64
 
 [VERSION]
-B_GITVER https://github.com/cyring/CoreFreq.git
+B_GITVER -i x86_64 -F -x86_64 https://github.com/cyring/CoreFreq.git
 
 [BUILD]
 B_GET git https://github.com/cyring/CoreFreq.git corefreqk
 cd corefreqk
-git checkout $B_VERSION
+git checkout ${B_VERSION}-x86_64
 rm -rf .git .gitignore
 sed -i "s/^DRV_VERSION=.*/DRV_VERSION=${B_VERSION}/" dkms.conf
+sed -i "/^POST_BUILD.*/d" dkms.conf
+sed -i "/^POST_REMOVE.*/d" dkms.conf
 
 dst="$B_INSTALLDIR/usr/src/corefreqk-${B_VERSION}"
 mkdir -p "$dst"
