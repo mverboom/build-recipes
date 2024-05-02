@@ -2,7 +2,7 @@
 arch=amd64
 
 [VERSION]
-B_GITVER https://github.com/cyring/CoreFreq.git
+B_GITVER -i x86_64 -F -x86_64 https://github.com/cyring/CoreFreq.git
 
 [REQUIRED]
 build-essential libpthread-stubs0-dev
@@ -10,7 +10,7 @@ build-essential libpthread-stubs0-dev
 [BUILD]
 B_GET git https://github.com/cyring/CoreFreq.git corefreq
 cd corefreq
-git checkout $B_VERSION
+git checkout ${B_VERSION}-x86_64
 mkdir build
 make corefreqd corefreq-cli
 mkdir -p "${B_INSTALLDIR}/usr/bin"
