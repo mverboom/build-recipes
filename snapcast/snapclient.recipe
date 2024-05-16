@@ -34,4 +34,4 @@ Architecture: B_ARCH
 Maintainer: B_MAIL
 Description: snapclient custom B_ORG build
 Homepage: https://github.com/badaix/snapcast
-Depends: adduser, libavahi-client3, libavahi-common3, libc6, libflac12, libogg0, libvorbis0a, libvorbisenc2, init-system-helpers, libatomic1, libopus0, libpulse0, libsoxr0
+Depends: adduser, libavahi-client3, libavahi-common3, libc6, libflac12, libogg0, libvorbis0a, libvorbisenc2, init-system-helpers, libatomic1, libopus0, libpulse0, libsoxr0, libvorbisidec1
