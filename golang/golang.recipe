@@ -1,25 +1,13 @@
 [INFO]
 arch=amd64
-excludefromall=1
 
 [VERSION]
 B_GITVER -e weekly -f "^go" https://go.googlesource.com/go
 
-[REQUIRED]
-golang-go
-
 [BUILD]
-B_GET git https://go.googlesource.com/go go
-cd go
-git checkout go${B_VERSION}
-#echo "go$B_VERSION" > src/VERSION
-cd src
-./make.bash -v
-cd ..
-rm -rf .git .gitattributes .github .gitignore # src test
-cd ..
+B_GET http https://go.dev/dl/go${B_VERSION}.linux-amd64.tar.gz go.tar.gz
 mkdir -p $B_INSTALLDIR/opt
-tar cfB - go | ( cd $B_INSTALLDIR/opt ; tar xfB - )
+tar xzf go.tar.gz -C $B_INSTALLDIR/opt
 
 [PKG]
 type=deb
