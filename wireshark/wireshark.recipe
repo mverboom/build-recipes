@@ -36,4 +36,4 @@ Priority: optional
 Architecture: B_ARCH
 Maintainer: B_MAIL
 Description: wireshark custom B_ORG build
-Depends: libc6, libgcc1, libglib2.0-0, libnl-3-200, libnl-genl-3-200, libnl-route-3-200, libpcap0.8, libqt5core5a, libqt5gui5, libqt5multimedia5, libqt5printsupport5, libqt5widgets5, libstdc++6, zlib1g, libsmi2ldbl
+Depends: libc6, libgcc1, libglib2.0-0, libnl-3-200, libnl-genl-3-200, libnl-route-3-200, libpcap0.8, libqt5core5a, libqt5gui5, libqt5multimedia5, libqt5printsupport5, libqt5widgets5, libstdc++6, zlib1g, libsmi2ldbl, libnghttp3-3
