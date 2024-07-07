@@ -2,7 +2,7 @@
 arch=amd64
 
 [VERSION]
-B_GITVER https://github.com/Genymobile/scrcpy/
+B_GITVER -e install-release https://github.com/Genymobile/scrcpy/
 
 [REQUIRED]
 make gcc pkg-config meson ninja-build libavcodec-dev libavformat-dev libavutil-dev libsdl2-dev default-jdk-headless libavdevice-dev libusb-1.0-0-dev
