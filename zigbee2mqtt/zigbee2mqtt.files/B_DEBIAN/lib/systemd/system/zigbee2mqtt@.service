@@ -1,0 +1,17 @@
+[Unit]
+Description=zigbee2mqtt (%i)
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/npm start
+WorkingDirectory=/opt/zigbee2mqtt
+Environment="ZIGBEE2MQTT_DATA=/var/lib/zigbee2mqtt-%i"
+StandardOutput=inherit
+StandardError=inherit
+Restart=always
+User=zigbee2mqtt
+ConditionPathIsDirectory=/var/lib/zigbee2mqtt-%i
+ConditionPathExists=/var/lib/zigbee2mqtt-%i/configuration.yaml
+
+[Install]
+WantedBy=multi-user.target
