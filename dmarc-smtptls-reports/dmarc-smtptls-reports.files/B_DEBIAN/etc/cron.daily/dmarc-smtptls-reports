@@ -1,0 +1,3 @@
+#!/bin/bash
+cd /opt/dmarc-smtptls-reports
+php bin/console app:getreportsfrommailbox
