@@ -2,4 +2,4 @@
 
 set -e
 
-systemctl stop script-server.service
+systemctl stop script-server-dev.service
