@@ -2,7 +2,7 @@
 arch=amd64
 
 [VERSION]
-B_GITVER https://github.com/FrameworkComputer/framework-system
+B_GITHUBVER https://github.com/FrameworkComputer/framework-system main
 
 [REQUIRED]
 rustc-B_PF gcc libudev-dev pkg-config
