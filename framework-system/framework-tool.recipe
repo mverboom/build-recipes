@@ -1,0 +1,29 @@
+[INFO]
+arch=amd64
+
+[VERSION]
+B_GITVER https://github.com/FrameworkComputer/framework-system
+
+[REQUIRED]
+rustc-B_PF gcc libudev-dev pkg-config
+
+[BUILD]
+B_GET git https://github.com/FrameworkComputer/framework-system framework-system
+cd framework-system
+cargo build
+mkdir -p $B_INSTALLDIR/usr/bin
+cp target/debug/framework_tool $B_INSTALLDIR/usr/bin
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: framework-tool
+Version: B_VERSION
+Section: framework-tool
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: Framework-tool server custom B_ORG build
+Homepage: https://github.com/FrameworkComputer/framework-system
