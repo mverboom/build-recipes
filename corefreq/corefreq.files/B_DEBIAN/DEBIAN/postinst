@@ -1,8 +1,0 @@
-#!/bin/sh
- 
-if test "$1" = "configure"; then
-  systemctl enable corefreqd.service
-  systemctl start corefreqd.service
-else
-  systemctl restart corefreqd.service
-fi

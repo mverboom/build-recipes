@@ -2,16 +2,19 @@
 arch=amd64
 
 [VERSION]
-B_GITVER -i x86_64 -F -x86_64 https://github.com/cyring/CoreFreq.git
+B_GITVER -F -x86_64 https://github.com/cyring/CoreFreq.git
 
 [BUILD]
 B_GET git https://github.com/cyring/CoreFreq.git corefreqk
 cd corefreqk
-git checkout ${B_VERSION}-x86_64
+git checkout ${B_VERSION}
 rm -rf .git .gitignore
 sed -i "s/^DRV_VERSION=.*/DRV_VERSION=${B_VERSION}/" dkms.conf
-sed -i "/^POST_BUILD.*/d" dkms.conf
+#sed -i "/^POST_BUILD.*/d" dkms.conf
 sed -i "/^POST_REMOVE.*/d" dkms.conf
+
+mkdir -p "${B_INSTALLDIR}/lib/systemd/system"
+cp corefreqd.service "${B_INSTALLDIR}/lib/systemd/system"
 
 dst="$B_INSTALLDIR/usr/src/corefreqk-${B_VERSION}"
 mkdir -p "$dst"
@@ -23,8 +26,19 @@ cat > "$post/postinst" <<EOF
 #!/bin/sh
 dkms add -m corefreqk -v ${B_VERSION}
 dkms build -m corefreqk -v ${B_VERSION} && dkms install -m corefreqk -v ${B_VERSION} || true
+if test "$1" = "configure"; then
+  systemctl daemon-reload
+  systemctl enable corefreqd.service
+  systemctl start corefreqd.service
+else
+  systemctl daemon-reload
+  systemctl restart corefreqd.service
+fi
 EOF
 cat > "$post/prerm" <<EOF
+systemctl stop corefreqd.service
+systemctl disable corefreqd.service
+rmmod corefreqk || true
 dkms remove -m corefreqk -v ${B_VERSION} --all || true
 EOF
 chmod 755 "$post"/*
