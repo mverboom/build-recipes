@@ -24,16 +24,16 @@ post="$B_RECIPEDIR/corefreqk-dkms.files/B_DEBIAN/DEBIAN"
 test -d "$post" || mkdir -p "$post"
 cat > "$post/postinst" <<EOF
 #!/bin/sh
+systemctl stop corefreqd.service || true
+rmmod corefreqk || true
 dkms add -m corefreqk -v ${B_VERSION}
-dkms build -m corefreqk -v ${B_VERSION} && dkms install -m corefreqk -v ${B_VERSION} || true
+dkms build -m corefreqk -v ${B_VERSION} && dkms install -m corefreqk -v ${B_VERSION}
+modprobe corefreqk
 if test "$1" = "configure"; then
-  systemctl daemon-reload
   systemctl enable corefreqd.service
-  systemctl start corefreqd.service
-else
-  systemctl daemon-reload
-  systemctl restart corefreqd.service
 fi
+systemctl daemon-reload
+systemctl start corefreqd.service
 EOF
 cat > "$post/prerm" <<EOF
 systemctl stop corefreqd.service
