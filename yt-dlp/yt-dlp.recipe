@@ -1,0 +1,31 @@
+[INFO]
+arch=amd64
+
+[VERSION]
+B_GITVER https://github.com/yt-dlp/yt-dlp
+
+[REQUIRED]
+make zip pandoc
+
+[BUILD]
+dest=$B_INSTALLDIR/usr
+
+B_GET git https://github.com/yt-dlp/yt-dlp yt-dlp
+cd yt-dlp
+git checkout ${B_VERSION}
+make
+make PREFIX=${dest} install
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: yt-dlp
+Version: B_VERSION
+Section: yt-dlp
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: yt-dlp custom B_ORG build
+Homepage: https://github.com/yt-dlp/yt-dlp
