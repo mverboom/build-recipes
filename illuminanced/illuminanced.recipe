@@ -1,0 +1,33 @@
+[INFO]
+arch=amd64
+
+[VERSION]
+B_GITHUBVER https://github.com/mikhail-m1/illuminanced
+
+[REQUIRED]
+rustc-B_PF gcc
+
+[BUILD]
+B_GET git https://github.com/mikhail-m1/illuminanced illuminanced
+cd illuminanced
+cargo build --release
+mkdir -p $B_INSTALLDIR/usr/sbin $B_INSTALLDIR/etc $B_INSTALLDIR/lib/systemd/system
+cp target/release/illuminanced $B_INSTALLDIR/usr/sbin
+cp illuminanced.toml $B_INSTALLDIR/etc/illuminanced.toml.example
+sed -i "s#local/##" illuminanced.service
+sed -i "/ExecStart/ s|$| -c /etc/illuminanced.toml|" illuminanced.service
+cp illuminanced.service $B_INSTALLDIR/lib/systemd/system
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: illuminanced
+Version: B_VERSION
+Section: illuminanced
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: Illuminanced server custom B_ORG build
+Homepage: https://github.com/mikhail-m1/illuminanced
