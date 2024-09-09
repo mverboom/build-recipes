@@ -1,0 +1,31 @@
+[INFO]
+arch=amd64
+
+[VERSION]
+wget  -q  -O - 'https://gitlab.howett.net/api/v4/projects/171/repository/commits' | jq -r '.[0].committed_date[0:10] | gsub("-";"")'
+
+[REQUIRED]
+cmake g++ pkg-config libusb-1.0-0-dev libftdi1-dev
+
+[BUILD]
+B_GET git https://gitlab.howett.net/DHowett/ectool.git/ ectool
+cd ectool
+mkdir -p build; cd build
+cmake ..
+make 
+mkdir -p $B_INSTALLDIR/usr/bin
+cp src/ectool $B_INSTALLDIR/usr/bin
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: ectool
+Version: B_VERSION
+Section: ectool
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: ectool custom B_ORG build
+Homepage: https://gitlab.howett.net/DHowett/ectool
