@@ -1,0 +1,26 @@
+#!/bin/sh
+ 
+if test "$1" = "configure"; then
+  # Create a tmobile system group
+  if ! getent group tmobile > /dev/null; then
+      addgroup --quiet --system tmobile
+  fi
+  
+  # Create a tmobile system user
+  if ! getent passwd tmobile > /dev/null; then
+      adduser --quiet --system \
+          --ingroup tmobile \
+          --home /opt/tmobile-nl-unlimited-bundle-automated \
+          --no-create-home \
+          --disabled-password --shell /bin/bash \
+          tmobile
+      usermod -c "Tmobile user" tmobile
+  fi
+
+  chown -R tmobile:tmobile /etc/tmobile.cfg
+
+  systemctl enable tmobile-nl-unlimited-bundle-automated.service
+  systemctl restart tmobile-nl-unlimited-bundle-automated.service
+else
+  systemctl restart tmobile-nl-unlimited-bundle-automated.service
+fi

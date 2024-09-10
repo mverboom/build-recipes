@@ -1,0 +1,11 @@
+#!/bin/sh
+
+set -e
+
+if [ "$1" = "purge" ] ; then
+    if getent passwd tmobile >/dev/null; then
+        if which deluser >/dev/null 2>&1; then
+            deluser --quiet --system tmobile || echo "Could not remove tmobile user."
+        fi
+    fi
+fi

@@ -1,0 +1,35 @@
+[INFO]
+arch=amd64
+
+[VERSION]
+B_GITHUBVER https://github.com/lodu/TMobile-NL-Unlimited-Bundle-Automated main
+
+[REQUIRED]
+nodejs npm
+
+[BUILD]
+B_GET git https://github.com/lodu/TMobile-NL-Unlimited-Bundle-Automated odido
+cd odido
+npm install
+npm run build
+rm -f README.md Dockerfile docker-compose.yml LICENSE package-lock.json
+rm -rf .git* src
+ln -s /etc/tmobile.cfg .env
+dest="$B_INSTALLDIR/opt/tmobile-nl-unlimited-bundle-automated"
+mkdir -p "$dest"
+tar cf - . | ( cd "$dest" ; tar xf - )
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: tmobile-nl-unlimited-bundle-automated
+Version: B_VERSION
+Section: tmobile-nl-unlimited-bundle-automated
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: tmobile-nl-unlimited-bundle-automated custom B_ORG build
+Homepage: https://github.com/lodu/TMobile-NL-Unlimited-Bundle-Automated
+Depends: nodejs

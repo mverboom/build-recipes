@@ -1,0 +1,18 @@
+[Unit]
+Description=Tmobile NL Unlimited Bundle Automated
+After=network.target
+
+[Service]
+Type=simple
+User=tmobile
+Group=tmobile
+StandardOutput=journal
+StandardError=journal
+EnvironmentFile=-/etc/default/script-server-dev
+WorkingDirectory=/opt/tmobile-nl-unlimited-bundle-automated
+ExecStart=/usr/bin/nodejs dist/index.js
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
