@@ -1,0 +1,28 @@
+[INFO]
+arch=amd64
+
+[VERSION]
+B_GITVER -a https://github.com/FreeCAD/FreeCAD/
+
+[BUILD]
+releaseid=$( curl -s -L https://api.github.com/repos/FreeCAD/FreeCAD/releases | jq -r ".[] | select(.tag_name == \"$B_VERSION\") | .id" )
+url=$( curl -s -L https://api.github.com/repos/FreeCAD/FreeCAD/releases/${releaseid}/assets | jq -r '.[].browser_download_url' | grep "Linux-x86.*.AppImage$" )
+B_GET http "$url" freecad
+chmod 755 freecad
+mkdir -p "${B_INSTALLDIR}/usr/bin"
+mv freecad "${B_INSTALLDIR}/usr/bin"
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: freecad
+Version: B_VERSION
+Section: freecad
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: freecad custom B_ORG build
+Homepage: https://www.freecad.org/
+
