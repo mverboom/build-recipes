@@ -1,0 +1,28 @@
+[VERSION]
+B_GITVER https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git
+
+[INFO]
+arch=amd64
+
+[BUILD]
+B_GET git https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git linux-firmware
+cd linux-firmware
+git checkout $B_VERSION
+rm -rf amd-ucode
+dst=$B_INSTALLDIR/lib/firmware
+mkdir -p "$dst"
+cp -r * $dst
+
+[PKG]
+type=deb
+torepo=1
+
+[DEB]
+Package: linux-firmware
+Version: B_VERSION
+Section: linux-firmware
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: linux-firmware custom B_ORG build
+Homepage: https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git
