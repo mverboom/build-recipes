@@ -29,9 +29,7 @@ rmmod corefreqk || true
 dkms add -m corefreqk -v ${B_VERSION}
 dkms build -m corefreqk -v ${B_VERSION} && dkms install -m corefreqk -v ${B_VERSION}
 modprobe corefreqk
-if test "$1" = "configure"; then
-  systemctl enable corefreqd.service
-fi
+systemctl enable corefreqd.service
 systemctl daemon-reload
 systemctl start corefreqd.service
 EOF
