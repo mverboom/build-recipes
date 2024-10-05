@@ -1,0 +1,31 @@
+[INFO]
+arch=amd64
+
+[VERSION]
+B_GITVER https://github.com/arr2036/yksofttoken
+
+[REQUIRED]
+make gcc libyubikey-dev
+
+[BUILD]
+B_GET git https://github.com/arr2036/yksofttoken yksoft
+cd yksoft
+git checkout v${B_VERSION}
+sed -i 's#ldconfig#/sbin/ldconfig#' Makefile
+make
+mkdir -p "$B_INSTALLDIR/usr/bin"
+cp yksoft "$B_INSTALLDIR/usr/bin"
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: yksoft
+Version: B_VERSION
+Section: yksoft
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: yksoft server custom B_ORG build
+Homepage: https://github.com/arr2036/yksofttoken
