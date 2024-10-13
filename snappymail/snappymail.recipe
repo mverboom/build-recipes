@@ -1,0 +1,39 @@
+[INFO]
+arch=any
+
+[VERSION]
+B_GITVER https://github.com/the-djmaze/snappymail
+
+[REQUIRED]
+gulp-B_PF nodejs-lts-B_PF yarn-B_PF
+
+[BUILD]
+B_GET git https://github.com/the-djmaze/snappymail snappymail
+cd snappymail
+git checkout v${B_VERSION}
+sed -i "s/0.0.0/${B_VERSION}/" index.php
+mv snappymail/v/0.0.0 snappymail/v/${B_VERSION}
+yarn install
+gulp
+rm -rf .git .github .gitignore docker-compose.yml
+cat > include.php <<EOF
+<?php
+define('APP_DATA_FOLDER_PATH', '/var/lib/snappymail/data/');
+EOF
+
+mkdir -p $B_INSTALLDIR/opt/snappymail $B_INSTALLDIR/var/lib/snappymail/data
+tar cf - . | tar -C $B_INSTALLDIR/opt/snappymail -xf -
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: snappymail
+Version: B_VERSION
+Section: snappymail
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: snappymail custom B_ORG build
+Homepage: https://github.com/the-djmaze/snappymail
