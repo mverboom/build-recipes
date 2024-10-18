@@ -1,5 +1,5 @@
 [VERSION]
-B_GITVER -D -r s/zfs-// -f 2.1.99 -f 2.2.99 -f 2.3.99 https://github.com/openzfs/zfs
+B_GITVER -D -r s/zfs-// -f .\..\.99 https://github.com/openzfs/zfs
 
 [INFO]
 arch=amd64
