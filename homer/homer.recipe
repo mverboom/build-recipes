@@ -1,0 +1,38 @@
+[INFO]
+arch=amd64
+
+[VERSION]
+B_GITVER -D -r "/^v/!d" https://github.com/bastienwirtz/homer
+
+[REQUIRED]
+nodejs-lts-B_PF
+#yarn-B_PF
+
+[BUILD]
+B_GET git https://github.com/bastienwirtz/homer homer
+mkdir corepack
+corepack enable --install-directory corepack
+export PATH=$(pwd)/corepack:$PATH
+cd homer
+git checkout v$B_VERSION
+pnpm install
+pnpm build
+cd dist
+mkdir -p $B_INSTALLDIR/opt/homer $B_INSTALLDIR/etc
+mv assets $B_INSTALLDIR/etc/homer
+mv * $B_INSTALLDIR/opt/homer
+ln -s /etc/homer $B_INSTALLDIR/opt/homer/assets
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: homer
+Version: B_VERSION
+Section: homer
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: Homer custom B_ORG build
+Homepage: https://github.com/bastienwirtz/homer
