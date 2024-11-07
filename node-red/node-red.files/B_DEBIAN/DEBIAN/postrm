@@ -12,6 +12,8 @@ if [ "$1" = "purge" ]; then
 	done
 fi
 
+systemctl stop node-red
+
 userdel --force node-red > /dev/null || true
 groupdel node-red > /dev/null || true
 

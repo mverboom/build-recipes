@@ -7,7 +7,7 @@ Requires=network-online.target
 EnvironmentFile=-/etc/default/node-red
 User=node-red
 Group=node-red
-ExecStart=/opt/node-red/bin/node-red-pi
+ExecStart=/usr/bin/node-red --settings /etc/node-red/settings.js --userDir /var/lib/node-red
 PIDFile=/var/run/node-red/pid
 Restart=always
 

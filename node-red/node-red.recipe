@@ -17,10 +17,10 @@ git checkout tags/$B_VERSION
 npm install
 npm run build
 rm -rf *.md .git* .nodemonignore package.json package-lock.json .travis.yml Gruntfile.js .jshintrc jsdoc.json LICENSE test
-mkdir -p $B_INSTALLDIR/opt/node-red/bin
+mkdir -p $B_INSTALLDIR/opt/node-red $B_INSTALLDIR/usr/bin
 tar cf - . | ( cd $B_INSTALLDIR/opt/node-red ; tar xf - )
-cd $B_INSTALLDIR/opt/node-red/bin
-ln -s ../packages/node_modules/node-red/bin/node-red-pi
+cd $B_INSTALLDIR/usr/bin
+ln -s /opt/node-red/packages/node_modules/node-red/bin/node-red-pi node-red
 
 [PKG]
 type=deb

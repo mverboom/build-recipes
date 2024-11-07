@@ -5,16 +5,19 @@ set -e
 umask 0022
 ACTION="$1"
 VERSION="$2"
+CFGDEFAULT="/opt/node-red/packages/node_modules/node-red/settings.js"
+CFG="/etc/node-red/settings.js"
 
 if [ "$ACTION" = "configure" ]; then
 	# add the node-red user
 	if ! getent passwd node-red >/dev/null; then
 		useradd --user-group --system --home-dir /var/lib/node-red node-red
 	fi
+	test -e "$CFG" || cp "$CFGDEFAULT" "$CFG"
 	if ! test -d /var/lib/node-red
 	then
 		mkdir /var/lib/node-red
-		chown node-red:node-red /var/lib/node-red
+		chown -R node-red:node-red /var/lib/node-red /etc/node-red
 	fi
 	systemctl enable node-red
 fi
