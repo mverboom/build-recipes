@@ -17,7 +17,9 @@ git checkout $B_VERSION
 npm ci
 npm run build
 rm -rf LICENSE README.md .git .github .gitignore test .vscode .npmrc .npmignore update.sh docker images npm-shrinkwrap.json .dockerignore .eslintignore .eslintrc.json data
-mkdir -p $B_INSTALLDIR/opt/zigbee2mqtt
+mkdir -p "$B_INSTALLDIR/opt/zigbee2mqtt"
+mkdir -p "$B_INSTALLDIR/var/log/zigbee2mqtt"
+mkdir -p "$B_INSTALLDIR/var/lib/zigbee2mqtt"
 ln -s /var/lib/zigbee2mqtt data
 tar cfB - . | (cd $B_INSTALLDIR/opt/zigbee2mqtt ; tar xfB - )
 
