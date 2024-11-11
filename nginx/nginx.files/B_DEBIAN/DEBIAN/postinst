@@ -1,0 +1,27 @@
+#!/bin/sh
+ 
+if test "$1" = "configure"; then
+  # Create a www-data system group
+  if ! getent group www-data > /dev/null; then
+      addgroup --quiet --system www-data
+  fi
+  
+  # Create a www-data system user
+  if ! getent passwd www-data > /dev/null; then
+      adduser --quiet --system \
+          --ingroup www-data \
+          --home /var/www \
+          --no-create-home \
+          --disabled-password --shell /bin/bash \
+          gvm
+      usermod -c "www-data user" www-data
+  fi
+
+  chown -R www-data:www-data /var/www /var/log/nginx
+  systemd-tmpfiles --create
+
+  systemctl enable nginx
+  systemctl start nginx
+else
+  systemctl restart nginx
+fi

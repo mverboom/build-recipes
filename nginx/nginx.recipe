@@ -1,0 +1,80 @@
+[INFO]
+arch=amd64
+
+[VERSION]
+wget -O - -q http://nginx.org/en/download.html | awk '/<a href="\/download/ { split($0, a, "href=\"/download/"); print substr(a[2],7,index(a[2],".tar.gz")-7); }'
+
+[REQUIRED]
+gcc zlib1g-dev libpcre3-dev libpam0g-dev make libressl-B_PF libmaxminddb-dev libxslt1-dev
+
+[BUILD]
+B_GET http http://nginx.org/download/nginx-$B_VERSION.tar.gz nginx.tar.gz
+mkdir nginx
+tar xzf nginx.tar.gz -C nginx --strip-components 1
+
+B_GET http https://github.com/stogh/ngx_http_auth_pam_module/archive/master.tar.gz master.tar.gz
+mkdir auth_pam
+tar xzf master.tar.gz -C auth_pam --strip-components 1
+rm -f master.tar.gz
+
+pushd .
+mkdir -p "libressl/.openssl/lib"
+cd "libressl/.openssl"
+( cd /opt/libressl ; tar cfB - include lib ) | tar xfB -
+popd
+
+B_GET git https://github.com/sergey-dryabzhinsky/nginx-rtmp-module.git rtmp
+
+B_GET git https://github.com/leev/ngx_http_geoip2_module.git geoip2
+
+#B_GET git https://github.com/arut/nginx-dav-ext-module dav-ext
+B_GET git https://github.com/mid1221213/nginx-dav-ext-module dav-ext
+
+cd nginx
+patch -p0 < <(wget -q -O - https://raw.githubusercontent.com/Jas0n99/ngx_force_gunzip/refs/heads/master/ngx_force_gunzip.patch)
+./configure --with-openssl=../libressl \
+            --with-ld-opt="-L ../libressl/.openssl/lib/" \
+            --with-cc-opt="-I ../libressl/.openssl/include/ -O2 -fPIE -fstack-protector -D_FORTIFY_SOURCE=2 -DTLS1_3_VERSION=0x0304" \
+            --prefix=/opt/nginx \
+            --http-log-path=/var/log/nginx/access.log \
+            --conf-path=/etc/nginx/nginx.conf \
+            --sbin-path=/opt/nginx/sbin/nginx \
+            --error-log-path=/var/log/nginx/error.log \
+            --pid-path=/var/run/nginx.pid \
+            --with-http_ssl_module \
+            --with-http_stub_status_module \
+            --with-http_sub_module \
+            --with-stream \
+            --with-file-aio \
+            --with-stream_ssl_module \
+            --with-stream_ssl_preread_module \
+            --with-http_realip_module \
+            --with-http_dav_module \
+            --with-http_gunzip_module \
+            --add-module=../auth_pam \
+            --add-module=../rtmp \
+            --add-module=../geoip2 \
+            --add-module=../dav-ext \
+            --with-debug \
+            --with-http_v2_module \
+            --with-http_v3_module \
+            --with-http_auth_request_module
+# Prevent nginx from trying to compile openssl because of older ssl.h
+touch ../libressl/.openssl/include/openssl/ssl.h
+make -j $(nproc)
+make install DESTDIR=$B_INSTALLDIR
+B_LINKFILE /opt/nginx/sbin/nginx /usr/sbin
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: nginx
+Version: B_VERSION
+Section: httpd
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: Nginx custom B_ORG build
+Depends: libmaxminddb0,libpcre3
