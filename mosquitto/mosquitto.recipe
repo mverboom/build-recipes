@@ -18,6 +18,7 @@ B_LINKFILES /opt/mosquitto/bin /usr/bin
 B_LINKFILES /opt/mosquitto/sbin /usr/sbin
 mkdir -p "$B_INSTALLDIR/var/log/mosquitto"
 mkdir -p "$B_INSTALLDIR/var/lib/mosquitto"
+mkdir -p "$B_INSTALLDIR/etc/mosquitto/conf.d"
 
 [PKG]
 type=deb
