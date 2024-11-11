@@ -1,5 +1,5 @@
 [INFO]
-arch=amd64,armhf
+arch=amd64
 
 [VERSION]
 B_GITVER https://github.com/Koenkk/zigbee2mqtt.git
