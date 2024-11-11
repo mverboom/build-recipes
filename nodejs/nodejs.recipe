@@ -1,5 +1,6 @@
 [INFO]
 arch=amd64
+# https://github.com/nodejs/help/issues/4406
 
 [VERSION]
 B_GITVER -e 213123 https://github.com/nodejs/node/
@@ -12,7 +13,8 @@ B_GET git https://github.com/nodejs/node/ nodejs
 cd nodejs
 git checkout v$B_VERSION
 ./configure --prefix=/opt/nodejs
-make -j $(nproc)
+#make -j $(nproc)
+make
 make install DESTDIR=$B_INSTALLDIR
 B_LINKFILES /opt/nodejs/bin /usr/bin
 
