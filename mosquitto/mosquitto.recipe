@@ -16,6 +16,8 @@ make WITH_WEBSOCKETS=yes CPPFLAGS=-I/opt/libwebsockets/include LDFLAGS=-L/opt/li
 make install DESTDIR=$B_INSTALLDIR WITH_LIBWEBSOCKETS=yes
 B_LINKFILES /opt/mosquitto/bin /usr/bin
 B_LINKFILES /opt/mosquitto/sbin /usr/sbin
+mkdir -p "$B_INSTALLDIR/var/log/mosquitto"
+mkdir -p "$B_INSTALLDIR/var/lib/mosquitto"
 
 [PKG]
 type=deb
