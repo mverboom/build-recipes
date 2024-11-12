@@ -77,4 +77,4 @@ Priority: optional
 Architecture: B_ARCH
 Maintainer: B_MAIL
 Description: Nginx custom B_ORG build
-Depends: libmaxminddb0,libpcre3
+Depends: libmaxminddb0,libpcre3,libxml2
