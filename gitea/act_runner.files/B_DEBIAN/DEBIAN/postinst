@@ -1,0 +1,19 @@
+#!/bin/sh
+
+set -e
+
+case "$1" in
+  configure)
+    if ! getent passwd act_runner > /dev/null; then
+       adduser --disabled-password --quiet --system --group \
+          --home /var/act_runner --no-create-home \
+          --gecos "gitea act_runner" --shell /bin/bash act_runner
+    fi
+    mkdir -p /var/act_runner > /dev/null 2>&1 || true 
+    chown act_runner:act_runner /var/act_runner
+    adduser act_runner docker
+    systemctl enable act_runner
+  ;;
+esac
+
+exit 0

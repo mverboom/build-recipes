@@ -1,0 +1,13 @@
+#!/bin/sh
+
+set -e
+
+systemctl stop act_runner > /dev/null || true
+
+if test "$1" = "purge"; then
+   delgroup --quiet act_runner docker > /dev/null || true
+   deluser --quiet --system act_runner > /dev/null || true
+   delgroup --quiet act_runner > /dev/null || true
+fi
+
+exit 0

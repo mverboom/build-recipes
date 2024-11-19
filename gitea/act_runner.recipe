@@ -1,0 +1,34 @@
+[INFO]
+arch=amd64
+
+[VERSION]
+B_GITVER https://gitea.com/gitea/act_runner
+
+[REQUIRED]
+make golang-B_PF
+
+[BUILD]
+export GOROOT=/opt/go
+export PATH=${PATH}:${GOROOT}/bin
+B_GET git https://gitea.com/gitea/act_runner act_runner
+cd act_runner
+git checkout v$B_VERSION
+#TAGS="bindata sqlite sqlite_unlock_notify pam" make build
+make build
+mkdir -p "$B_INSTALLDIR/usr/bin"
+cp act_runner "$B_INSTALLDIR/usr/bin"
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: act-runner
+Version: B_VERSION
+Section: act-runner
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Homepage: https://gitea.io
+Description: act_runner B_PF custom build
+Depends: docker.io

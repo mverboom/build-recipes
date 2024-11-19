@@ -1,0 +1,14 @@
+[Unit]
+Description=act_runner
+After=network.target
+
+[Service]
+Type=simple
+User=act_runner
+Group=act_runner
+WorkingDirectory=/var/act_runner
+ExecStart=/usr/bin/act_runner daemon
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
