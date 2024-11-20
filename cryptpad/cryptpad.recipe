@@ -26,7 +26,6 @@ sed -i '/blobPath/ s#./#/var/lib/cryptpad/#' config.js
 sed -i '/blobStagingPath/ s#./#/var/lib/cryptpad/#' config.js
 sed -i '/logPath/ s#./data/logs#/var/log/cryptpad#' config.js
 mv config.js $B_INSTALLDIR/etc/cryptpad/config.js
-mv customize.dist/application_config.js $B_INSTALLDIR/etc/cryptpad/application_config.js
 rm -f *.md
 rm -rf .git* config
 tar cf - . | ( cd $B_INSTALLDIR/opt/cryptpad ; tar xf - )
@@ -34,7 +33,6 @@ B_LINKFILES /var/lib/cryptpad /opt/cryptpad
 mv $B_INSTALLDIR/opt/cryptpad/lib/plugins $B_INSTALLDIR/var/lib/cryptpad
 ln -s /var/lib/cryptpad/plugins $B_INSTALLDIR/opt/cryptpad/lib/plugins
 ln -s /etc/cryptpad $B_INSTALLDIR/opt/cryptpad/config
-ln -s /etc/cryptpad/application_config.js $B_INSTALLDIR/opt/cryptpad/customize.dist/application_config.js
 
 [PKG]
 type=deb
