@@ -1,0 +1,26 @@
+#!/bin/sh
+ 
+if test "$1" = "configure"; then
+  # Create a cryptpad system group
+  if ! getent group cryptpad > /dev/null; then
+      addgroup --quiet --system cryptpad
+  fi
+  
+  # Create a cryptpad system user
+  if ! getent passwd cryptpad > /dev/null; then
+      adduser --quiet --system \
+          --ingroup cryptpad \
+          --home /opt/cryptpad \
+          --no-create-home \
+          --disabled-password --shell /bin/bash \
+          cryptpad
+      usermod -c "Cryptpad user" cryptpad
+  fi
+
+  chown -R cryptpad:cryptpad /var/lib/cryptpad /etc/cryptpad /var/log/cryptpad
+
+  systemctl enable cryptpad
+  systemctl start cryptpad
+else
+  systemctl restart cryptpad
+fi

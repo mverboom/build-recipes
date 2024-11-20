@@ -1,0 +1,13 @@
+[Unit]
+Description=Cryptpad
+
+[Service]
+Environment=NODE_ENV=production
+Type=simple
+User=cryptpad
+Group=cryptpad
+WorkingDirectory=/opt/cryptpad
+ExecStart=node server
+
+[Install]
+WantedBy=multi-user.target

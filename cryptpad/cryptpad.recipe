@@ -1,0 +1,52 @@
+[INFO]
+arch=amd64
+
+[VERSION]
+B_GITVER https://github.com/xwiki-labs/cryptpad
+
+[REQUIRED]
+nodejs npm
+#nodejs-lts-B_PF
+
+[BUILD]
+B_GET git https://github.com/xwiki-labs/cryptpad cryptpad
+cd cryptpad
+git checkout $B_VERSION
+npm install
+npm run install:components
+ACCEPT_LICENSE=y ./install-onlyoffice.sh
+mkdir -p $B_INSTALLDIR/opt/cryptpad $B_INSTALLDIR/etc/cryptpad $B_INSTALLDIR/var/lib/cryptpad/datastore $B_INSTALLDIR/var/lib/cryptpad/data/pins $B_INSTALLDIR/var/lib/cryptpad/data/tasks $B_INSTALLDIR/var/lib/cryptpad/block $B_INSTALLDIR/var/lib/cryptpad/blob $B_INSTALLDIR/var/lib/cryptpad/data/blobstage $B_INSTALLDIR/var/lib/cryptpad/customize $B_INSTALLDIR/var/log/cryptpad
+mv config/config.example.js config.js
+sed -i '/filePath/ s#./#/var/lib/cryptpad/#' config.js
+sed -i '/archivePath/ s#./#/var/lib/cryptpad/#' config.js
+sed -i '/pinPath/ s#./#/var/lib/cryptpad/#' config.js
+sed -i '/taskPath/ s#./#/var/lib/cryptpad/#' config.js
+sed -i '/blockPath/ s#./#/var/lib/cryptpad/#' config.js
+sed -i '/blobPath/ s#./#/var/lib/cryptpad/#' config.js
+sed -i '/blobStagingPath/ s#./#/var/lib/cryptpad/#' config.js
+sed -i '/logPath/ s#./data/logs#/var/log/cryptpad#' config.js
+mv config.js $B_INSTALLDIR/etc/cryptpad/config.js
+mv customize.dist/application_config.js $B_INSTALLDIR/etc/cryptpad/application_config.js
+rm -f *.md
+rm -rf .git* config
+tar cf - . | ( cd $B_INSTALLDIR/opt/cryptpad ; tar xf - )
+B_LINKFILES /var/lib/cryptpad /opt/cryptpad
+mv $B_INSTALLDIR/opt/cryptpad/lib/plugins $B_INSTALLDIR/var/lib/cryptpad
+ln -s /var/lib/cryptpad/plugins $B_INSTALLDIR/opt/cryptpad/lib/plugins
+ln -s /etc/cryptpad $B_INSTALLDIR/opt/cryptpad/config
+ln -s /etc/cryptpad/application_config.js $B_INSTALLDIR/opt/cryptpad/customize.dist/application_config.js
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: cryptpad
+Version: B_VERSION
+Section: cryptpad
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: Cryptpad custom B_ORG build
+Homepage: https://cryptpad.fr/
+Depends: nodejs
