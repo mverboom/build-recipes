@@ -1,0 +1,3 @@
+# tgpt
+
+Terminal GPT interface
