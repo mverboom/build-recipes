@@ -1,0 +1,27 @@
+[INFO]
+arch=amd64
+
+[VERSION]
+B_GITVER https://github.com/cryptpad/sso
+
+[BUILD]
+B_GET git https://github.com/cryptpad/sso sso
+cd sso
+git checkout $B_VERSION
+mkdir -p "$B_INSTALLDIR/var/lib/cryptpad/plugins/sso"
+tar cf - . | ( cd $B_INSTALLDIR/var/lib/cryptpad/plugins/sso ; tar xf - )
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: cryptpad-plugin-sso
+Version: B_VERSION
+Section: cryptpad-plugin-sso
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: Cryptpad-plugin-sso custom B_ORG build
+Homepage: https://cryptpad.fr/
+Depends: cryptpad-B_PF

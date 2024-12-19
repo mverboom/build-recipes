@@ -1,0 +1,30 @@
+[INFO]
+arch=amd64
+
+[VERSION]
+B_GITHUBVER https://github.com/cryptpad/cryptpad-sodium-plugin main
+
+[REQUIRED]
+npm
+
+[BUILD]
+B_GET git https://github.com/cryptpad/cryptpad-sodium-plugin sodium
+cd sodium
+npm ci
+mkdir -p "$B_INSTALLDIR/var/lib/cryptpad/plugins/sodium"
+tar cf - . | ( cd $B_INSTALLDIR/var/lib/cryptpad/plugins/sodium ; tar xf - )
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: cryptpad-plugin-sodium
+Version: B_VERSION
+Section: cryptpad-plugin-sodium
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: Cryptpad-plugin-sodium custom B_ORG build
+Homepage: https://cryptpad.fr/
+Depends: cryptpad-B_PF
