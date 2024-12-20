@@ -11,8 +11,8 @@ nodejs-lts-B_PF yarn-B_PF
 B_GET git https://github.com/zwave-js/zwave-js-ui.git zwavejsui
 cd zwavejsui
 git checkout v$B_VERSION
-yarn install
-yarn run build
+npm install
+npm run build
 rm -rf .git .github .yarn .vscode .yarnrc.yml .prettierrc.js .prettierignore .postcssrc.js .nvmrc .mocharc.yml .mergify.yml .markdownlintignore .markdownlint.json .gitignore .eslintrc.js .eslintignore .dockerignore .babelrc README.md SECURITY.md yarn.lock src docker kubernetes test store
 mkdir -p $B_INSTALLDIR/opt/zwavejsui
 ln -s /var/lib/zwavejsui store
