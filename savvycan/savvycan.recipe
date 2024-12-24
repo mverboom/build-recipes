@@ -1,0 +1,31 @@
+[INFO]
+arch=amd64
+
+[VERSION]
+B_GITVER -D -f V  https://github.com/collin80/SavvyCAN.git
+
+[REQUIRED DEBIAN]
+qt5-qmake-bin g++ libqt5serialbus5-dev libqt5serialport5-dev qtdeclarative5-dev qttools5-dev make
+
+[BUILD]
+B_GET git https://github.com/collin80/SavvyCAN.git savvycan
+cd savvycan
+git checkout V${B_VERSION}
+qmake PREFIX="$B_INSTALLDIR/opt/savvycan"
+make
+make install
+B_LINKFILES /opt/savvycan/bin /usr/bin
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: savvycan
+Version: B_VERSION
+Section: savvycan
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: savvycan custom B_ORG build
+Depends: libqt5serialbus5
