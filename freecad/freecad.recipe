@@ -2,7 +2,7 @@
 arch=amd64
 
 [VERSION]
-B_GITVER -a https://github.com/FreeCAD/FreeCAD/
+B_GITVER https://github.com/FreeCAD/FreeCAD/
 
 [BUILD]
 releaseid=$( curl -s -L https://api.github.com/repos/FreeCAD/FreeCAD/releases | jq -r ".[] | select(.tag_name == \"$B_VERSION\") | .id" )
