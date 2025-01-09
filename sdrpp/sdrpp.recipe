@@ -1,0 +1,34 @@
+[INFO]
+arch=amd64
+
+[VERSION]
+B_GITHUBVER https://github.com/AlexandreRouma/SDRPlusPlus
+
+[REQUIRED]
+cmake libglfw3-dev libfftw3-dev libvolk2-dev libzstd-dev g++ pkg-config libairspy-dev libairspyhf-dev libhackrf-dev librtlsdr-dev libsoapysdr-dev libiio-dev libad9361-dev librtaudio-dev
+
+[BUILD]
+B_GET git https://github.com/AlexandreRouma/SDRPlusPlus sdrpp
+cd sdrpp
+sed -i 's&\(set(CMAKE_INSTALL_PREFIX \)"/usr")&\1"/opt/sdrpp")&' CMakeLists.txt
+mkdir build
+cd build
+cmake -DCMAKE_INSTALL_PREFIX=/opt/sdrpp ..
+make -j $(nproc)
+make install DESTDIR=$B_INSTALLDIR
+B_LINKFILES /opt/sdrpp/bin /usr/bin
+B_LINKFILES /opt/sdrpp/lib /usr/lib
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: sdrpp
+Version: B_VERSION
+Section: sdrpp
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: sdrpp custom B_ORG build
+Depends: libopengl0, libglfw3, libvolk2.5, libairspyhf1, libad9361-0, libairspy0, libhackrf0, libiio0, librtaudio6, librtlsdr0, libsoapysdr0.8, libfftw3-single3

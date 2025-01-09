@@ -1,0 +1,13 @@
+[Unit]
+Description=SDR++ service
+After=network.target
+
+[Service]
+Environment=HOME=/root
+Type=simple
+StandardOutput=tty
+ExecStart=/opt/sdrpp/bin/sdrpp --server
+WorkingDirectory=/root
+
+[Install]
+WantedBy=multi-user.target
