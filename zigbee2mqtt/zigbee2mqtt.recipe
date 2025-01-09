@@ -4,24 +4,24 @@ arch=amd64
 [VERSION]
 B_GITVER https://github.com/Koenkk/zigbee2mqtt.git
 
-[REQUIRED DEBIAN BULLSEYE]
-nodejs-14-B_PF git make g++ gcc
-
 [REQUIRED]
-nodejs-lts-B_PF git make g++ gcc
+nodejs-lts-B_PF git make g++ gcc pnpm-B_PF
 
 [BUILD]
 B_GET git https://github.com/Koenkk/zigbee2mqtt.git zigbee2mqtt
 cd zigbee2mqtt
 git checkout $B_VERSION
-npm ci
-npm run build
-rm -rf LICENSE README.md .git .github .gitignore test .vscode .npmrc .npmignore update.sh docker images npm-shrinkwrap.json .dockerignore .eslintignore .eslintrc.json data
+#npm ci
+#npm run build
+pnpm i
+pnpm run build
+#rm -rf LICENSE README.md .git .github .gitignore test .vscode .npmrc .npmignore update.sh docker images npm-shrinkwrap.json .dockerignore .eslintignore .eslintrc.json data
 mkdir -p "$B_INSTALLDIR/opt/zigbee2mqtt"
 mkdir -p "$B_INSTALLDIR/var/log/zigbee2mqtt"
 mkdir -p "$B_INSTALLDIR/var/lib/zigbee2mqtt"
 ln -s /var/lib/zigbee2mqtt data
 tar cfB - . | (cd $B_INSTALLDIR/opt/zigbee2mqtt ; tar xfB - )
+ln -s /etc/zigbee2mqtt/configuration.yaml $B_INSTALLDIR/var/lib/zigbee2mqtt/configuration.yaml
 
 [PKG]
 type=deb
