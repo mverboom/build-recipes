@@ -1,0 +1,19 @@
+[INFO]
+arch=amd64
+
+[REQUIRED]
+unzip
+
+[VERSION]
+wget -q -O - https://www.cendio.com/thinlinc/download | sed -n "/server\/tl-[0-9\.]\+-server.zip/ {s#.*server/tl-\([0-9\.]\+\)-server.zip.*#\1#p; q}"
+
+[BUILD]
+B_GET http https://www.cendio.com/downloads/server/tl-${B_VERSION}-server.zip server.zip
+unzip -q server.zip
+cd "tl-${B_VERSION}-server"
+mv packages/thinlinc-server_${B_VERSION}-*_amd64.deb ${B_INSTALLDIR}
+
+[PKG]
+type=deb
+pkgready=y
+torepo=y
