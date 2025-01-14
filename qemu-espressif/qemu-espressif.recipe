@@ -1,0 +1,26 @@
+[INFO]
+arch=amd64
+
+[VERSION]
+B_GITVER -D -e "rv" -e "develop-20" -i esp-develop -F 'esp-develop-' https://github.com/espressif/qemu/
+
+[BUILD]
+B_GET http https://github.com/espressif/qemu/releases/download/esp-develop-${B_VERSION}/qemu-xtensa-softmmu-esp_develop_${B_VERSION/-/_}-x86_64-linux-gnu.tar.xz qemu.tar.xz
+dest="$B_INSTALLDIR/opt/qemu-esp32"
+mkdir -p "$dest"
+tar xJf qemu.tar.xz -C "$dest" --strip-components 1
+B_LINKFILE /opt/qemu-esp32/bin/qemu-system-xtensa /usr/bin
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: qemu-espressif
+Version: B_VERSION
+Section: qemu-espressif
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: Qemu-espressif custom B_ORG build
+Homepage: https://github.com/espressif/qemu/
