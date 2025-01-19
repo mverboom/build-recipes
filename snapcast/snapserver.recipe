@@ -5,7 +5,7 @@ arch=amd64
 B_GITVER https://github.com/badaix/snapcast
 
 [REQUIRED]
-build-essential libasound2-dev libvorbisidec-dev libvorbis-dev libflac-dev alsa-utils libavahi-client-dev avahi-daemon libopus-dev libsoxr-dev libboost1.74-dev cmake
+build-essential libasound2-dev libvorbisidec-dev libvorbis-dev libflac-dev alsa-utils libavahi-client-dev avahi-daemon libopus-dev libsoxr-dev libboost1.74-dev cmake libssl-dev
 
 [BUILD]
 B_GET git -s https://github.com/badaix/snapcast.git snapcast
