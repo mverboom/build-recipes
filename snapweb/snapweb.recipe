@@ -1,5 +1,6 @@
 [INFO]
 arch=amd64
+excludefromall=1
 
 [VERSION]
 B_GITHUBVER https://github.com/badaix/snapweb
