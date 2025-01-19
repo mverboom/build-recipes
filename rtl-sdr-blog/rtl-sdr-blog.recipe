@@ -1,0 +1,34 @@
+[INFO]
+arch=amd64
+
+[VERSION]
+B_GITVER https://github.com/rtlsdrblog/rtl-sdr-blog
+
+[REQUIRED]
+libusb-1.0-0-dev cmake pkg-config
+
+[BUILD]
+B_GET git https://github.com/rtlsdrblog/rtl-sdr-blog rtl-sdr-blog
+cd rtl-sdr-blog/
+git checkout v$B_VERSION
+mkdir build && cd build/
+cmake ../ -DINSTALL_UDEV_RULES=ON
+make
+make install DESTDIR=$B_INSTALLDIR
+mkdir -p $B_INSTALLDIR/etc/modprobe.d/
+echo 'blacklist dvb_usb_rtl28xxu' > $B_INSTALLDIR/etc/modprobe.d/blacklist-dvb_usb_rtl28xxu.conf
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: rtl-sdr-blog
+Version: B_VERSION
+Section: rtl-sdr-blog
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: rtl-sdr-blog custom B_ORG build
+Homepage: https://osmocom.org/projects/rtl-sdr/wiki
+Depends: libusb-1.0-0-dev
