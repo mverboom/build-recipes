@@ -11,11 +11,12 @@ nodejs-lts-B_PF git make g++ gcc pnpm-B_PF
 B_GET git https://github.com/Koenkk/zigbee2mqtt.git zigbee2mqtt
 cd zigbee2mqtt
 git checkout $B_VERSION
+echo "node-linker=hoisted" >> .npmrc
 #npm ci
 #npm run build
 pnpm i
 pnpm run build
-#rm -rf LICENSE README.md .git .github .gitignore test .vscode .npmrc .npmignore update.sh docker images npm-shrinkwrap.json .dockerignore .eslintignore .eslintrc.json data
+rm -rf LICENSE README.md .git .github .gitignore test .vscode .npmrc .npmignore update.sh docker images npm-shrinkwrap.json .dockerignore .eslintignore .eslintrc.json data
 mkdir -p "$B_INSTALLDIR/opt/zigbee2mqtt"
 mkdir -p "$B_INSTALLDIR/var/log/zigbee2mqtt"
 mkdir -p "$B_INSTALLDIR/var/lib/zigbee2mqtt"

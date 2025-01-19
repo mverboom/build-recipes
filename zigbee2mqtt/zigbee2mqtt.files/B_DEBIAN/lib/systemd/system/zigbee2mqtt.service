@@ -5,6 +5,7 @@ After=network.target
 [Service]
 ExecStart=/usr/bin/npm start
 WorkingDirectory=/opt/zigbee2mqtt
+Environment="ZIGBEE2MQTT_DATA=/var/lib/zigbee2mqtt"
 StandardOutput=inherit
 StandardError=inherit
 Restart=always
