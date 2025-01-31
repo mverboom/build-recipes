@@ -1,0 +1,23 @@
+#!/bin/sh
+ 
+if test "$1" = "configure"; then
+  # Create a ollama system group
+  if ! getent group ollama > /dev/null; then
+      addgroup --quiet --system ollama
+  fi
+  # Create a ollama system user
+  if ! getent passwd ollama > /dev/null; then
+      adduser --quiet --system \
+          --home /var/lib/ollama \
+          --no-create-home \
+          --disabled-password --shell /bin/false \
+          ollama
+      usermod -c "ollama user" ollama
+      chown -R ollama:ollama /var/lib/ollama
+  fi
+
+  systemctl enable ollama.service
+  systemctl start ollama.service
+else
+  systemctl restart ollama.service
+fi

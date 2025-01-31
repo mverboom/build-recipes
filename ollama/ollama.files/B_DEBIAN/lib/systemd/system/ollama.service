@@ -1,0 +1,17 @@
+[Unit]
+Description=ollama server
+After=network-online.target
+
+[Service]
+Type=simple
+EnvironmentFile=-/etc/default/ollama
+User=ollama
+Group=ollama
+ExecStart=/opt/ollama/bin/ollama serve $OPTIONS
+TimeoutStopSec=5
+Restart=on-failure
+RestartSec=2
+PrivateTmp=false
+
+[Install]
+WantedBy=multi-user.target

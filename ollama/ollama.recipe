@@ -1,0 +1,37 @@
+[INFO]
+arch=amd64
+
+[VERSION]
+B_GITVER https://github.com/ollama/ollama/
+
+[REQUIRED]
+golang-B_PF gcc g++ make
+
+[BUILD]
+export GOROOT=/opt/go
+export PATH=${PATH}:${GOROOT}/bin
+B_GET git https://github.com/ollama/ollama/ ollama
+cd ollama
+git checkout v$B_VERSION
+export PATH=/opt/go/bin:$PATH
+export GOPATH=$(pwd)
+make -j $(nproc)
+make dist
+mkdir -p "$B_INSTALLDIR/opt/ollama"
+cd dist/linux-amd64
+tar cfB - . | ( cd "$B_INSTALLDIR/opt/ollama"; tar xfB -)
+B_LINKFILE /opt/ollama/bin/ollama /usr/bin
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: ollama
+Version: B_VERSION
+Section: ollama
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Homepage: https://ollama.com/
+Description: ollama B_PF custom build

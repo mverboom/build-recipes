@@ -1,0 +1,5 @@
+#!/bin/sh
+
+systemctl stop ollama.service
+systemctl disable ollama.service
+deluser --quiet ollama
