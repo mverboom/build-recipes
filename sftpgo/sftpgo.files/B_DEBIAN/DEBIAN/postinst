@@ -1,0 +1,23 @@
+#!/bin/sh
+ 
+if test "$1" = "configure"; then
+  # Create a sftpgo system group
+  if ! getent group sftpgo > /dev/null; then
+      addgroup --quiet --system sftpgo
+  fi
+  # Create a sftpgo system user
+  if ! getent passwd sftpgo > /dev/null; then
+      adduser --quiet --system \
+          --home /var/lib/sftpgo \
+          --no-create-home \
+          --disabled-password --shell /bin/false \
+          sftpgo
+      usermod -c "sftpgo user" sftpgo
+      chown -R sftpgo:sftpgo /var/lib/sftpgo /var/log/sftpgo
+  fi
+
+  systemctl enable sftpgo.service
+  systemctl start sftpgo.service
+else
+  systemctl restart sftpgo.service
+fi

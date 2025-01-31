@@ -1,0 +1,17 @@
+[Unit]
+Description=sftpgo server
+After=network-online.target
+
+[Service]
+Type=simple
+EnvironmentFile=-/etc/default/sftpgo
+User=sftpgo
+Group=sftpgo
+ExecStart=/usr/bin/sftpgo serve --config-file /etc/sftpgo/sftpgo.json --log-file-path /var/log/sftpgo/sftpgo.log --config-dir /var/lib/sftpgo $OPTIONS
+TimeoutStopSec=5
+Restart=on-failure
+RestartSec=2
+PrivateTmp=false
+
+[Install]
+WantedBy=multi-user.target
