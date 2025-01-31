@@ -12,7 +12,7 @@ B_GET git https://github.com/rtlsdrblog/rtl-sdr-blog rtl-sdr-blog
 cd rtl-sdr-blog/
 git checkout v$B_VERSION
 mkdir build && cd build/
-cmake ../ -DINSTALL_UDEV_RULES=ON
+cmake ../ -DINSTALL_UDEV_RULES=ON -DDETACH_KERNEL_DRIVER=ON
 make
 make install DESTDIR=$B_INSTALLDIR
 mkdir -p $B_INSTALLDIR/etc/modprobe.d/

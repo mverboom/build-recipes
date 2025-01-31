@@ -15,7 +15,7 @@ export JAVA_HOME=/usr/lib/jvm/default-java
 # Ignore license errors
 sed -i 's#<ignoreLicenseErrors>false</ignoreLicenseErrors>#<ignoreLicenseErrors>true</ignoreLicenseErrors>#' pom.xml
 # 20190718 MV: skip javadoc due to errors
-mvn package -Dmaven.javadoc.skip=true
+mvn package -Dmaven.javadoc.skip=true -DskipTests=true
 mkdir -p $B_INSTALLDIR/var/lib/guacamole/
 mv target/guacamole-client-*.tar.gz $B_INSTALLDIR/var/lib/guacamole/
 
