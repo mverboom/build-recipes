@@ -1,0 +1,23 @@
+#!/bin/sh
+ 
+if test "$1" = "configure"; then
+  # Create a openwebui system group
+  if ! getent group openwebui > /dev/null; then
+      addgroup --quiet --system openwebui
+  fi
+  # Create a openwebui system user
+  if ! getent passwd openwebui > /dev/null; then
+      adduser --quiet --system \
+          --home /var/lib/open-webui \
+          --no-create-home \
+          --disabled-password --shell /bin/false \
+          openwebui
+      usermod -c "openwebui user" openwebui
+      chown -R openwebui:openwebui /var/lib/open-webui
+  fi
+
+  systemctl enable openwebui.service
+  systemctl start openwebui.service
+else
+  systemctl restart openwebui.service
+fi

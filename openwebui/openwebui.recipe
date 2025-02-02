@@ -1,0 +1,36 @@
+[VERSION]
+B_GITVER https://github.com/open-webui/open-webui
+
+[INFO]
+arch=amd64
+
+[REQUIRED]
+python3 python3-venv
+
+[BUILD]
+DEST=$B_INSTALLDIR/opt/open-webui
+VIRT=$DEST
+mkdir -p $VIRT
+python3 -m venv "$VIRT"
+. $VIRT/bin/activate
+pip3 install open-webui==v$B_VERSION
+deactivate
+pushd "$VIRT/bin"
+shopt -s extglob
+sed -i "s|$VIRT|/opt/open-webui|g" !(__pycache__)
+popd
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: openwebui
+Version: B_VERSION
+Section: openwebui
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: openwebui saver custom B_ORG build
+Homepage: https://github.com/open-webui/open-webui
+Depends: ffmpeg

@@ -1,0 +1,7 @@
+# Storage location
+DATA_DIR=/var/lib/open-webui
+# Default value
+WEBUI_SECRET_KEY=t0p-s3cr3t
+# Use proxy for internet access
+#http_proxy=http://proxy:8080
+#https_proxy=http://proxy:8080
