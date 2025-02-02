@@ -1,4 +1,8 @@
+# Additional options to pass to ollama
 OPTIONS=""
 # Listen on all ip's
 #OLLAMA_HOST=0.0.0.0
+# Where to store the models
 OLLAMA_MODELS=/var/lib/ollama
+# Allow origin requests, use * for any (with obvious risk)
+OLLAMA_ORIGINS=http://127.0.0.1
