@@ -1,5 +1,0 @@
-#!/bin/sh
-
-systemctl stop hollama.service
-systemctl disable hollama.service
-deluser --quiet hollama
