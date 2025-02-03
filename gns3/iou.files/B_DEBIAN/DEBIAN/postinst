@@ -1,0 +1,2 @@
+#!/bin/sh
+ln -s /usr/lib/i386-linux-gnu/libcrypto.so.1.0.2 /usr/lib/i386-linux-gnu/libcrypto.so.4

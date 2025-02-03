@@ -1,0 +1,35 @@
+[INFO]
+arch=amd64
+
+[VERSION]
+B_GITVER -e '.*[ab].*' https://github.com/GNS3/gns3-server gns3-server
+
+[REQUIRED]
+python3-setuptools python3-pip python3-venv
+
+[BUILD]
+DEST=$B_INSTALLDIR/opt/gns3-server
+mkdir -p $DEST
+python3 -m venv "$DEST"
+. $DEST/bin/activate
+pip3 install gns3-server==$B_VERSION
+pushd "$DEST/bin"
+shopt -s extglob
+sed -i "s|$DEST|/opt/gns3-server|g" !(__pycache__)
+popd
+B_LINKFILE /opt/gns3-server/bin/gns3server /usr/bin
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: gns3-server
+Version: B_VERSION
+Section: gns3-server
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: gns3-server custom B_ORG build
+Homepage: https://github.com/GNS3/gns3-server
+Depends: python3,vpcs-B_PF,ubridge-B_PF,iou-B_PF,libvirt0

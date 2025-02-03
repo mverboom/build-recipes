@@ -1,0 +1,43 @@
+[INFO]
+arch=amd64
+
+[VERSION]
+B_GITVER https://github.com/GNS3/vpcs
+
+[REQUIRED]
+make gcc libpthread-stubs0-dev
+
+[BUILD]
+B_GET git https://github.com/GNS3/vpcs vpcs
+cd vpcs
+git checkout v$B_VERSION
+cd src
+#./mk.sh
+#rgetopt='int getopt(int argc, char *const *argv, const char *optstr);'
+#sed -i "s/^int getopt.*/$rgetopt/" getopt.h
+#unset -v rgetopt
+#sed -i 's/i386/x86_64/' Makefile.linux
+#sed -i 's/-s -static//' Makefile.linux
+make -f Makefile.linux -j $(nproc)
+strip --strip-unneeded vpcs
+mkdir -p ${B_INSTALLDIR}/opt/vpcs/bin
+cp vpcs ${B_INSTALLDIR}/opt/vpcs/bin
+cd ..
+mkdir -p ${B_INSTALLDIR}/opt/vpcs/share/man/man1
+cp man/vpcs.1 ${B_INSTALLDIR}/opt/vpcs/share/man/man1
+B_LINKFILES /opt/vpcs/bin /usr/bin
+B_LINKFILES /opt/vpcs/share/man/man1 /usr/share/man/man1
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: vpcs
+Version: B_VERSION
+Section: vpcs
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: Vpcs GNS3 custom B_ORG build
+Homepage: https://github.com/GNS3/vpcs

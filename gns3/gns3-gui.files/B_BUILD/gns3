@@ -1,0 +1,4 @@
+#!/bin/sh
+PYTHONPATH="/opt/gns3-gui/lib/python3.5/site-packages":"${PYTHONPATH}"
+export PYTHONPATH
+exec /opt/gns3-gui/bin/gns3.real

@@ -1,0 +1,27 @@
+[INFO]
+arch=amd64
+
+[VERSION]
+echo 1.1
+
+[BUILD]
+mkdir -p ${B_INSTALLDIR}/opt/iou/images ${B_INSTALLDIR}/opt/iou/bin ${B_INSTALLDIR}/opt/iou/share/man/man1
+cp $B_FILES/i86bi* ${B_INSTALLDIR}/opt/iou/images
+cp $B_FILES/iou.1 ${B_INSTALLDIR}/opt/iou/share/man/man1
+cp $B_FILES/ioukeygen.py ${B_INSTALLDIR}/opt/iou/bin
+B_LINKFILES /opt/iou/share/man/man1 /usr/share/man/man1
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: iou
+Version: B_VERSION
+Section: iou
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: iou custom B_ORG build
+Homepage: https://www.cisco.com
+Depends: libssl1.0.2:i386
