@@ -5,9 +5,9 @@ arch=amd64
 wget -O - -q http://ftp.mozilla.org/pub/firefox/releases/ | grep releases | cut -d '>' -f3 | cut -d'/' -f1 | grep -E '^[0-9\.]+$' | sort -n | tail -1
 
 [BUILD]
-B_GET http http://ftp.mozilla.org/pub/firefox/releases/$B_VERSION/linux-$(uname -m)/en-US/firefox-$B_VERSION.tar.bz2 firefox-$B_VERSION.tar.bz2
+B_GET http http://ftp.mozilla.org/pub/firefox/releases/$B_VERSION/linux-$(uname -m)/en-US/firefox-$B_VERSION.tar.xz firefox-$B_VERSION.tar.xz
 mkdir -p $B_INSTALLDIR/opt/firefox
-tar xjf firefox-$B_VERSION.tar.bz2 -C $B_INSTALLDIR/opt/firefox --strip-components 1
+tar xJf firefox-$B_VERSION.tar.xz -C $B_INSTALLDIR/opt/firefox --strip-components 1
 
 [PKG]
 type=deb
