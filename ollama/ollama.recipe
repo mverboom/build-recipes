@@ -5,7 +5,7 @@ arch=amd64
 B_GITVER https://github.com/ollama/ollama/
 
 [REQUIRED]
-golang-B_PF gcc g++ make
+golang-B_PF gcc g++ make cmake nvidia-cuda-toolkit-gcc
 
 [BUILD]
 export GOROOT=/opt/go
@@ -13,13 +13,20 @@ export PATH=${PATH}:${GOROOT}/bin
 B_GET git https://github.com/ollama/ollama/ ollama
 cd ollama
 git checkout v$B_VERSION
+# cuda 11
+cmake -DCMAKE_INSTALL_PREFIX=$B_INSTALLDIR/opt/ollama --preset 'CUDA 11'
+cmake --build --parallel $(nproc) --preset 'CUDA 11'
+cmake --install build --component CUDA --strip
+# cpu
+cmake -DCMAKE_INSTALL_PREFIX=$B_INSTALLDIR/opt/ollama --preset 'CPU'
+cmake --build --parallel $(nproc) --preset 'CPU'
+cmake --install build --component CPU --strip
+
 export PATH=/opt/go/bin:$PATH
 export GOPATH=$(pwd)
-make -j $(nproc)
-make dist
-mkdir -p "$B_INSTALLDIR/opt/ollama"
-cd dist/linux-amd64
-tar cfB - . | ( cd "$B_INSTALLDIR/opt/ollama"; tar xfB -)
+go build
+mkdir -p "$B_INSTALLDIR/opt/ollama/bin"
+cp ollama "$B_INSTALLDIR/opt/ollama/bin"
 B_LINKFILE /opt/ollama/bin/ollama /usr/bin
 
 [PKG]
