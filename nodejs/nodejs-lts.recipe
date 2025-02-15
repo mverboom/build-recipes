@@ -2,7 +2,7 @@
 arch=amd64,armhf
 
 [VERSION]
-wget -q -O - https://nodejs.org/en/download/ | sed -n '/Latest LTS Version/ s/.*<strong>\([0-9.]\+\)<.*/\1/p' | head -1
+wget -q -O - https://nodejs.org/en/download/ | sed -n 's/.*<span>v\([0-9\.]\+\) (LTS)<\/span>.*/\1/p'
 
 [REQUIRED]
 python3 make gcc g++ python3-distutils
@@ -29,3 +29,4 @@ Priority: optional
 Architecture: B_ARCH
 Maintainer: B_MAIL
 Description: Nodejs LTS custom B_ORG build
+Conflicts: nodejs

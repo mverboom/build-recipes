@@ -28,3 +28,4 @@ Priority: optional
 Architecture: B_ARCH
 Maintainer: B_MAIL
 Description: Nodejs 12 custom B_ORG build
+Conflicts: nodejs
