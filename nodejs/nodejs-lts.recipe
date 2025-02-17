@@ -1,5 +1,5 @@
 [INFO]
-arch=amd64,armhf
+arch=amd64
 
 [VERSION]
 wget -q -O - https://nodejs.org/en/download/ | sed -n 's/.*<span>v\([0-9\.]\+\) (LTS)<\/span>.*/\1/p'

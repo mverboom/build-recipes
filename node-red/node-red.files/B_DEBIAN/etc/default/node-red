@@ -1,1 +1,3 @@
+# Add options to startup (--safe for safe mode)
+#OPTIONS="--safe"
 # Put any environment variables here
