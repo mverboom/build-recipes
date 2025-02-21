@@ -1,0 +1,32 @@
+[INFO]
+arch=amd64
+
+[VERSION]
+B_GITVER -e pre https://github.com/yusufcanb/tlm
+
+[REQUIRED]
+golang-B_PF
+
+[BUILD]
+B_GET git https://github.com/yusufcanb/tlm tlm
+cd tlm
+git checkout $B_VERSION
+export PATH=/opt/go/bin:$PATH
+export GOPATH=$(pwd)
+go build
+mkdir -p "$B_INSTALLDIR/usr/bin"
+cp tlm "$B_INSTALLDIR/usr/bin"
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: tlm
+Version: B_VERSION
+Section: tlm
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Homepage: https://github.com/yusufcanb/tlm
+Description: tlm B_PF custom build
