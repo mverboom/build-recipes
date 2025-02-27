@@ -1,0 +1,47 @@
+[INFO]
+arch=amd64
+
+[VERSION]
+B_GITHUBVER https://github.com/searxng/searxng
+
+[REQUIRED]
+python3-dev python3-babel python3-venv uwsgi uwsgi-plugin-python3 build-essential libxslt1-dev zlib1g-dev libffi-dev libssl-dev
+
+[BUILD DEBIAN]
+B_GET git https://github.com/searxng/searxng searxng
+cd searxng
+DEST=$B_INSTALLDIR/opt/searxng
+python3 -m venv $DEST
+. $DEST/bin/activate
+#pip install -U pip
+#pip install -U setuptools
+#pip install -U wheel
+#pip install -U pyyaml
+pip install -U pip setuptools wheel pyyaml
+#pip install --use-pep517 --no-build-isolation -e .
+pip install -e .
+deactivate
+pushd "$DEST/bin"
+shopt -s extglob
+sed -i "s|$DEST|/opt/searxng|g" !(__pycache__)
+popd
+sed -i 's#^/.*/#/opt/#' $B_INSTALLDIR/opt/searxng/lib/python3.11/site-packages/searxng.egg-link
+sed -i 's#^/.*/#/opt/#' $B_INSTALLDIR/opt/searxng/lib/python3.11/site-packages/easy-install.pth
+tar cfB - searx searxng.egg-info | ( cd "$DEST" ; tar xfB - )
+mkdir -p "$B_INSTALLDIR/etc/searxng"
+cp searx/settings.yml "$B_INSTALLDIR/etc/searxng"
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: searxng
+Version: B_VERSION
+Section: searxng
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: Searxng custom B_ORG build
+Homepage: https://github.com/searxng/searxng
+Depends: redis

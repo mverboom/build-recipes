@@ -1,0 +1,25 @@
+#!/bin/sh
+
+set -e
+
+# Create a searxng system group
+if ! getent group searxng > /dev/null; then
+    addgroup --quiet --system searxng
+fi
+
+grep "ultrasecretkey" /etc/searxng/settings.yml 2>&1 > /dev/null && sed -i -e "s/ultrasecretkey/`openssl rand -hex 16`/g" /etc/searxng/settings.yml
+
+# Create a searxng system user
+if ! getent passwd searxng > /dev/null; then
+    adduser --quiet --system \
+        --ingroup searxng \
+        --home /opt/searxng \
+        --no-create-home \
+        --disabled-password --shell /bin/bash \
+        searxng
+    usermod -c "Searxng daemon" searxng
+fi
+
+chmod 600 /etc/searxng/*
+chown -R searxng:searxng /etc/searxng /opt/searxng
+systemctl restart searxng.service

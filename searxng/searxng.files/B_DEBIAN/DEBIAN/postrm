@@ -1,0 +1,11 @@
+#!/bin/sh
+
+set -e
+
+if [ "$1" = "purge" ] ; then
+    if getent passwd searxng >/dev/null; then
+        if which deluser >/dev/null 2>&1; then
+            deluser --quiet --system searxng || echo "Could not remove searxng user."
+        fi
+    fi
+fi
