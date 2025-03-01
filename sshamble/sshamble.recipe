@@ -1,0 +1,34 @@
+[INFO]
+arch=amd64
+
+[VERSION]
+B_GITVER https://github.com/runZeroInc/sshamble
+
+[REQUIRED]
+golang-B_PF
+
+[BUILD]
+export GOROOT=/opt/go
+export PATH=${PATH}:${GOROOT}/bin
+B_GET git https://github.com/runZeroInc/sshamble sshamble
+cd sshamble
+git checkout v$B_VERSION
+export PATH=/opt/go/bin:$PATH
+export GOPATH=$(pwd)
+go build -o sshamble
+mkdir -p "$B_INSTALLDIR/usr/bin"
+cp sshamble "$B_INSTALLDIR/usr/bin"
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: sshamble
+Version: B_VERSION
+Section: sshamble
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Homepage: https://github.com/runZeroInc/sshamble
+Description: sshamble B_PF custom build
