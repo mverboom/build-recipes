@@ -1,0 +1,25 @@
+[VERSION]
+B_GITHUBVER https://github.com/mverboom/pve-testenv
+
+[INFO]
+arch=all
+
+[BUILD]
+B_GET git https://github.com/mverboom/pve-testenv pve-testenv
+cd pve-testenv
+mkdir -p $B_INSTALLDIR/usr/bin
+cp pvete pve-testenv.sh createtemplate $B_INSTALLDIR/usr/bin
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: pve-testenv
+Version: B_VERSION
+Section: pve-testenv
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Homepage: https://github.com/mverboom/pve-testenv
+Description: pve-testenv B_PF custom build
