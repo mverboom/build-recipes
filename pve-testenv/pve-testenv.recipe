@@ -8,7 +8,7 @@ arch=all
 B_GET git https://github.com/mverboom/pve-testenv pve-testenv
 cd pve-testenv
 mkdir -p $B_INSTALLDIR/usr/bin
-cp pvete pve-testenv.sh createtemplate $B_INSTALLDIR/usr/bin
+cp pvete _pve-testenv.sh _pvete-createtemplate $B_INSTALLDIR/usr/bin
 
 [PKG]
 type=deb
