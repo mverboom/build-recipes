@@ -8,6 +8,7 @@ B_GITVER -e weekly -f "^go" https://go.googlesource.com/go
 B_GET http https://go.dev/dl/go${B_VERSION}.linux-amd64.tar.gz go.tar.gz
 mkdir -p $B_INSTALLDIR/opt
 tar xzf go.tar.gz -C $B_INSTALLDIR/opt
+B_LINKFILES /opt/go/bin /usr/bin
 
 [PKG]
 type=deb
