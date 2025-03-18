@@ -1,0 +1,30 @@
+[INFO]
+arch=amd64
+
+[VERSION]
+B_GITVER https://github.com/sigoden/aichat
+
+[REQUIRED]
+rustc-B_PF gcc
+
+[BUILD]
+B_GET git https://github.com/sigoden/aichat aichat
+cd aichat
+git checkout v${B_VERSION}
+cargo build --release
+mkdir -p $B_INSTALLDIR/usr/bin
+cp target/release/aichat $B_INSTALLDIR/usr/bin
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: aichat
+Version: B_VERSION
+Section: aichat
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: Aichat server custom B_ORG build
+Homepage: https://github.com/sigoden/aichat
