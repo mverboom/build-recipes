@@ -9,6 +9,7 @@ Environment="ZIGBEE2MQTT_DATA=/var/lib/zigbee2mqtt"
 StandardOutput=inherit
 StandardError=inherit
 Restart=always
+RestartSec=30
 User=zigbee2mqtt
 
 [Install]
