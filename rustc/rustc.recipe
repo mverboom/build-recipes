@@ -15,9 +15,11 @@ git checkout ${B_VERSION}
 #     s/^#channel = .*/channel = \"stable\"/;
 #     s/^#sysconfdir = .*/sysconfdir = \"etc\"/;
 #     s/^#extended = .*/extended = true/' config.example.toml > config.toml
-./configure --prefix=/opt/rusc --sysconfdir=/etc
-python3 ./x.py build
-python3 ./x.py install
+./configure --prefix=/opt/rustc --sysconfdir=/etc
+#python3 ./x.py build
+#python3 ./x.py install
+make
+make DESTDIR=$B_INSTALLDIR/opt/rustc install
 B_LINKFILES /opt/rustc/bin /usr/bin
 
 [PKG]
