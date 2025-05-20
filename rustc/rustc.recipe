@@ -11,15 +11,9 @@ make gcc g++ cmake ninja-build libssl-dev pkg-config
 B_GET git https://github.com/rust-lang/rust rust
 cd rust
 git checkout ${B_VERSION}
-#sed 's#^\#prefix = .*#prefix = "'$B_INSTALLDIR'/opt/rustc"#;
-#     s/^#channel = .*/channel = \"stable\"/;
-#     s/^#sysconfdir = .*/sysconfdir = \"etc\"/;
-#     s/^#extended = .*/extended = true/' config.example.toml > config.toml
 ./configure --prefix=/opt/rustc --sysconfdir=/etc
-#python3 ./x.py build
-#python3 ./x.py install
 make
-make DESTDIR=$B_INSTALLDIR/opt/rustc install
+make DESTDIR=$B_INSTALLDIR install
 B_LINKFILES /opt/rustc/bin /usr/bin
 
 [PKG]
