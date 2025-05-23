@@ -1,0 +1,52 @@
+[INFO]
+arch=amd64
+
+[VERSION]
+B_GITVER -e agent https://github.com/draios/sysdig
+
+[REQUIRED]
+cmake g++ clang bpftool
+
+[BUILD]
+B_GET git https://github.com/draios/sysdig sysdig
+cd sysdig
+git checkout $B_VERSION
+mkdir -p build; cd build
+cmake -DCMAKE_INSTALL_PREFIX=/usr -DBUILD_DRIVER=OFF ..
+make
+make DESTDIR=$B_INSTALLDIR install
+
+dorg="$(ls -d $B_INSTALLDIR/usr/src/scap-*/)"
+mv "$dorg" "${dorg/+driver/}"
+dver="$(ls -d $B_INSTALLDIR/usr/src/scap-*/)"
+dver="${dver/*scap-/}"
+dver="${dver/\//}"
+post="$B_RECIPEDIR/sysdig.files/B_DEBIAN/DEBIAN"
+test -d "$post" || mkdir -p "$post"
+cat > "$post/postinst" <<EOF
+#!/bin/sh
+rmmod scap || true
+dkms add -m scap -v ${dver}
+dkms build -m scap -v ${dver} && dkms install -m scap -v ${dver}
+modprobe scap
+EOF
+cat > "$post/prerm" <<EOF
+rmmod scap || true
+dkms remove -m scap -v ${dver} --all || true
+EOF
+chmod 755 "$post"/*
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: sysdig
+Version: B_VERSION
+Section: sysdig
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: sysdig custom B_ORG build
+Homepage: https://github.com/draios/sysdig
+Depends: dkms
