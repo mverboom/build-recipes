@@ -5,8 +5,8 @@ arch=amd64
 B_GITVER https://github.com/xwiki-labs/cryptpad
 
 [REQUIRED]
-nodejs npm
-#nodejs-lts-B_PF
+nodejs-lts-B_PF
+#nodejs npm
 
 [BUILD]
 B_GET git https://github.com/xwiki-labs/cryptpad cryptpad
@@ -47,4 +47,4 @@ Architecture: B_ARCH
 Maintainer: B_MAIL
 Description: Cryptpad custom B_ORG build
 Homepage: https://cryptpad.fr/
-Depends: nodejs
+Depends: nodejs-lts-B_PF
