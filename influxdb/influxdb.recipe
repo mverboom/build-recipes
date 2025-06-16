@@ -1,5 +1,6 @@
 [INFO]
 arch=amd64
+excludefromall=1
 
 [VERSION]
 B_GITVER -f 9.9.9 -i 2. https://github.com/influxdata/influxdb
