@@ -2,7 +2,7 @@
 arch=amd64
 
 [VERSION]
-B_GITVER https://github.com/ollama/ollama/
+B_GITVER -e citest https://github.com/ollama/ollama/
 
 [REQUIRED]
 golang-B_PF gcc g++ make cmake nvidia-cuda-toolkit-gcc
