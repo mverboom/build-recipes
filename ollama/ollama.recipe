@@ -13,9 +13,9 @@ export PATH=${PATH}:${GOROOT}/bin
 B_GET git https://github.com/ollama/ollama/ ollama
 cd ollama
 git checkout v$B_VERSION
-# cuda 11
-cmake -DCMAKE_INSTALL_PREFIX=$B_INSTALLDIR/opt/ollama --preset 'CUDA 11'
-cmake --build --parallel $(nproc) --preset 'CUDA 11'
+# cuda
+cmake -DCMAKE_INSTALL_PREFIX=$B_INSTALLDIR/opt/ollama -DCMAKE_CUDA_ARCHITECTURES="50;60;61;70;75;80;86;87;89;90" --preset 'CUDA'
+cmake --build --parallel $(nproc) --preset 'CUDA'
 cmake --install build --component CUDA --strip
 # cpu
 cmake -DCMAKE_INSTALL_PREFIX=$B_INSTALLDIR/opt/ollama --preset 'CPU'

@@ -6,3 +6,5 @@ OPTIONS=""
 OLLAMA_MODELS=/var/lib/ollama
 # Allow origin requests, use * for any (with obvious risk)
 OLLAMA_ORIGINS=http://127.0.0.1
+# Number of models in memory
+OLLAMA_MAX_LOADED=1
