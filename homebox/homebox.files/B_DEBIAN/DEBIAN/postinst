@@ -1,0 +1,20 @@
+#!/bin/sh
+ 
+if test "$1" = "configure"; then
+   # Create a homebox system group
+   if ! getent group homebox > /dev/null; then
+       addgroup --quiet --system homebox
+   fi
+   
+   # Create a homebox system user
+   if ! getent passwd homebox > /dev/null; then
+       adduser --quiet --system \
+           --ingroup homebox \
+           --home /var/tmp \
+           --disabled-password \
+           homebox
+       usermod -c "Homebox user" homebox
+   fi
+   chown -R homebox:homebox /var/lib/homebox
+   systemctl enable homebox
+fi

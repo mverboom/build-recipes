@@ -1,0 +1,8 @@
+# Generic settings
+HBOX_MODE=production
+HBOX_LOG_LEVEL=info
+
+# Data storage
+HBOX_STORAGE_CONN_STRING=file:///var/lib/homebox/data/
+HBOX_STORAGE_PREFIX_PATH=""
+HBOX_DATABASE_SQLITE_PATH=/var/lib/homebox/homebox.db?_pragma=busy_timeout=2000&_pragma=journal_mode=WAL&_fk=1&_time_format=sqlite

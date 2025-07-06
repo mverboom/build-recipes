@@ -1,0 +1,4 @@
+#!/bin/sh
+
+userdel --force homebox > /dev/null || true
+groupdel homebox > /dev/null || true

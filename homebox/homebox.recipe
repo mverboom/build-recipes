@@ -1,0 +1,40 @@
+[INFO]
+arch=amd64
+
+[VERSION]
+B_GITVER https://github.com/sysadminsmedia/homebox/
+
+[REQUIRED]
+make golang-B_PF nodejs-lts-B_PF pnpm-B_PF
+
+[BUILD]
+export GOROOT=/opt/go
+export PATH=${PATH}:${GOROOT}/bin
+B_GET git https://github.com/sysadminsmedia/homebox/ homebox
+cd homebox
+git checkout v$B_VERSION
+
+mkdir -p $B_INSTALLDIR/usr/bin
+
+cd frontend
+pnpm install --frozen-lockfile
+pnpm build
+
+cd ../backend
+cp -r ../frontend/.output/public app/api/static/
+go mod download
+CGO_ENABLED=0 GOOS=linux go build -ldflags "-s -w -X main.version=$B_VERSION -X main.commit=$(git rev-parse --short HEAD) -X main.buildTime=$(date "+%Y%m%d")" -o $B_INSTALLDIR/usr/bin/homebox -v app/api/*go
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: homebox
+Version: B_VERSION
+Section: homebox
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Homepage: https://github.com/sysadminsmedia/homebox
+Description: Homebox B_PF custom build
