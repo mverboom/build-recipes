@@ -5,6 +5,7 @@ if test "$1" = "configure"; then
   if ! getent group openwebui > /dev/null; then
       addgroup --quiet --system openwebui
   fi
+  test -d "/var/lib/open-webui" || mkdir -p /var/lib/open-webui
   # Create a openwebui system user
   if ! getent passwd openwebui > /dev/null; then
       adduser --quiet --system \
