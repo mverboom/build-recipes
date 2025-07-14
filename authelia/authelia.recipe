@@ -5,10 +5,10 @@ arch=amd64
 B_GITVER https://github.com/authelia/authelia
 
 [REQUIRED DEBIAN BULLSEYE]
-nodejs-16-B_PF golang-B_PF pnpm-B_PF gcc
+nodejs-lts-B_PF golang-B_PF pnpm-B_PF gcc
 
 [REQUIRED]
-npm golang-B_PF pnpm-B_PF
+nodejs-lts-B_PF golang-B_PF pnpm-B_PF gcc
 
 [BUILD]
 export GOROOT=/opt/go
