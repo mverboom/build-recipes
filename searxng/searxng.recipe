@@ -30,7 +30,7 @@ popd
 #sed -i 's#^/.*/#/opt/#' $B_INSTALLDIR/opt/searxng/lib/python3.11/site-packages/easy-install.pth
 tar cfB - searx searxng.egg-info | ( cd "$DEST" ; tar xfB - )
 mkdir -p "$B_INSTALLDIR/etc/searxng"
-cp searx/settings.yml "$B_INSTALLDIR/etc/searxng"
+cp searx/settings.yml "$B_INSTALLDIR/etc/searxng/settings.yml.example"
 
 [PKG]
 type=deb
