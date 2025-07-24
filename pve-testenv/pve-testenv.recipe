@@ -10,12 +10,13 @@ pandoc lynx
 [BUILD]
 B_GET git https://github.com/mverboom/pve-testenv pve-testenv
 cd pve-testenv
-mkdir -p $B_INSTALLDIR/usr/bin $B_INSTALLDIR/usr/share/doc/pve-testenv/examples
+mkdir -p $B_INSTALLDIR/usr/bin $B_INSTALLDIR/usr/share/doc/pve-testenv/examples $B_INSTALLDIR/usr/share/pve-testenv/scripts
 cp pvete _pve-testenv.sh _pvete-createtemplate pveruntests $B_INSTALLDIR/usr/bin
 pandoc -t html README.md | lynx -stdin -dump > $B_INSTALLDIR/usr/share/doc/pve-testenv/readme.txt
 pandoc -t html PVETE.md | lynx -stdin -dump > $B_INSTALLDIR/usr/share/doc/pve-testenv/pvete.txt
 pandoc -t html PVERUNTESTS.md | lynx -stdin -dump > $B_INSTALLDIR/usr/share/doc/pve-testenv/pveruntests.txt
 cp testing.drawio testing-modified.drawio tests.ini tests-include.ini $B_INSTALLDIR/usr/share/doc/pve-testenv/examples
+cp scripts/* $B_INSTALLDIR/usr/share/pve-testenv/scripts
 
 [PKG]
 type=deb
