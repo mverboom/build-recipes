@@ -4,11 +4,8 @@ arch=amd64
 [VERSION]
 B_GITVER https://github.com/node-red/node-red
 
-[REQUIRED DEBIAN BOOKWORM]
-nodejs-lts-B_PF g++ make
-
 [REQUIRED]
-nodejs-14-B_PF g++ make
+nodejs-lts-B_PF g++ make
 
 [BUILD]
 B_GET git https://github.com/node-red/node-red nodered
@@ -35,7 +32,7 @@ Architecture: B_ARCH
 Maintainer: B_MAIL
 Description: Node RED custom B_ORG build
 Homepage: http://nodered.org/
-Depends: nodejs-14-B_PF
+Depends: nodejs-lts-B_PF
 
 [DEB BOOKWORM]
 Package: node-red
