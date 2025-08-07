@@ -6,7 +6,6 @@ B_GITVER https://github.com/grafana/grafana
 
 [REQUIRED]
 golang-B_PF gcc nodejs-lts-B_PF g++ make yarn-B_PF
-#golang-B_PF gcc nodejs g++ make yarn-B_PF
 
 [BUILD]
 # 20200207 MV: Prevent memory debug error

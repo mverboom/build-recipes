@@ -5,12 +5,13 @@ arch=amd64
 B_GITVER -i release -R s/release-// https://github.com/NLnetLabs/unbound
 
 [REQUIRED]
-gcc make libssl-dev libexpat1-dev bison libnghttp2-dev libevent-dev libpython3-dev swig flex
+gcc make libssl-dev libexpat1-dev bison libnghttp2-dev libevent-dev libpython3-dev swig flex python3
 
 [BUILD]
 B_GET git https://github.com/NLnetLabs/unbound unbound
 cd unbound
 git checkout release-$B_VERSION
+export PYTHON_VERSION=3
 ./configure --with-libnghttp2 --with-libevent --with-pythonmodule \
    --prefix=/opt/unbound --sysconfdir=/etc --localstatedir=/var --mandir=/usr/share/man
 make -j $(nproc)
@@ -24,6 +25,17 @@ mv "$B_INSTALLDIR"/etc/unbound/unbound.conf "$B_INSTALLDIR"/etc/unbound/unbound.
 type=deb
 torepo=y
 
+[DEB]
+Package: unbound
+Version: B_VERSION
+Section: unbound
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: Unbound custom B_ORG build
+Homepage: https://www.nlnetlabs.nl/projects/unbound
+Depends: libevent-2.1-7,libpython3.13
+
 [DEB BOOKWORM]
 Package: unbound
 Version: B_VERSION
@@ -34,14 +46,3 @@ Maintainer: B_MAIL
 Description: Unbound custom B_ORG build
 Homepage: https://www.nlnetlabs.nl/projects/unbound
 Depends: libevent-2.1-7,libpython3.11
-
-[DEB BULLSEYE]
-Package: unbound
-Version: B_VERSION
-Section: unbound
-Priority: optional
-Architecture: B_ARCH
-Maintainer: B_MAIL
-Description: Unbound custom B_ORG build
-Homepage: https://www.nlnetlabs.nl/projects/unbound
-Depends: libevent-2.1-7,libpython3.9

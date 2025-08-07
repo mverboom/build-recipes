@@ -6,7 +6,7 @@ arch=amd64
 B_GITVER -e 213123 https://github.com/nodejs/node/
 
 [REQUIRED]
-python3 make gcc g++ python3-distutils
+python3 make gcc g++
 
 [BUILD]
 B_GET git https://github.com/nodejs/node/ nodejs

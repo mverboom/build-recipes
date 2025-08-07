@@ -7,6 +7,9 @@ wget -q -O - https://nodejs.org/en/download/ | sed -n 's/.*<span>v\([0-9\.]\+\) 
 [REQUIRED]
 python3 make gcc g++ python3-distutils
 
+[REQUIRED DEBIAN TRIXIE]
+python3 make gcc g++
+
 [BUILD]
 B_GET git https://github.com/nodejs/node/ nodejs
 cd nodejs
