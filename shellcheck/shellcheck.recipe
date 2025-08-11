@@ -11,6 +11,7 @@ cabal-install libghc-quickcheck-instances-dev libghc-mtl-dev libghc-regex-tdfa-d
 B_GET git https://github.com/koalaman/shellcheck shellcheck
 cd shellcheck
 git checkout tags/v$B_VERSION
+#unset CABAL_DIR CABAL_CONFIG
 cabal update
 cabal build
 pandoc -s -t man shellcheck.1.md -o shellcheck.1

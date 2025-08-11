@@ -42,7 +42,7 @@ B_LINKFILES /opt/keepassxc/share/mime/packages /usr/share/mime/packages
 type=deb
 torepo=y
 
-[DEB BULLSEYE]
+[DEB]
 Package: keepassxc
 Version: B_VERSION
 Section: utils
@@ -51,7 +51,7 @@ Architecture: B_ARCH
 Maintainer: B_MAIL
 Description: Cross Platform Password Manager
 Homepage: https://keepassxc.org
-Depends: libargon2-1 (>= 0~20171227~), libc6 (>= 2.31), libgcrypt20 (>= 1.8.7), libqt5core5a (>= 5.15.2), libqt5dbus5 (>= 5.15.2), libqt5gui5 (>= 5.15.2), libqt5network5 (>= 5.15.2), libqt5widgets5 (>= 5.12.2), libqt5x11extras5 (>= 5.15.2), libsodium23, libstdc++6 (>= 10.2.1), libx11-6, libxi6, libxtst6, libykpers-1-1 (>= 1.20.0), zlib1g (>= 1:1.2.11), libqrencode4, libqt5concurrent5 (>=5.15.2), libquazip5-1, libqt5svg5, libbotan-2-17, libminizip1
+Depends: libargon2-1, libbotan-2-19, libc6-dev, libglib2.0-dev, libminizip1t64, libpcsclite1, libqrencode4, libqt5concurrent5t64, libqt5svg5, libqt5x11extras5, libusb-1.0-0
 
 [DEB BOOKWORM]
 Package: keepassxc
@@ -62,4 +62,4 @@ Architecture: B_ARCH
 Maintainer: B_MAIL
 Description: Cross Platform Password Manager
 Homepage: https://keepassxc.org
-Depends: libargon2-1 (>= 0~20171227~), libc6 (>= 2.36), libgcrypt20 (>= 1.10.1), libqt5core5a (>= 5.15.8), libqt5dbus5 (>= 5.15.8), libqt5gui5 (>= 5.15.8), libqt5network5 (>= 5.15.8), libqt5widgets5 (>= 5.12.8), libqt5x11extras5 (>= 5.15.8), libsodium23, libstdc++6 (>= 12.2.0), libx11-6, libxi6, libxtst6, libykpers-1-1 (>= 1.20.0), zlib1g (>= 1:1.2.13), libqrencode4, libqt5concurrent5 (>=5.15.8), libquazip5-1, libqt5svg5, libbotan-2-19, libminizip1
+Depends: libargon2-1, libgcrypt20, libqt5core5a, libqt5dbus5, libqt5gui5, libqt5network5, libqt5widgets5, libqt5x11extras5, libsodium23, libstdc++6, libx11-6, libxi6, libxtst6, libykpers-1-1, zlib1g, libqrencode4, libqt5concurrent5, libquazip5-1, libqt5svg5, libbotan-2-19, libminizip1

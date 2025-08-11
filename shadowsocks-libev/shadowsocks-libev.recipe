@@ -1,12 +1,13 @@
 [INFO]
 arch=amd64
+excludefromall=1
 
 [VERSION]
 B_GITVER https://github.com/shadowsocks/shadowsocks-libev
 
 [REQUIRED]
-gettext build-essential autoconf libtool libpcre3-dev asciidoc libmbedtls-dev libsodium-B_PF
-make gcc autoconf libtool libpcre3-dev asciidoc libmbedtls-dev libsodium-B_PF libc-ares-dev libev-dev
+gettext build-essential autoconf libtool libpcre2-dev asciidoc libmbedtls-dev libsodium-B_PF
+make gcc autoconf libtool asciidoc libmbedtls-dev libsodium-B_PF libc-ares-dev libev-dev
 
 [BUILD]
 B_GET git https://github.com/shadowsocks/shadowsocks-libev shadowsocks-libev

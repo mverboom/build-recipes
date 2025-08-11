@@ -35,4 +35,15 @@ Architecture: B_ARCH
 Maintainer: B_MAIL
 Description: Virtualgl custom B_ORG build
 Homepage: https://www.virtualgl.org/
+Depends: libxtst6, libxv1, libglu1-mesa, libegl-mesa0
+
+[DEB BOOKWORM]
+Package: virtualgl
+Version: B_VERSION
+Section: virtualgl
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: Virtualgl custom B_ORG build
+Homepage: https://www.virtualgl.org/
 Depends: libxtst6, libxv1, libglu1-mesa, libegl1-mesa

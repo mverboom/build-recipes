@@ -5,14 +5,17 @@ arch=amd64
 B_GITVER https://github.com/AsamK/signal-cli
 
 [REQUIRED]
+openjdk-21-jdk-headless make
+
+[REQUIRED DEBIAN BOOKWORM]
 openjdk-21-B_PF make
 
 [BUILD]
 B_GET git https://github.com/AsamK/signal-cli signal-cli
 cd signal-cli
 git checkout v${B_VERSION}
-./gradlew build
-./gradlew installDist
+./gradlew -Dorg.gradle.java.installations.auto-detect=false build
+./gradlew -Dorg.gradle.java.installations.auto-detect=false installDist
 #cd man
 #make
 #cd ..
@@ -29,6 +32,17 @@ type=deb
 torepo=y
 
 [DEB]
+Package: signal-cli
+Version: B_VERSION
+Section: signal-cli
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: signal-cli custom B_ORG build
+Homepage: https://github.com/AsamK/signal-cli
+Depends: openjdk-jre
+
+[DEB BOOKWORM]
 Package: signal-cli
 Version: B_VERSION
 Section: signal-cli

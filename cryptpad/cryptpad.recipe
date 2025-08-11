@@ -25,7 +25,7 @@ sed -i '/blockPath/ s#./#/var/lib/cryptpad/#' config.js
 sed -i '/blobPath/ s#./#/var/lib/cryptpad/#' config.js
 sed -i '/blobStagingPath/ s#./#/var/lib/cryptpad/#' config.js
 sed -i '/logPath/ s#./data/logs#/var/log/cryptpad#' config.js
-mv config.js $B_INSTALLDIR/etc/cryptpad/config.js
+mv config.js $B_INSTALLDIR/etc/cryptpad/config.js.example
 rm -f *.md
 rm -rf .git* config
 tar cf - . | ( cd $B_INSTALLDIR/opt/cryptpad ; tar xf - )

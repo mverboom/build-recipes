@@ -5,6 +5,9 @@ arch=all
 B_GITVER https://github.com/antedebaas/DMARC-SMTPTLS-Reports
 
 [REQUIRED]
+php-cli composer php-curl php-xml php-sqlite3
+
+[REQUIRED DEBIAN BOOKWORM]
 php-cli composer php-curl php-imap php-xml php-sqlite3
 
 [BUILD]

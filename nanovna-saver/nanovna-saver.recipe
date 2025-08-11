@@ -5,7 +5,7 @@ B_GITVER -e -pre -f 0.11 https://github.com/NanoVNA-Saver/nanovna-saver
 arch=amd64
 
 [REQUIRED]
-python3-virtualenv virtualenv virtualenv-make-relocatable-B_PF
+python3-venv
 
 [BUILD]
 B_GET git https://github.com/NanoVNA-Saver/nanovna-saver nanovna-saver
@@ -13,15 +13,14 @@ cd nanovna-saver
 git checkout v$B_VERSION
 touch CHANGELOG.md
 DEST=$B_INSTALLDIR/opt/nanovna-saver
-virtualenv  -p python3 $DEST
-source $DEST/bin/activate
-pip install -r requirements.txt
-python -m pip install .
-ln -s /usr/lib/x86_64-linux-gnu/libxcb-util.so.0 $DEST/lib/libxcb-util.so.1
-#virtualenv --relocatable -p python3 $DEST
-#sed -i "s#$B_INSTALLDIR##" $DEST/bin/activate*
+python3 -m venv $DEST
+. $DEST/bin/activate
+python3 -m pip install .
 deactivate
-virtualenv-make-relocatable $DEST
+pushd "$DEST/bin"
+shopt -s extglob
+sed -i "s|$DEST|/opt/nanovna-saver|g" !(__pycache__)
+popd
 
 [PKG]
 type=deb
@@ -36,4 +35,3 @@ Architecture: B_ARCH
 Maintainer: B_MAIL
 Description: NanoVNA saver custom B_ORG build
 Homepage: https://github.com/NanoVNA-Saver/nanovna-saver
-Depends: python3,libxcb-util0,libxcb-render-util0,libxcb-keysyms1,libfontconfig1,libxkbcommon-x11-0,libxcb-icccm4,libxcb-xinerama0,libxcb-image0,libxcb-randr0,libxcb-shape0,libxcb-xfixes0

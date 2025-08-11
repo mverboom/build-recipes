@@ -7,7 +7,7 @@ arch=amd64
 [REQUIRED]
 python3 python3-venv
 
-[BUILD]
+[BUILD DEBIAN BOOOKWORM]
 DEST=$B_INSTALLDIR/opt/open-webui
 VIRT=$DEST
 mkdir -p $VIRT

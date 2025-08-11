@@ -5,6 +5,9 @@ arch=amd64
 B_GITHUBVER https://github.com/AlexandreRouma/SDRPlusPlus
 
 [REQUIRED]
+cmake libglfw3-dev libfftw3-dev libvolk-dev libzstd-dev g++ pkg-config libairspy-dev libairspyhf-dev libhackrf-dev librtlsdr-dev libsoapysdr-dev libiio-dev libad9361-dev librtaudio-dev
+
+[REQUIRED DEBIAN BOOKWORM]
 cmake libglfw3-dev libfftw3-dev libvolk2-dev libzstd-dev g++ pkg-config libairspy-dev libairspyhf-dev libhackrf-dev librtlsdr-dev libsoapysdr-dev libiio-dev libad9361-dev librtaudio-dev
 
 [BUILD]

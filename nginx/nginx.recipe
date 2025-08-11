@@ -7,6 +7,9 @@ wget -O - -q http://nginx.org/en/download.html | awk '/<a href="\/download/ { sp
 [REQUIRED]
 gcc zlib1g-dev libpcre3-dev libpam0g-dev make libressl-B_PF libmaxminddb-dev libxslt1-dev
 
+[REQUIRED DEBIAN TRIXIE]
+gcc zlib1g-dev libpcre2-dev libpam0g-dev make libressl-B_PF libmaxminddb-dev libxslt1-dev
+
 [BUILD]
 B_GET http http://nginx.org/download/nginx-$B_VERSION.tar.gz nginx.tar.gz
 mkdir nginx
@@ -41,6 +44,7 @@ patch -p0 < <(wget -q -O - https://raw.githubusercontent.com/Jas0n99/ngx_force_g
             --sbin-path=/opt/nginx/sbin/nginx \
             --error-log-path=/var/log/nginx/error.log \
             --pid-path=/var/run/nginx.pid \
+            --with-http_v3_module \
             --with-http_ssl_module \
             --with-http_stub_status_module \
             --with-http_sub_module \

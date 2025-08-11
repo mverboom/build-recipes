@@ -5,7 +5,7 @@ arch=amd64
 B_GITVER https://github.com/aandrew-me/tgpt
 
 [REQUIRED]
-golang-B_PF
+golang-B_PF libx11-dev
 
 [BUILD]
 export PATH=${PATH}:/opt/go/bin
