@@ -7,7 +7,7 @@ B_GITVER https://github.com/cederberg/mibble
 [REQUIRED]
 ant default-jdk-headless
 
-[BUILD]
+[BUILD DEBIAN BOOKWORM]
 B_GET git https://github.com/cederberg/mibble mibble
 cd mibble
 git checkout v${B_VERSION}
