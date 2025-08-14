@@ -29,3 +29,4 @@ Architecture: B_ARCH
 Maintainer: B_MAIL
 Description: yksoft server custom B_ORG build
 Homepage: https://github.com/arr2036/yksofttoken
+Depends: libyubikey0
