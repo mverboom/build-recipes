@@ -1,5 +1,6 @@
 [INFO]
 arch=amd64
+excludefromall=1
 
 [VERSION]
 B_GITVER https://github.com/prasmussen/gdrive

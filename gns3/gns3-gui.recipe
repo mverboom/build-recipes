@@ -3,10 +3,10 @@ arch=amd64
 excludefromall=1
 
 [VERSION]
-B_GITVER -e a https://github.com/GNS3/gns3-gui gns3-gui
+B_GITVER -e a https://github.com/GNS3/gns3-gui
 
 [REQUIRED]
-python3-pip python3-setuptools python3-venv
+python3-pip python3-venv
 
 [BUILD]
 DEST=$B_INSTALLDIR/opt/gns3-gui
