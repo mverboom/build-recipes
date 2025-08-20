@@ -1,0 +1,23 @@
+#!/bin/sh
+ 
+if test "$1" = "configure"; then
+  # Create a powerdns system group
+  if ! getent group pdns > /dev/null; then
+      addgroup --quiet --system pdns
+  fi
+  # Create a powerdns system user
+  if ! getent passwd pdns > /dev/null; then
+      adduser --quiet --system \
+          --home /opt/pdns \
+          --no-create-home \
+          --disabled-password --shell /bin/false \
+          pdns
+      usermod -c "Power DNS user" pdns
+      chown -R pdns:pdns /var/lib/pdns
+  fi
+
+  systemctl enable pdns.service
+  systemctl start pdns.service
+else
+  systemctl restart pdns.service
+fi

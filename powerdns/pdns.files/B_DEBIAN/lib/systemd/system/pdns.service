@@ -1,0 +1,16 @@
+[Unit]
+Description=PowerDNS Authoritative Server
+After=network-online.target
+
+[Service]
+Type=simple
+ExecStart=/opt/pdns/sbin/pdns_server --daemon=no
+ExecStop=/opt/pdns/bin/pdns_control quit
+ExecReload=bash -c "/opt/pdns/sbin/pdns_server --config=check && systemctl restart pdns"
+TimeoutStopSec=5
+Restart=on-failure
+RestartSec=2
+PrivateTmp=false
+
+[Install]
+WantedBy=multi-user.target

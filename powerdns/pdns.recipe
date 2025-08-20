@@ -1,0 +1,69 @@
+[INFO]
+arch=amd64
+
+[VERSION]
+B_GITVER -i "^auth-" -F "^auth-" https://github.com/PowerDNS/pdns
+
+[REQUIRED]
+g++ libboost-all-dev libtool make pkg-config libmariadbclient-dev-compat libssl-dev autoconf automake ragel bison flex libsqlite3-dev pandoc libsystemd-dev virtualenv libluajit-5.1-dev libcurl4-gnutls-dev python3-venv
+
+[REQUIRED DEBIAN BOOKWORM]
+g++ libboost-all-dev libtool make pkg-config libmariadbclient-dev-compat libssl-dev autoconf automake ragel bison flex libsqlite3-dev pandoc libsystemd-dev virtualenv libluajit-5.1-dev libcurl4-gnutls-dev python3-venv
+
+[BUILD]
+B_GET git https://github.com/PowerDNS/pdns pdns
+cd pdns
+git checkout tags/auth-$B_VERSION
+export IS_RELEASE=YES
+#./bootstrap
+autoreconf -vi
+#./configure --with-modules="bind gmysql gsqlite3" --without-lua --disable-lua-records --prefix=/opt/pdns --sysconfdir=/etc/powerdns
+./configure --with-modules="bind gmysql gsqlite3" --prefix=/opt/pdns --sysconfdir=/etc/powerdns
+#sed -i '/^extensions =/,+1d' docs/conf.py
+make -j $(nproc)
+make install DESTDIR=$B_INSTALLDIR
+cd $B_INSTALLDIR
+mkdir -p $B_INSTALLDIR/usr/bin $B_INSTALLDIR/usr/sbin $B_INSTALLDIR/etc/powerdns/pdns.d
+echo "Include directory from wich all .conf files will be included" > $B_INSTALLDIR/etc/powerdns/pdns.d/README
+echo "include-dir=/etc/powerdns/pdns.d" >> "$B_INSTALLDIR/etc/powerdns/pdns.conf-dist"
+B_LINKFILES /opt/pdns/bin /usr/bin
+B_LINKFILES /opt/pdns/sbin /usr/sbin
+rm -rf $B_INSTALLDIR/etc/init.d
+
+[PKG]
+type=deb
+torepo=y
+manual=opt/pdns/share/man/man1
+
+[DEB BOOKWORM]
+Package: pdns
+Version: B_VERSION
+Section: powerdns
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: PowerDNS custom B_ORG build
+Homepage: https://www.powerdns.com
+Depends: libmariadb3,libluajit2-5.1-2,libboost-program-options1.74.0:amd64
+
+[DEB BUSTER]
+Package: pdns
+Version: B_VERSION
+Section: powerdns
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: PowerDNS custom B_ORG build
+Homepage: https://www.powerdns.com
+Depends: libmariadb3,libsqlite3-0,libboost-program-options1.67.0,libluajit-5.1-2
+
+[DEB BULLSEYE]
+Package: pdns
+Version: B_VERSION
+Section: powerdns
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: PowerDNS custom B_ORG build
+Homepage: https://www.powerdns.com
+Depends: libmariadb3,libsqlite3-0,libboost-program-options1.74.0,libluajit-5.1-2
