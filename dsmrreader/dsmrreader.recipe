@@ -5,7 +5,7 @@ B_GITVER https://github.com/dsmrreader/dsmr-reader
 arch=amd64
 
 [REQUIRED]
-python3 python3-psycopg2 python3-pip python3-venv python3-dev default-libmysqlclient-dev build-essential pkg-config
+python3 python3-psycopg2 python3-pip python3-venv python3-dev default-libmysqlclient-dev build-essential pkg-config libpq-dev
 
 [BUILD]
 B_GET git https://github.com/dsmrreader/dsmr-reader dsmrreader

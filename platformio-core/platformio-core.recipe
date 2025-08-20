@@ -5,15 +5,20 @@ arch=all
 B_GITVER https://github.com/platformio/platformio-core
 
 [REQUIRED]
-python3-pip
+python3-pip python3-setuptools
 
 [BUILD]
-PYVER=$( python3 -c "import sys; print(f'{sys.version_info.major}.{sys.version_info.minor}')" )
-pip3 install --system --prefix=$B_INSTALLDIR/opt/platformio-core platformio==$B_VERSION
-B_LINKFILES -r /opt/platformio-core/lib/python$(python3 --version | cut -d ' ' -f 2 | cut -d '.' -f 1,2)/site-packages /usr/local/lib/python${PYVER}/dist-packages
-B_LINKFILE /opt/platformio-core/bin/pio /usr/bin
-B_LINKFILE /opt/platformio-core/bin/piodebuggdb /usr/bin
-B_LINKFILE /opt/platformio-core/bin/platformio /usr/bin
+#PYVER=$( python3 -c "import sys; print(f'{sys.version_info.major}.{sys.version_info.minor}')" )
+B_GET git https://github.com/platformio/platformio-core pio
+cd pio
+git checkout v${B_VERSION}
+python3 ./setup.py install --root=$B_INSTALLDIR --install-layout=deb
+
+#pip3 install --system --prefix=$B_INSTALLDIR/opt/platformio-core platformio==$B_VERSION
+#B_LINKFILES -r /opt/platformio-core/lib/python$(python3 --version | cut -d ' ' -f 2 | cut -d '.' -f 1,2)/site-packages /usr/local/lib/python${PYVER}/dist-packages
+#B_LINKFILE /opt/platformio-core/bin/pio /usr/bin
+#B_LINKFILE /opt/platformio-core/bin/piodebuggdb /usr/bin
+#B_LINKFILE /opt/platformio-core/bin/platformio /usr/bin
 
 [PKG]
 type=deb

@@ -19,10 +19,18 @@ go build -o nfcollector cmd/collector/main.go
 sed -i 's#"/opt/nfcollector/etc/"#"/etc/nfcollector/"#' cmd/updater/main.go
 go build -o nfupdater cmd/updater/main.go
 dst="$B_INSTALLDIR/opt/nfcollector"
-mkdir -p "$dst/bin" "$B_INSTALLDIR/etc/nfcollector"
+mkdir -p "$dst/bin" "$B_INSTALLDIR/etc/nfcollector" "$B_INSTALLDIR/var/log/nfcollector" "$B_INSTALLDIR/var/lib/nfcollector/ipsum"
+cp templates/configs-example/* "$B_INSTALLDIR/etc/nfcollector"
+cp templates/ipsum/ipsum.txt "$B_INSTALLDIR/var/lib/nfcollector/ipsum"
 mv nfcollector "$dst/bin"
 mv nfupdater "$dst/bin"
 B_LINKFILES /opt/nfcollector/bin /usr/bin
+
+# ToDo:
+# - configfiles include
+# - generate application user
+# - chown required files
+# - systemd files?
 
 [PKG]
 type=deb
