@@ -7,7 +7,7 @@ echo "1.0"
 [REQUIRED]
 lua5.4 luarocks cmake libssl-dev liblua5.4-dev
 
-[BUILD]
+[BUILD DEBIAN BOOKWORM]
 B_GET git https://github.com/evanlabs/luacrypto luacrypto
 luaver=5.4
 cd luacrypto

@@ -7,7 +7,7 @@ arch=amd64
 [REQUIRED]
 python3-venv
 
-[BUILD]
+[BUILD DEBIAN BOOKWORM]
 B_GET git https://github.com/NanoVNA-Saver/nanovna-saver nanovna-saver
 cd nanovna-saver
 git checkout v$B_VERSION

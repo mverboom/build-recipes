@@ -4,10 +4,10 @@ arch=amd64
 [VERSION]
 B_GITVER -D -f V  https://github.com/collin80/SavvyCAN.git
 
-[REQUIRED DEBIAN]
+[REQUIRED DEBIAN BOOKWORM]
 qt5-qmake-bin g++ libqt5serialbus5-dev libqt5serialport5-dev qtdeclarative5-dev qttools5-dev make
 
-[BUILD]
+[BUILD DEBIAN BOOKWORM]
 B_GET git https://github.com/collin80/SavvyCAN.git savvycan
 cd savvycan
 git checkout V${B_VERSION}

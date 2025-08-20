@@ -4,10 +4,10 @@ arch=amd64
 [VERSION]
 echo "1.0"
 
-[REQUIRED]
+[REQUIRED DEBIAN BULLSEYE]
 lua5.2 luarocks cmake libssl-dev liblua5.2-dev
 
-[BUILD]
+[BUILD DEBIAN BULLSEYE]
 B_GET git https://github.com/evanlabs/luacrypto luacrypto
 cd luacrypto
 # ugly patches, but seems to work
