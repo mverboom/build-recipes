@@ -35,6 +35,17 @@ type=deb
 torepo=y
 manual=opt/pdns/share/man/man1
 
+[DEB]
+Package: pdns
+Version: B_VERSION
+Section: powerdns
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: PowerDNS custom B_ORG build
+Homepage: https://www.powerdns.com
+Depends: libmariadb3,libluajit2-5.1-2,libboost-program-options1.74.0:amd64
+
 [DEB BOOKWORM]
 Package: pdns
 Version: B_VERSION
