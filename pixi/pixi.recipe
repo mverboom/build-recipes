@@ -5,7 +5,7 @@ arch=amd64
 B_GITVER https://github.com/prefix-dev/pixi/
 
 [REQUIRED]
-rustc-B_PF
+rustc-B_PF gcc
 
 [BUILD]
 B_GET git https://github.com/prefix-dev/pixi pixi
