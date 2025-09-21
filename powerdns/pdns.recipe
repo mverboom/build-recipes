@@ -44,7 +44,7 @@ Architecture: B_ARCH
 Maintainer: B_MAIL
 Description: PowerDNS custom B_ORG build
 Homepage: https://www.powerdns.com
-Depends: libmariadb3,libluajit2-5.1-2,libboost-program-options1.74.0:amd64
+Depends: libmariadb3,libboost-program-options1.83.0,libcurl3t64-gnutls,libluajit-5.1-2
 
 [DEB BOOKWORM]
 Package: pdns
