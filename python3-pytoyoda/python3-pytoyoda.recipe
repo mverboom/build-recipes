@@ -1,0 +1,35 @@
+[VERSION]
+B_GITVER https://github.com/pytoyoda/pytoyoda/
+
+[INFO]
+arch=amd64
+
+[REQUIRED]
+python3-pip python3-httpx python3-pydantic python3-dateutil python3-importlib-metadata python3-hishel python3-arrow python3-marisa python3-jwt python3-loguru
+
+[BUILD]
+B_GET git https://github.com/pytoyoda/pytoyoda/ pytoyoda
+cd pytoyoda
+git checkout v${B_VERSION}
+pip3 install --root=$B_INSTALLDIR .
+cd $B_INSTALLDIR
+mkdir -p "usr/lib/python3"
+pushd "usr/local/lib/python3.13"
+mv dist-packages "$B_INSTALLDIR/usr/lib/python3"
+popd
+rm -rf usr/local
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: python3-pytoyoda
+Version: B_VERSION
+Section: python3
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: Python3 pytoyoda bindings custom B_ORG build
+Homepage: https://github.com/pytoyoda/pytoyoda/
+Depends: python3,python3-loguru,python3-httpx,python3-pydantic,python3-dateutil,python3-importlib-metadata,python3-hishel,python3-arrow,python3-marisa,python3-jwt
