@@ -1,0 +1,30 @@
+[INFO]
+arch=amd64
+
+[VERSION]
+B_GITVER https://github.com/boxdot/gurk-rs
+
+[REQUIRED]
+rustc-B_PF make protobuf-compiler
+
+[BUILD]
+B_GET git https://github.com/boxdot/gurk-rs gurk
+cd gurk
+git checkout v${B_VERSION}
+cargo build --release
+mkdir -p $B_INSTALLDIR/usr/bin
+cp target/release/gurk $B_INSTALLDIR/usr/bin
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: gurk
+Version: B_VERSION
+Section: gurk
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: gurk custom B_ORG build
+Homepage: https://github.com/boxdot/gurk-rs
