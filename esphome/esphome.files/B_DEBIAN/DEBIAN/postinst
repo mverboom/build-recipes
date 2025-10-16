@@ -16,7 +16,7 @@ if test "$1" = "configure"; then
            esphome
        usermod -c "ESPHome user" esphome
    fi
-   chown -R esphome:esphome /var/lib/esphome
+   chown -R esphome:esphome /var/lib/esphome /var/lib/esphome-venv
    if ! test -e /etc/esphome/privkey.pem; then
       openssl req \
        -newkey rsa:2048 \
