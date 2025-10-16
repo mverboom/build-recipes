@@ -5,15 +5,22 @@ B_GITVER https://github.com/esphome/esphome
 arch=amd64
 
 [REQUIRED]
-python3 python3-pip
+python3 python3-pip python3-venv
 
 [BUILD]
 B_GET git https://github.com/esphome/esphome esphome
 cd esphome
 git checkout $B_VERSION
-pref="$B_INSTALLDIR/opt/esphome"
-pip install --prefix="$pref" -r requirements.txt
-pip install --prefix="$pref" esphome==$B_VERSION
+DEST=$B_INSTALLDIR/var/lib/esphome-venv
+
+mkdir -p "$DEST"
+python3 -m venv $DEST
+source $DEST/bin/activate
+pip install esphome==$B_VERSION
+deactivate
+cd "$DEST/bin"
+shopt -s extglob
+sed -i "s|$DEST|/var/lib/esphome-venv|g" !(__pycache__)
 
 [PKG]
 type=deb
@@ -29,4 +36,4 @@ Maintainer: B_MAIL
 Description: ESPHome custom B_ORG build
 Homepage: https://esphome.io/
 Recommends: lighttpd
-Depends: python3,python3-setuptools,python3-six,openssl,python3-requests,python3-cryptography,python3-voluptuous,python3-yaml,python3-colorama,python3-tornado,python3-zeroconf,python3-serial,python3-click,python3-reportlab,python3-svglib,python3-venv
+Depends: python3,python3-setuptools,python3-six,openssl,python3-requests,python3-voluptuous,python3-yaml,python3-colorama,python3-tornado,python3-zeroconf,python3-serial,python3-click,python3-reportlab,python3-svglib,python3-venv
