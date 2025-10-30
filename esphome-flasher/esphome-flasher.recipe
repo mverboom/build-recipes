@@ -13,7 +13,7 @@ B_GET git https://github.com/esphome/esphome-flasher esphome-flasher
 cd esphome-flasher
 git checkout $B_VERSION
 DIR=/opt/esphome-flasher
-DEST=$B_INSTALLDIR/opt/$DIR
+DEST=$B_INSTALLDIR/$DIR
 python3 -m venv $DEST
 source $DEST/bin/activate
 pip install setuptools

@@ -7,7 +7,7 @@ B_GITVER -i release -R s/release-// https://github.com/NLnetLabs/unbound
 [REQUIRED]
 gcc make libssl-dev libexpat1-dev bison libnghttp2-dev libevent-dev libpython3-dev swig flex python3
 
-[BUILD]
+[BUILD DEBIAN TRIXIE]
 B_GET git https://github.com/NLnetLabs/unbound unbound
 cd unbound
 git checkout release-$B_VERSION
