@@ -21,6 +21,9 @@ cd dist
 mkdir -p $B_INSTALLDIR/opt/homer $B_INSTALLDIR/etc
 mv assets $B_INSTALLDIR/etc/homer
 mv * $B_INSTALLDIR/opt/homer
+B_GET git https://github.com/NX211/homer-icons/ icons
+mv icons/svg/* $B_INSTALLDIR/etc/homer/icons
+mv icons/png/* $B_INSTALLDIR/etc/homer/icons
 ln -s /etc/homer $B_INSTALLDIR/opt/homer/assets
 
 [PKG]
