@@ -24,6 +24,9 @@ mkdir -p "$B_INSTALLDIR/etc/mosquitto/conf.d"
 type=deb
 torepo=y
 
+[DEB_DEPENDS]
+echo "libuuid1,libc-ares2,libcjson1,libwebsockets-$B_PF (=$(apt-cache show libwebsockets-$B_PF | grep "^Version: " | cut -d ' ' -f 2) )"
+
 [DEB]
 Package: mosquitto
 Version: B_VERSION
@@ -33,4 +36,4 @@ Architecture: B_ARCH
 Maintainer: B_MAIL
 Description: Mosquitto custom B_ORG build
 Homepage: https://mosquitto.org/
-Depends: libuuid1,libc-ares2,libcjson1,libwebsockets-B_PF
+Depends: B_DEPENDS
