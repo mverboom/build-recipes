@@ -1,0 +1,18 @@
+# This file provides optional environment variables for the
+# zigbee2mqtt systemd service.
+#
+# It is sourced by zigbee2mqtt.service before starting Zigbee2MQTT.
+# Use this file to set environment variables such as proxy settings
+# or other custom overrides.
+#
+# Lines starting with '#' are comments. Empty lines are ignored.
+
+
+# Proxy URL for HTTP traffic
+#HTTP_PROXY="http://proxy.example.com:3128"
+
+# Proxy URL for HTTPS traffic
+#HTTPS_PROXY="http://proxy.example.com:3128"
+
+# Comma-seperated list of hosts that should bypass the proxy
+#NO_PROXY="localhost,127.0.0.1"
