@@ -7,6 +7,7 @@ User=authelia
 Group=authelia
 ExecStart=/opt/authelia/bin/authelia --config /etc/authelia-%i/configuration.yml
 SyslogIdentifier=authelia-%i
+Restart=always
 
 [Install]
 WantedBy=multi-user.target
