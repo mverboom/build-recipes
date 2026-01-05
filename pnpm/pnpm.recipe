@@ -2,7 +2,7 @@
 arch=amd64
 
 [VERSION]
-B_GITVER https://github.com/pnpm/pnpm
+B_GITVER -e dev https://github.com/pnpm/pnpm
 
 [REQUIRED]
 npm
