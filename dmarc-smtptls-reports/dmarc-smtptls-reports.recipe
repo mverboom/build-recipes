@@ -10,7 +10,7 @@ php-cli composer php-curl php-xml php-sqlite3
 [REQUIRED DEBIAN BOOKWORM]
 php-cli composer php-curl php-imap php-xml php-sqlite3
 
-[BUILD]
+[BUILD DEBIAN BOOKWORM]
 B_GET git https://github.com/antedebaas/DMARC-SMTPTLS-Reports dmarc-smtptls-reports
 cd dmarc-smtptls-reports
 git checkout v${B_VERSION}
