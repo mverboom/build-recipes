@@ -1,0 +1,36 @@
+#!/bin/sh
+# postinst script for forgejo
+#
+# see: dh_installdeb(1)
+
+set -e
+
+setup_git_user() {
+   # Create a git system group
+   if ! getent group git > /dev/null; then
+       addgroup --quiet --system git
+   fi
+
+   if ! getent passwd git >/dev/null; then
+      adduser --quiet --system --ingroup git --no-create-home --home /var/lib/forgejo --shell /usr/sbin/nologin git
+   fi
+}
+
+case "$1" in
+configure)
+   setup_git_user
+   chown git:git /var/lib/forgejo /var/log/forgejo /etc/forgejo
+   systemctl enable forgejo
+;;
+abort-upgrade|abort-remove|abort-deconfigure)
+;;
+
+*)
+   echo "postinst called with unknown argument \`$1'" >&2
+   exit 1
+;;
+esac
+
+systemctl restart forgejo
+
+exit 0

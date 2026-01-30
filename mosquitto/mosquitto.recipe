@@ -5,7 +5,9 @@ arch=amd64
 B_GITVER -e test https://github.com/eclipse/mosquitto
 
 [REQUIRED]
+<<<<<<< HEAD
 libwebsockets-B_PF libc-ares-dev uuid-dev gcc libssl-dev g++ xsltproc make docbook-xsl libcjson-dev libedit-dev libmicrohttpd-dev libsqlite3-dev 
+>>>>>>> f04c3d59801fb86b23d502561b5ed877a56b49e2
 
 [BUILD]
 B_GET git https://github.com/eclipse/mosquitto mosquitto
@@ -25,7 +27,7 @@ type=deb
 torepo=y
 
 [DEB_DEPENDS]
-echo "libuuid1,libc-ares2,libcjson1,libwebsockets-$B_PF (=$(apt-cache show libwebsockets-$B_PF | grep "^Version: " | cut -d ' ' -f 2) )"
+echo "libmicrohttpd-dev,libuuid1,libc-ares2,libcjson1,libwebsockets-$B_PF (=$(apt-cache show libwebsockets-$B_PF | grep "^Version: " | cut -d ' ' -f 2) )"
 
 [DEB TRIXIE]
 Package: mosquitto
