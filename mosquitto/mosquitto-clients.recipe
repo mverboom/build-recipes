@@ -21,13 +21,28 @@ B_LINKFILES /opt/mosquitto-clients/bin /usr/bin
 type=deb
 torepo=y
 
-[DEB]
-Package: mosquitto-clients
+[DEB_DEPENDS]
+echo "libuuid1,libc-ares2,libcjson1,libwebsockets-$B_PF (=$(apt-cache show libwebsockets-$B_PF | grep "^Version: " | cut -d ' ' -f 2) )"
+
+[DEB TRIXIE]
+Package: mosquitto
 Version: B_VERSION
-Section: mosquitto-clients
+Section: mosquitto
 Priority: optional
 Architecture: B_ARCH
 Maintainer: B_MAIL
-Description: Mosquitto-clients custom B_ORG build
+Description: Mosquitto custom B_ORG build
 Homepage: https://mosquitto.org/
-Depends: libuuid1,libc-ares2,libcjson1,libwebsockets-B_PF
+Depends: B_DEPENDS,libmicrohttpd12t64
+
+[DEB BOOKWORM]
+Package: mosquitto
+Version: B_VERSION
+Section: mosquitto
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: Mosquitto custom B_ORG build
+Homepage: https://mosquitto.org/
+Depends: B_DEPENDS,libmicrohttpd12
+
