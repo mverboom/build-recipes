@@ -25,7 +25,7 @@ type=deb
 torepo=y
 
 [DEB_DEPENDS]
-echo "libuuid1,libc-ares2,libcjson1,libwebsockets-$B_PF (=$(apt-cache show libwebsockets-$B_PF | grep "^Version: " | cut -d ' ' -f 2) )"
+echo "libmicrohttpd-dev,libuuid1,libc-ares2,libcjson1,libwebsockets-$B_PF (=$(apt-cache show libwebsockets-$B_PF | grep "^Version: " | cut -d ' ' -f 2) )"
 
 [DEB]
 Package: mosquitto
