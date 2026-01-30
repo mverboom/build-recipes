@@ -5,7 +5,7 @@ arch=amd64
 B_GITVER -e test https://github.com/eclipse/mosquitto
 
 [REQUIRED]
-libwebsockets-B_PF libc-ares-dev uuid-dev gcc libssl-dev g++ xsltproc make docbook-xsl libcjson-dev
+libwebsockets-B_PF libc-ares-dev uuid-dev gcc libssl-dev g++ xsltproc make docbook-xsl libcjson-dev libedit-dev libmicrohttpd-dev libsqlite3-dev
 
 [BUILD]
 B_GET git https://github.com/eclipse/mosquitto mosquitto
