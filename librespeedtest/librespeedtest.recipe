@@ -1,0 +1,32 @@
+[VERSION]
+B_GITVER -e pre https://github.com/librespeed/speedtest
+
+[INFO]
+arch=all
+
+[BUILD]
+B_GET git https://github.com/librespeed/speedtest librespeedtest
+cd librespeedtest
+git checkout v$B_VERSION
+DEST=$B_INSTALLDIR/opt/librespeedtest
+mkdir -p $DEST $B_INSTALLDIR/var/lib/librespeedtest $B_INSTALLDIR/etc/librespeedtest
+rm -rf .git .github .logo doc.md README.md
+sed -i 's/db_type.*;/db_type="sqlite";/; s#Sqlite_db_file.*;#Sqlite_db_file="/var/lib/librespeedtest/db.sql";#' results/telemetry_settings.php
+mv results/telemetry_settings.php $B_INSTALLDIR/etc/librespeedtest
+ln -s /etc/librespeedtest/telemetry_settings.php results/telemetry_settings.php
+#ln -s example-singleServer-full.html index.html
+tar cfB - . | ( cd $DEST ; tar xfB - )
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: librespeedtest
+Version: B_VERSION
+Section: librespeedtest
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: librespeedtest saver custom B_ORG build
+Homepage: https://github.com/librespeed/speedtest

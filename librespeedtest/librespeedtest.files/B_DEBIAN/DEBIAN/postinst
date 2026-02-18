@@ -1,0 +1,9 @@
+#!/bin/sh
+ 
+if test "$1" = "configure"; then
+   if test "$2" = ""; then
+      touch /var/lib/librespeedtest/db.sql
+      chown -R www-data.www-data /var/lib/librespeedtest
+      chmod 755 /var/lib/librespeedtest/db.sql
+   fi
+fi
