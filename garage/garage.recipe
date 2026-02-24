@@ -1,0 +1,30 @@
+[INFO]
+arch=amd64
+
+[VERSION]
+B_GITVER https://git.deuxfleurs.fr/Deuxfleurs/garage
+
+[REQUIRED]
+rustc-B_PF gcc make
+
+[BUILD]
+B_GET git https://git.deuxfleurs.fr/Deuxfleurs/garage garage
+cd garage
+git checkout v${B_VERSION}
+cargo build -j $(nproc) --release
+mkdir -p $B_INSTALLDIR/usr/bin
+cp target/release/garage $B_INSTALLDIR/usr/bin
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: garage
+Version: B_VERSION
+Section: garage
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: garage custom B_ORG build
+Homepage: https://garagehq.deuxfleurs.fr
