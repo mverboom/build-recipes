@@ -38,6 +38,7 @@ admin_token = "$(openssl rand -base64 32)"
 metrics_token = "$(openssl rand -base64 32)"
 EOF
 
-systemctl restart garage
+systemctl enable garage.service
+systemctl restart garage.service
 
 exit 0
