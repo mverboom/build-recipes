@@ -1,0 +1,37 @@
+[INFO]
+arch=amd64
+
+[VERSION]
+B_GITDATE https://git.deuxfleurs.fr/Deuxfleurs/garage-webadmin main
+
+[REQUIRED]
+nodejs-lts-B_PF g++ make
+nodejs-lts-B_PF make g++ gcc pnpm-B_PF
+
+[BUILD]
+B_GET git https://git.deuxfleurs.fr/Deuxfleurs/garage-webadmin garage-webadmin
+cd garage-webadmin
+#git checkout tags/$B_VERSION
+npm install
+npm run build
+#rm -rf *.md .git* .nodemonignore package.json package-lock.json .travis.yml Gruntfile.js .jshintrc jsdoc.json LICENSE test
+mkdir -p $B_INSTALLDIR/opt/garage-webadmin #$B_INSTALLDIR/usr/bin
+cd dist
+tar cf - . | ( cd $B_INSTALLDIR/opt/garage-webadmin ; tar xf - )
+#cd $B_INSTALLDIR/usr/bin
+#ln -s /opt/node-red/packages/node_modules/node-red/bin/node-red-pi node-red
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: garage-webadmin
+Version: B_VERSION
+Section: garage-webadmin
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: Garage Web Admin custom B_ORG build
+Homepage: https://git.deuxfleurs.fr/Deuxfleurs/garage-webadmin
+Depends: nodejs-lts-B_PF
