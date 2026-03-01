@@ -1,0 +1,36 @@
+[INFO]
+arch=amd64
+
+[VERSION]
+B_GITVER -i ^2 -a -e beta -e rc https://github.com/FreeRDP/FreeRDP
+
+[REQUIRED]
+build-essential git debhelper cdbs dpkg-dev autotools-dev cmake pkg-config xmlto libssl-dev docbook-xsl xsltproc libxkbfile-dev libx11-dev libwayland-dev libxrandr-dev libxi-dev libxrender-dev libxext-dev libxinerama-dev libxfixes-dev libxcursor-dev libxv-dev libxdamage-dev libxtst-dev libcups2-dev libpcsclite-dev libasound2-dev libpulse-dev libjpeg-dev libgsm1-dev libusb-1.0-0-dev libudev-dev libdbus-glib-1-dev uuid-dev libxml2-dev libgstreamer1.0-dev libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev libgstreamer-plugins-base1.0-dev libavutil-dev libavcodec-dev libxkbcommon-dev libwayland-dev libcairo2-dev libmp3lame-dev libfaad-dev libfaac-dev libsoxr-dev libpkcs11-helper1-dev libkrb5-dev libswscale-dev libfuse3-dev libwebkit2gtk-4.1-dev libsdl2-dev libsdl2-ttf-dev libgsm1-dev
+
+[BUILD]
+B_GET git https://github.com/FreeRDP/FreeRDP freerdp
+cd freerdp
+git checkout $B_VERSION
+mkdir build
+cd build
+CFLAGS="-Wno-error=incompatible-pointer-types" cmake -DCMAKE_BUILD_TYPE=Debug -DWITH_SSE2=ON -DWITH_JPEG=on -DWITH_GSM=ON -DWITH_LAME=ON -DWITH_FAAD2=ON -DWITH_FAAC=ON -DWITH_SOXR=ON -DCMAKE_INSTALL_PREFIX=/opt/freerdp2 ..
+make -j $(nproc)
+make install DESTDIR=$B_INSTALLDIR
+B_LINKFILES /opt/freerdp2/bin /usr/bin
+B_LINKFILES /opt/freerdp2/share/man/man1 /usr/share/man/man1
+B_LINKFILES /opt/freerdp2/share/man/man7 /usr/share/man/man7
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: freerdp2
+Version: B_VERSION
+Section: freerdp
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: Freerdp version 2 custom B_ORG build
+Homepage: https://github.com/FreeRDP/FreeRDP
+Depends: libfaac0,libfaad2

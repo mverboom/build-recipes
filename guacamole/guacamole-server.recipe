@@ -5,7 +5,7 @@ arch=amd64
 B_GITVER https://github.com/apache/guacamole-server
 
 [REQUIRED]
-autoconf libtool make libpng-dev libjpeg-dev libcairo2-dev uuid-dev libossp-uuid-dev gcc libssl-dev libssh2-1-dev libwebp-dev libpulse-dev libvncserver-dev libtelnet-dev freerdp2-dev libpango1.0-dev libavutil-dev libswscale-dev libvorbis-dev
+autoconf libtool make libpng-dev libjpeg-dev libcairo2-dev uuid-dev libossp-uuid-dev gcc libssl-dev libssh2-1-dev libwebp-dev libpulse-dev libvncserver-dev libtelnet-dev freerdp2-B_PF libpango1.0-dev libavutil-dev libswscale-dev libvorbis-dev
 
 [BUILD]
 B_GET git https://github.com/apache/guacamole-server guacamole-server
