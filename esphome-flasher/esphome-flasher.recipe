@@ -22,7 +22,7 @@ python3 setup.py install
 deactivate
 pushd "$DEST/bin"
 shopt -s extglob
-sed -i "s|$DEST|$NAME|g" !(__pycache__)
+sed -i "s|$DEST|$DIR|g" !(__pycache__)
 popd
 B_LINKFILE /opt/esphome-flasher/bin/esphomeflasher /usr/bin
 
