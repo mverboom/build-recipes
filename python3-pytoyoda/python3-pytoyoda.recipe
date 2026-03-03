@@ -5,7 +5,8 @@ B_GITVER https://github.com/pytoyoda/pytoyoda/
 arch=amd64
 
 [REQUIRED]
-python3-pip python3-httpx python3-pydantic python3-dateutil python3-importlib-metadata python3-hishel python3-arrow python3-marisa python3-jwt python3-loguru
+python3-pip python3-dateutil python3-importlib-metadata python3-arrow python3-marisa python3-jwt python3-loguru
+#python3-pip python3-httpx python3-pydantic python3-dateutil python3-importlib-metadata python3-hishel python3-arrow python3-marisa python3-jwt python3-loguru
 
 [BUILD]
 B_GET git https://github.com/pytoyoda/pytoyoda/ pytoyoda
@@ -32,4 +33,5 @@ Architecture: B_ARCH
 Maintainer: B_MAIL
 Description: Python3 pytoyoda bindings custom B_ORG build
 Homepage: https://github.com/pytoyoda/pytoyoda/
-Depends: python3,python3-loguru,python3-httpx,python3-pydantic,python3-dateutil,python3-importlib-metadata,python3-hishel,python3-arrow,python3-marisa,python3-jwt
+Depends: python3,python3-loguru,python3-dateutil,python3-importlib-metadata,python3-arrow,python3-marisa,python3-jwt
+#Depends: python3,python3-loguru,python3-httpx,python3-pydantic,python3-dateutil,python3-importlib-metadata,python3-hishel,python3-arrow,python3-marisa,python3-jwt
