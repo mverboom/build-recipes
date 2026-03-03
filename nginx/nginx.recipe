@@ -33,6 +33,10 @@ B_GET git https://github.com/leev/ngx_http_geoip2_module.git geoip2
 #B_GET git https://github.com/arut/nginx-dav-ext-module dav-ext
 B_GET git https://github.com/mid1221213/nginx-dav-ext-module dav-ext
 
+B_GET git https://github.com/vision5/ngx_devel_kit devkit
+
+B_GET git https://github.com/openresty/set-misc-nginx-module set-misc
+
 cd nginx
 patch -p0 < <(wget -q -O - https://raw.githubusercontent.com/Jas0n99/ngx_force_gunzip/refs/heads/master/ngx_force_gunzip.patch)
 ./configure --with-openssl=../libressl \
@@ -55,10 +59,12 @@ patch -p0 < <(wget -q -O - https://raw.githubusercontent.com/Jas0n99/ngx_force_g
             --with-http_realip_module \
             --with-http_dav_module \
             --with-http_gunzip_module \
+            --add-module=../devkit \
             --add-module=../auth_pam \
             --add-module=../rtmp \
             --add-module=../geoip2 \
             --add-module=../dav-ext \
+            --add-module=../set-misc \
             --with-debug \
             --with-http_v2_module \
             --with-http_v3_module \
