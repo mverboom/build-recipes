@@ -1,0 +1,30 @@
+[INFO]
+arch=amd64
+
+[VERSION]
+B_GITVER https://github.com/anomalyco/opencode/
+
+[REQUIRED]
+nodejs npm
+
+[BUILD]
+B_GET git https://github.com/anomalyco/opencode/ opencode
+cd opencode
+git checkout v$B_VERSION
+export npm_config_prefix=$B_INSTALLDIR/opt/opencode
+npm install -g opencode-ai@$B_VERSION
+B_LINKFILES /opt/opencode/bin /usr/bin
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: opencode
+Version: B_VERSION
+Section: opencode
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: Opencode custom B_ORG build
+Homepage: https://opencode.ai/
