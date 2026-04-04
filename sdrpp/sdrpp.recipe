@@ -34,4 +34,4 @@ Priority: optional
 Architecture: B_ARCH
 Maintainer: B_MAIL
 Description: sdrpp custom B_ORG build
-Depends: libopengl0, libglfw3, libvolk2.5, libairspyhf1, libad9361-0, libairspy0, libhackrf0, libiio0, librtaudio6, librtlsdr0, libsoapysdr0.8, libfftw3-single3
+Depends: libopengl0, libglfw3, libvolk3.2, libairspyhf1, libad9361-0, libairspy0, libhackrf0, libiio0, librtaudio6, librtlsdr0, libsoapysdr0.8, libfftw3-single3, libgl

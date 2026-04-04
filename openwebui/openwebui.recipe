@@ -3,7 +3,6 @@ B_GITVER https://github.com/open-webui/open-webui
 
 [INFO]
 arch=amd64
-excludefromall=true
 
 [REQUIRED]
 python3 python3-venv

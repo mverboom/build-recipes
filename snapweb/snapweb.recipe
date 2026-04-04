@@ -11,6 +11,7 @@ typescript-B_PF
 [BUILD]
 B_GET git https://github.com/badaix/snapweb snapweb
 cd snapweb
+npm install
 npm ci
 npm run build
 mkdir -p $B_INSTALLDIR/opt/snapweb

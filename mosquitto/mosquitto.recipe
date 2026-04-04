@@ -5,14 +5,16 @@ arch=amd64
 B_GITVER -e test https://github.com/eclipse/mosquitto
 
 [REQUIRED]
-libwebsockets-B_PF libc-ares-dev uuid-dev gcc libssl-dev g++ xsltproc make docbook-xsl libcjson-dev libedit-dev libmicrohttpd-dev libsqlite3-dev 
+libwebsockets-dev libc-ares-dev uuid-dev gcc libssl-dev g++ xsltproc make docbook-xsl libcjson-dev libedit-dev libmicrohttpd-dev libsqlite3-dev 
+#libwebsockets-B_PF libc-ares-dev uuid-dev gcc libssl-dev g++ xsltproc make docbook-xsl libcjson-dev libedit-dev libmicrohttpd-dev libsqlite3-dev 
 
 [BUILD]
 B_GET git https://github.com/eclipse/mosquitto mosquitto
 cd mosquitto
 git checkout tags/v$B_VERSION
 sed -i "s#prefix?=/usr/local#prefix?=/opt/mosquitto#" config.mk
-make WITH_WEBSOCKETS=yes CPPFLAGS=-I/opt/libwebsockets/include LDFLAGS=-L/opt/libwebsockets/lib -j $(nproc)
+#make WITH_WEBSOCKETS=yes CPPFLAGS=-I/opt/libwebsockets/include LDFLAGS=-L/opt/libwebsockets/lib -j $(nproc)
+make WITH_WEBSOCKETS=yes -j $(nproc)
 make install DESTDIR=$B_INSTALLDIR WITH_LIBWEBSOCKETS=yes
 B_LINKFILES /opt/mosquitto/bin /usr/bin
 B_LINKFILES /opt/mosquitto/sbin /usr/sbin
@@ -36,7 +38,8 @@ Architecture: B_ARCH
 Maintainer: B_MAIL
 Description: Mosquitto custom B_ORG build
 Homepage: https://mosquitto.org/
-Depends: B_DEPENDS,libmicrohttpd12t64
+Depends: libmicrohttpd12t64,libuuid1,libc-ares2,libcjson1,libwebsockets19t64
+#Depends: B_DEPENDS,libmicrohttpd12t64
 
 [DEB BOOKWORM]
 Package: mosquitto

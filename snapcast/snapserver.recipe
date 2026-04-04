@@ -5,7 +5,7 @@ arch=amd64
 B_GITVER https://github.com/badaix/snapcast
 
 [REQUIRED]
-build-essential libasound2-dev libvorbisidec-dev libvorbis-dev libflac-dev alsa-utils libavahi-client-dev avahi-daemon libopus-dev libsoxr-dev libboost-dev cmake libssl-dev libexpat1-dev
+build-essential libasound2-dev libvorbisidec-dev libvorbis-dev libflac-dev alsa-utils libavahi-client-dev avahi-daemon libopus-dev libsoxr-dev libboost-dev cmake libssl-dev libexpat1-dev libpipewire-0.3-dev
 
 [BUILD]
 B_GET git -s https://github.com/badaix/snapcast.git snapcast
@@ -13,7 +13,7 @@ cd snapcast
 git checkout v$B_VERSION
 mkdir build
 cd build
-cmake -DBUILD_CLIENT=NO -DBUILD_SERVER=YES ..
+cmake -DBUILD_CLIENT=NO -DBUILD_SERVER=YES -DBUILD_WITH_PIPEWIRE=ON ..
 make -j $(nproc)
 cd ..
 mkdir -p $B_INSTALLDIR/usr/bin $B_INSTALLDIR/usr/share/man/man1 $B_INSTALLDIR/etc
@@ -46,4 +46,4 @@ Architecture: B_ARCH
 Maintainer: B_MAIL
 Description: snapserver custom B_ORG build
 Homepage: https://github.com/badaix/snapcast
-Depends: adduser, libavahi-client3, libavahi-common3, libc6, libflac8, libogg0, libvorbis0a, libvorbisenc2, init-system-helpers, libopus0, libsoxr0
+Depends: adduser, libavahi-client3, libavahi-common3, libc6, libflac8, libogg0, libvorbis0a, libvorbisenc2, init-system-helpers, libopus0, libsoxr0, libpipewire-0.3-0t64
