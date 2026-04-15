@@ -22,9 +22,12 @@ pushd src/github.com/grafana
 B_GET git https://github.com/grafana/grafana grafana
 cd grafana
 git checkout v$B_VERSION
-make gen-go
-go run build.go setup
-go run build.go build
+# 20260415 Change for grafana 13
+#make gen-go
+make build-go GO_BUILD_TAGS=oss WIRE_TAGS=oss
+#go run build.go setup
+#go run build.go build
+
 export NODE_OPTIONS="--max_old_space_size=8000"
 export NODE_ENV=production
 yarn install
@@ -35,9 +38,10 @@ tar cfB - public | (cd $B_INSTALLDIR/opt/grafana ; tar xfB - )
 cd conf
 tar cfB - defaults.ini provisioning | (cd $B_INSTALLDIR/etc/grafana; tar xfB - )
 cd ..
-cp bin/linux-amd64/grafana-server $B_INSTALLDIR/opt/grafana/bin
-cp bin/linux-amd64/grafana-cli $B_INSTALLDIR/opt/grafana/bin
-cp bin/linux-amd64/grafana $B_INSTALLDIR/opt/grafana/bin
+#cp bin/linux-amd64/grafana-server $B_INSTALLDIR/opt/grafana/bin
+#cp bin/linux-amd64/grafana-cli $B_INSTALLDIR/opt/grafana/bin
+#cp bin/linux-amd64/grafana $B_INSTALLDIR/opt/grafana/bin
+cp bin/grafana $B_INSTALLDIR/opt/grafana/bin
 popd
 ln -s /etc/grafana $B_INSTALLDIR/opt/grafana/conf
 
