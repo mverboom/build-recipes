@@ -25,3 +25,4 @@ Architecture: B_ARCH
 Maintainer: B_MAIL
 Description: Opencode custom B_ORG build
 Homepage: https://opencode.ai/
+Depends: nodejs
