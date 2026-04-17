@@ -1,0 +1,38 @@
+[INFO]
+arch=amd64
+
+[VERSION]
+B_GITVER -a https://github.com/rustfs/rustfs
+
+[REQUIRED]
+rustc-B_PF gcc make unzip
+
+[BUILD]
+B_GET git https://github.com/rustfs/rustfs rustfs
+cd rustfs
+git checkout ${B_VERSION}
+mkdir -p rustfs/static
+curl -s https://api.github.com/repos/rustfs/console/releases/latest \
+| grep "browser_download_url.*zip" \
+| cut -d : -f 2,3 \
+| tr -d \" \
+| wget -O latest-console-assets.zip -qi -
+
+unzip -o latest-console-assets.zip -d rustfs/static
+cargo build -j $(nproc) --release -p rustfs --bins
+mkdir -p $B_INSTALLDIR/usr/local/bin
+cp target/release/rustfs $B_INSTALLDIR/usr/local/bin
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: rustfs
+Version: B_VERSION
+Section: rustfs
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: rustfs custom B_ORG build
+Homepage: https://rustfs.com

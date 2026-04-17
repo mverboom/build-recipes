@@ -1,0 +1,37 @@
+#!/bin/sh
+# postinst script for rustfs
+#
+# see: dh_installdeb(1)
+
+set -e
+
+# add the rustfs user
+if ! getent passwd rustfs >/dev/null; then
+    useradd --user-group --system --no-create-home rustfs
+fi
+
+if ! test -d /var/log/rustfs; then
+    mkdir -p /var/log/rustfs
+fi
+chown rustfs:rustfs /var/log/rustfs
+
+if ! test -d /var/lib/rustfs; then
+    mkdir -p /var/lib/rustfs
+fi
+chown rustfs:rustfs /var/lib/rustfs
+
+if ! test -f /etc/default/rustfs; then
+    cat > /etc/default/rustfs <<EOF
+RUSTFS_ACCESS_KEY=rustfsadmin
+RUSTFS_SECRET_KEY=rustfsadmin
+RUSTFS_VOLUMES="/data/rustfs0"
+RUSTFS_ADDRESS=":9000"
+RUSTFS_CONSOLE_ENABLE=true
+RUST_LOG=error
+RUSTFS_OBS_LOG_DIRECTORY="/var/log/rustfs/"
+EOF
+fi
+
+systemctl enable rustfs.service
+
+exit 0
