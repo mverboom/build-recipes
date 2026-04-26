@@ -1,0 +1,29 @@
+[INFO]
+arch=amd64
+
+[VERSION]
+B_GITVER https://github.com/badlogic/pi-mono/
+
+[REQUIRED]
+npm
+
+[BUILD]
+export npm_config_prefix=$B_INSTALLDIR/opt/pi-coding-agent
+npm install @mariozechner/pi-coding-agent@$B_VERSION --prefix $B_INSTALLDIR/opt/pi-coding-agent
+B_LINKFILE /opt/pi-coding-agent/node_modules/.bin/pi /usr/bin
+B_LINKFILE /opt/pi-coding-agent/node_modules/.bin/pi-ai /usr/bin
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: pi-coding-agent
+Version: B_VERSION
+Section: pi-mono
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: pi-coding-agent custom B_ORG build
+Homepage: https://pi.dev/
+Depends: nodejs,npm
