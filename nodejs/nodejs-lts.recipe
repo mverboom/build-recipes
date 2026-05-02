@@ -32,4 +32,5 @@ Priority: optional
 Architecture: B_ARCH
 Maintainer: B_MAIL
 Description: Nodejs LTS custom B_ORG build
-Conflicts: nodejs
+Provides: nodejs-runtime
+Conflicts: nodejs, nodejs-runtime
