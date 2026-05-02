@@ -12,6 +12,7 @@ export npm_config_prefix=$B_INSTALLDIR/opt/pi-coding-agent
 npm install @mariozechner/pi-coding-agent@$B_VERSION --prefix $B_INSTALLDIR/opt/pi-coding-agent
 B_LINKFILE /opt/pi-coding-agent/node_modules/.bin/pi /usr/bin
 B_LINKFILE /opt/pi-coding-agent/node_modules/.bin/pi-ai /usr/bin
+ln -s /usr/bin/fdfind $B_INSTALLDIR/usr/bin/fd
 
 [PKG]
 type=deb
@@ -26,4 +27,4 @@ Architecture: B_ARCH
 Maintainer: B_MAIL
 Description: pi-coding-agent custom B_ORG build
 Homepage: https://pi.dev/
-Depends: nodejs,npm
+Depends: nodejs,npm,ripgrep,fd-find
