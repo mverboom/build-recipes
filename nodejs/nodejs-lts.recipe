@@ -2,7 +2,7 @@
 arch=amd64
 
 [VERSION]
-wget -q -O - https://nodejs.org/en/download/ | sed -n 's/.*<span>v\([0-9\.]\+\) (LTS)<\/span>.*/\1/p'
+wget -q -O - https://nodejs.org/en/download/ | sed 's/>v/>\nv/g' | sed -n 's/^v\([0-9.]\+\)<\/span><span[^>]*>LTS.*/\1/p' | sort -u | tail -1
 
 [REQUIRED]
 python3 make gcc g++ python3-distutils
