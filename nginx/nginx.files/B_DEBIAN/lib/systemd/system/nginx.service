@@ -13,6 +13,7 @@ ExecStop=-/opt/nginx/sbin/start-stop-daemon --quiet --stop --retry QUIT/5 --pidf
 TimeoutStopSec=5
 KillMode=mixed
 Restart=always
+RestartSec=30
 
 [Install]
 WantedBy=multi-user.target

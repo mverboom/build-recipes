@@ -31,7 +31,7 @@ B_GET git https://github.com/sergey-dryabzhinsky/nginx-rtmp-module.git rtmp
 B_GET git https://github.com/leev/ngx_http_geoip2_module.git geoip2
 
 #B_GET git https://github.com/arut/nginx-dav-ext-module dav-ext
-B_GET git https://github.com/mid1221213/nginx-dav-ext-module dav-ext
+#B_GET git https://github.com/mid1221213/nginx-dav-ext-module dav-ext
 
 B_GET git https://github.com/vision5/ngx_devel_kit devkit
 
@@ -63,12 +63,12 @@ patch -p0 < <(wget -q -O - https://raw.githubusercontent.com/Jas0n99/ngx_force_g
             --add-module=../auth_pam \
             --add-module=../rtmp \
             --add-module=../geoip2 \
-            --add-module=../dav-ext \
             --add-module=../set-misc \
             --with-debug \
             --with-http_v2_module \
             --with-http_v3_module \
             --with-http_auth_request_module
+            #--add-module=../dav-ext \
 # Prevent nginx from trying to compile openssl because of older ssl.h
 touch ../libressl/.openssl/include/openssl/ssl.h
 make -j $(nproc)
