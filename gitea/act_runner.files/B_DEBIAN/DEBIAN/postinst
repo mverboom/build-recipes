@@ -16,4 +16,6 @@ case "$1" in
   ;;
 esac
 
+systemctl start act_runner
+
 exit 0
