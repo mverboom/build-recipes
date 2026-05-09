@@ -9,7 +9,7 @@ npm
 
 [BUILD]
 export npm_config_prefix=$B_INSTALLDIR/opt/pi-coding-agent
-npm install @mariozechner/pi-coding-agent@$B_VERSION --prefix $B_INSTALLDIR/opt/pi-coding-agent
+npm install @earendil-works/pi-coding-agent@$B_VERSION --prefix $B_INSTALLDIR/opt/pi-coding-agent
 B_LINKFILE /opt/pi-coding-agent/node_modules/.bin/pi /usr/bin
 B_LINKFILE /opt/pi-coding-agent/node_modules/.bin/pi-ai /usr/bin
 ln -s /usr/bin/fdfind $B_INSTALLDIR/usr/bin/fd
