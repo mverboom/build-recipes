@@ -16,7 +16,7 @@ git checkout v$B_VERSION
 #TAGS="bindata sqlite sqlite_unlock_notify pam" make build
 make build
 mkdir -p "$B_INSTALLDIR/usr/bin"
-cp act_runner "$B_INSTALLDIR/usr/bin"
+cp gitea-runner "$B_INSTALLDIR/usr/bin/act_runner"
 
 [PKG]
 type=deb
