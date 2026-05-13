@@ -36,4 +36,4 @@ Architecture: B_ARCH
 Maintainer: B_MAIL
 Description: Shellcheck custom B_ORG build
 Homepage: https://www.shellcheck.net/
-Depends: libatomic1
+Depends: libatomic1,libnuma1
