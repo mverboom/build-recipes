@@ -1,4 +1,0 @@
-systemctl stop corefreqd.service
-systemctl disable corefreqd.service
-rmmod corefreqk || true
-dkms remove -m corefreqk -v 2.0.0 --all || true
