@@ -2,7 +2,7 @@
 arch=amd64
 
 [VERSION]
-B_GITVER https://gitea.com/gitea/act_runner
+B_GITVER https://gitea.com/gitea/act_runner/
 
 [REQUIRED]
 make golang-B_PF
