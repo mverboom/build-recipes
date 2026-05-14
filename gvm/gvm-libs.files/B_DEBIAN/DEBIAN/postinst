@@ -1,2 +1,0 @@
-grep "# gvm-libs" /etc/manpath.config > /dev/null || echo "MANDATORY_MANPATH /opt/gvm/share/man # gvm-libs" >> /etc/manpath.config
-ldconfig

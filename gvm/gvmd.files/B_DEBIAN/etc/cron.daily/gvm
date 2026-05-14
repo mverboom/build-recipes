@@ -1,2 +1,0 @@
-#!/bin/sh
-su gvm -c /usr/bin/gvm-feed-update
