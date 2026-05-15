@@ -1,0 +1,30 @@
+[VERSION]
+B_GITVER https://github.com/NikitaIvanovV/ctpv
+
+[INFO]
+arch=amd64
+
+[REQUIRED]
+make gcc libssl-dev libmagic-dev
+
+[BUILD DEBIAN]
+B_GET git https://github.com/NikitaIvanovV/ctpv ctpv
+cd ctpv
+git checkout v$B_VERSION
+make
+make DESTDIR=$B_INSTALLDIR PREFIX=/usr install
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: ctpv
+Version: B_VERSION
+Section: ctpv
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: ctpv custom B_ORG build
+Homepage: https://github.com/NikitaIvanovV/ctpv
+Depends: libmagic1t64,libssl3t64
