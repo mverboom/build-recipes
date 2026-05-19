@@ -1,0 +1,29 @@
+[VERSION]
+B_GITVER https://github.com/jnuyens/modulejail
+
+[INFO]
+arch=all
+
+[BUILD]
+B_GET git https://github.com/jnuyens/modulejail modulejail
+cd modulejail
+git checkout v${B_VERSION}
+
+mkdir -p $B_INSTALLDIR/usr/bin $B_INSTALLDIR/usr/share/man/man8
+cp modulejail $B_INSTALLDIR/usr/bin
+sed "s/__VERSION__/$B_VERSION/g" man/modulejail.8.in > "$B_INSTALLDIR/usr/share/man/man8/modulejail.8"
+gzip -9n "$B_INSTALLDIR/usr/share/man/man8/modulejail.8"
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: modulejail
+Version: B_VERSION
+Section: modulejail
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: modulejail custom B_ORG build
+Homepage: https://github.com/jnuyens/modulejail
