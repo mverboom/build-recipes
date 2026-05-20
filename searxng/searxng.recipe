@@ -8,24 +8,32 @@ B_GITHUBVER https://github.com/searxng/searxng
 python3-dev python3-babel python3-venv uwsgi uwsgi-plugin-python3 build-essential libxslt1-dev zlib1g-dev libffi-dev libssl-dev
 
 [BUILD DEBIAN]
+set -o pipefail
 B_GET git https://github.com/searxng/searxng searxng
 cd searxng
 DEST=$B_INSTALLDIR/opt/searxng
-python3 -m venv $DEST
-. $DEST/bin/activate
-pip3 install --break-system-packages --no-cache -r requirements.txt
-pip install --upgrade pip build installer wheel setuptools
-pip install .
+python3 -m venv "$DEST"
+. "$DEST/bin/activate"
+
+# Pre-install build dependencies (required because setup.py imports them at module level)
+pip3 install --no-cache -r requirements.txt
+pip3 install -U pip setuptools wheel pyyaml msgspec typing-extensions pybind11
+
+# NON-editable install -- this places searx/ into site-packages
+pip3 install --no-build-isolation .
+
 deactivate
+
+# Rewrite hardcoded paths in bin scripts from build path to /opt/searxng
 pushd "$DEST/bin"
 shopt -s extglob
 sed -i "s|$DEST|/opt/searxng|g" !(__pycache__)
 popd
-#sed -i 's#^/.*/#/opt/#' $B_INSTALLDIR/opt/searxng/lib/python3.11/site-packages/searxng.egg-link
-#sed -i 's#^/.*/#/opt/#' $B_INSTALLDIR/opt/searxng/lib/python3.11/site-packages/easy-install.pth
-tar cfB - searx searxng.egg-info | ( cd "$DEST" ; tar xfB - )
+
+# Copy the settings file for configuration
 mkdir -p "$B_INSTALLDIR/etc/searxng"
 cp searx/settings.yml "$B_INSTALLDIR/etc/searxng/settings.yml.example"
+
 
 [PKG]
 type=deb
