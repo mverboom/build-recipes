@@ -2,7 +2,7 @@
 arch=amd64
 
 [VERSION]
-B_GITVER https://gitea.com/gitea/act_runner/
+B_GITVER https://gitea.com/gitea/runner/
 
 [REQUIRED]
 make golang-B_PF
@@ -10,7 +10,7 @@ make golang-B_PF
 [BUILD]
 export GOROOT=/opt/go
 export PATH=${PATH}:${GOROOT}/bin
-B_GET git https://gitea.com/gitea/act_runner act_runner
+B_GET git https://gitea.com/gitea/runner/ act_runner
 cd act_runner
 git checkout v$B_VERSION
 #TAGS="bindata sqlite sqlite_unlock_notify pam" make build
