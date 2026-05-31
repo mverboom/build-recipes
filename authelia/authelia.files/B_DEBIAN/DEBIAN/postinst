@@ -28,4 +28,4 @@ if grep JWT_SECRET /etc/authelia/configuration.yml > /dev/null 2>&1 ; then
 fi
 
 systemctl enable authelia
-systemctl start authelia
+systemctl restart authelia
