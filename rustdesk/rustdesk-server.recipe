@@ -1,0 +1,33 @@
+[INFO]
+arch=amd64
+
+[VERSION]
+B_GITVER -e '-[0-9]' https://github.com/rustdesk/rustdesk-server.git
+
+[REQUIRED]
+rustc-B_PF make gcc libssl-dev pkg-config libsodium-dev libsqlite3-dev
+
+[BUILD]
+export PATH=/opt/rustc/bin:${PATH}
+B_GET git -s https://github.com/rustdesk/rustdesk-server.git rustdesk-server
+cd rustdesk-server
+git checkout $B_VERSION
+cargo build --release
+mkdir -p $B_INSTALLDIR/opt/rustdesk/bin
+cp target/release/hbbs target/release/hbbr target/release/rustdesk-utils $B_INSTALLDIR/opt/rustdesk/bin/
+B_LINKFILE /opt/rustdesk/bin/rustdesk-utils /usr/bin
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: rustdesk-server
+Version: B_VERSION
+Section: rustdesk
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: RustDesk Server (hbbs + hbbr) custom B_ORG build
+Homepage: https://github.com/rustdesk/rustdesk-server
+Depends: libssl3, libsodium23, libsqlite3-0

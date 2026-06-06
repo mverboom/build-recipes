@@ -1,0 +1,30 @@
+# RustDesk Client Configuration Example
+# See: https://rustdesk.com/docs/en/self-host/client-configuration/
+#
+# This is an EXAMPLE file. Copy it to ~/.config/RustDesk/RustDesk2.toml
+# to use it, or use one of these methods instead:
+#
+#   rustdesk --import-config /etc/rustdesk/RustDesk2-example.toml
+#   rustdesk --config "BASE64_CONFIG_STRING"
+#
+# Note: RustDesk reads per-user config from ~/.config/RustDesk/RustDesk2.toml.
+# System-wide configs in /etc are NOT read automatically by the client.
+
+# ID Server (hbbs). Default port is 21116.
+# rendezvous_server = "hbbs.example.com:21116"
+
+# Relay Server (hbbr). Default port is 21117.
+# relay_server = "hbbr.example.com:21117"
+
+# API Server (for RustDesk Server Pro).
+# api_server = "https://api.example.com"
+
+# Public key from the server's id_ed25519.pub file.
+# key = ""
+
+[options]
+# These options are read when using --import-config
+# custom-rendezvous-server = "hbbs.example.com"
+# relay-server = "hbbr.example.com"
+# api-server = "https://api.example.com"
+# key = ""

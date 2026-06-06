@@ -1,0 +1,35 @@
+#!/bin/sh
+set -e
+
+case "$1" in
+  configure)
+    # Create rustdesk system group
+    if ! getent group rustdesk > /dev/null; then
+      addgroup --quiet --system rustdesk
+    fi
+
+    # Create rustdesk system user
+    if ! getent passwd rustdesk > /dev/null; then
+      adduser --quiet --system \
+        --ingroup rustdesk \
+        --home /var/lib/rustdesk \
+        --no-create-home \
+        --disabled-password --shell /bin/bash rustdesk
+      usermod -c "RustDesk daemon" rustdesk
+    fi
+
+    # Create and set permissions on data/log directories
+    mkdir -p /var/lib/rustdesk /var/log/rustdesk
+    chown -R rustdesk:rustdesk /var/lib/rustdesk /var/log/rustdesk
+
+    # Set permissions on config files
+    chown rustdesk:rustdesk /etc/rustdesk /etc/rustdesk/server.env /etc/rustdesk/server.ini
+    chmod 600 /etc/rustdesk/server.env
+
+    # Enable and start services
+    systemctl enable rustdesk-hbbs rustdesk-hbbr
+    systemctl restart rustdesk-hbbs rustdesk-hbbr
+    ;;
+esac
+
+exit 0

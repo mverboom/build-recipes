@@ -1,0 +1,13 @@
+#!/bin/sh
+set -e
+
+if [ "$1" = "purge" ]; then
+  systemctl stop rustdesk-hbbs rustdesk-hbbr 2>/dev/null || true
+  if getent passwd rustdesk >/dev/null; then
+    if which deluser >/dev/null 2>&1; then
+      deluser --quiet --system rustdesk || echo "Could not remove rustdesk user."
+    fi
+  fi
+fi
+
+exit 0

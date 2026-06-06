@@ -1,0 +1,19 @@
+[Unit]
+Description=RustDesk ID/Rendezvous Server
+After=network.target
+
+[Service]
+Type=simple
+User=rustdesk
+Group=rustdesk
+LimitNOFILE=1000000
+WorkingDirectory=/var/lib/rustdesk
+ExecStart=/opt/rustdesk/bin/hbbs -c /etc/rustdesk/server.ini
+EnvironmentFile=/etc/rustdesk/server.env
+Restart=always
+RestartSec=10
+StandardOutput=append:/var/log/rustdesk/hbbs.log
+StandardError=append:/var/log/rustdesk/hbbs.error
+
+[Install]
+WantedBy=multi-user.target

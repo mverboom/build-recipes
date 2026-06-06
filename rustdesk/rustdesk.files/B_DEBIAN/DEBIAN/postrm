@@ -1,0 +1,13 @@
+#!/bin/sh
+set -e
+
+case "$1" in
+  purge)
+    # Remove per-user RustDesk configs (service data from root)
+    rm -rf /root/.config/rustdesk || true
+    ;;
+  remove|upgrade)
+    ;;
+esac
+
+exit 0
