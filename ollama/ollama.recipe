@@ -10,24 +10,20 @@ golang-B_PF gcc g++ make cmake
 
 [BUILD]
 export GOROOT=/opt/go
-export PATH=${PATH}:${GOROOT}/bin
+export PATH=/opt/go/bin:$PATH
 B_GET git https://github.com/ollama/ollama/ ollama
 cd ollama
 git checkout v$B_VERSION
-# cuda
-#cmake -DCMAKE_INSTALL_PREFIX=$B_INSTALLDIR/opt/ollama -DCMAKE_CUDA_ARCHITECTURES="50;60;61;70;75;80;86;87;89;90" --preset 'CUDA'
-#cmake --build --parallel $(nproc) --preset 'CUDA'
-#cmake --install build --component CUDA --strip
-# cpu
-cmake -DCMAKE_INSTALL_PREFIX=$B_INSTALLDIR/opt/ollama --preset 'Default'
-cmake --build --parallel $(nproc) --preset 'Default'
-cmake --install build --component Default --strip
 
-export PATH=/opt/go/bin:$PATH
-export GOPATH=$(pwd)
-go build
-mkdir -p "$B_INSTALLDIR/opt/ollama/bin"
-cp ollama "$B_INSTALLDIR/opt/ollama/bin"
+# Build the native payload (llama-server, shared libs, CPU backends) via cmake superbuild
+# Also builds the Go binary with embedded version info
+cmake -DCMAKE_INSTALL_PREFIX=$B_INSTALLDIR/opt/ollama -DOLLAMA_VERSION=$B_VERSION --preset 'Default'
+cmake --build --parallel $(nproc) --preset 'Default'
+
+# Install the Go binary and all native payloads
+# The component name is ollama-local per cmake/local.cmake
+cmake --install build --component ollama-local
+
 B_LINKFILE /opt/ollama/bin/ollama /usr/bin
 
 [PKG]
@@ -40,6 +36,7 @@ Version: B_VERSION
 Section: ollama
 Priority: optional
 Architecture: B_ARCH
+Depends: libc6 (>= 2.36), libstdc++6 (>= 12), libgcc-s1
 Maintainer: B_MAIL
 Homepage: https://ollama.com/
 Description: ollama B_PF custom build
