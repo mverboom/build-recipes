@@ -1,0 +1,41 @@
+#!/bin/sh
+
+set -e
+
+# Create termix system group
+if ! getent group termix > /dev/null; then
+    addgroup --quiet --system termix
+fi
+
+# Create termix system user
+if ! getent passwd termix > /dev/null; then
+    adduser --quiet --system \
+        --ingroup termix \
+        --home /opt/termix \
+        --no-create-home \
+        --disabled-password --shell /bin/bash \
+        termix
+    usermod -c "Termix daemon" termix
+fi
+
+# Set permissions on data and log directories
+chown -R termix:termix /var/lib/termix /var/log/termix
+chmod 750 /var/lib/termix /var/log/termix
+
+# Enable termix nginx site, disable default
+if [ -f /etc/nginx/sites-enabled/default ]; then
+    rm -f /etc/nginx/sites-enabled/default
+fi
+if [ -f /etc/nginx/sites-available/termix ] && [ ! -e /etc/nginx/sites-enabled/termix ]; then
+    ln -s /etc/nginx/sites-available/termix /etc/nginx/sites-enabled/termix
+fi
+
+systemctl enable termix
+systemctl restart termix
+
+# Test nginx config before reloading
+if nginx -t 2>/dev/null; then
+    systemctl reload nginx
+else
+    echo "Warning: nginx configuration test failed, not reloading nginx"
+fi

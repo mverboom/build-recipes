@@ -1,0 +1,58 @@
+[INFO]
+arch=amd64
+
+[VERSION]
+B_GITVER -r 's/^release-//' -r 's/-tag$//' https://github.com/Termix-SSH/Termix
+
+[REQUIRED]
+nodejs-lts-B_PF python3 make g++
+
+[BUILD]
+B_GET git https://github.com/Termix-SSH/Termix termix
+cd termix
+git checkout release-$B_VERSION-tag
+
+# Install all dependencies and build frontend + backend
+npm ci
+# Build frontend with subpath base /termix/ so OIDC callbacks and
+# frontend routes work correctly behind reverse proxy at /termix/
+export VITE_BASE_PATH=/termix/
+
+npm run build
+
+# Switch to production dependencies only
+rm -rf node_modules
+npm ci --omit=dev --ignore-scripts
+npm rebuild better-sqlite3 bcryptjs
+
+# Copy entire dist output (frontend + backend) to /opt/termix/dist/
+# The backend serves frontend via express.static from process.cwd()/dist
+# Locales and fonts are bundled into dist by Vite since 2.3.0
+mkdir -p $B_INSTALLDIR/opt/termix/dist
+cp -r dist/* $B_INSTALLDIR/opt/termix/dist/
+
+# Install production dependencies and package.json
+cp -r node_modules $B_INSTALLDIR/opt/termix/
+cp package.json $B_INSTALLDIR/opt/termix/
+
+# Data and log directories
+mkdir -p $B_INSTALLDIR/var/lib/termix/uploads
+mkdir -p $B_INSTALLDIR/var/log/termix
+
+# Symlink uploads into /opt/termix so the hardcoded path works via /var
+ln -s /var/lib/termix/uploads $B_INSTALLDIR/opt/termix/uploads
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: termix
+Version: B_VERSION
+Section: termix
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: Termix SSH and remote desktop management B_ORG build
+Homepage: https://github.com/Termix-SSH/Termix
+Depends: nodejs-lts-B_PF, nginx

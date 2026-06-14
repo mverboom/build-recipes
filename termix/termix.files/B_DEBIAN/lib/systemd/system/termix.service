@@ -1,0 +1,17 @@
+[Unit]
+Description=Termix SSH and remote desktop management server
+After=network.target
+
+[Service]
+User=termix
+Group=termix
+WorkingDirectory=/opt/termix
+ExecStart=/usr/bin/node dist/backend/backend/starter.js
+Environment=NODE_ENV=production
+Environment=DATA_DIR=/var/lib/termix
+EnvironmentFile=-/etc/default/termix
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
