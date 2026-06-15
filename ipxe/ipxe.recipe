@@ -1,0 +1,83 @@
+[INFO]
+arch=amd64
+
+[VERSION]
+B_GITVER https://github.com/ipxe/ipxe
+
+[REQUIRED]
+gcc make perl liblzma-dev gcc-multilib libc6-dev-i386 xorriso mtools isolinux syslinux-common
+
+[BUILD]
+B_GET git https://github.com/ipxe/ipxe ipxe
+cd ipxe
+git checkout v${B_VERSION}
+
+# Deal with options
+opts=()
+if [[ -n "$IPXE_EMBEDCA" ]]; then
+   # ipxe root ca: http http://ca.ipxe.org/ca.crt
+   # lets encrypt root ca: https://letsencrypt.org/certs/isrgrootx1.pem
+   echo "Embedding CA $IPXE_EMBEDCA"
+   B_GET http "$IPXE_EMBEDCA" ca.crt
+   cp ca.crt src/ca.crt
+   opts+=( "CERT=ca.crt" "TRUST=ca.crt" )
+fi
+test -n "$IPXE_DEBUG" && opts+=( "DEBUG=open,httpcore" )
+
+cd src
+
+# Enable HTTPS, IP statistics and ping commands for all platforms
+mkdir -p config/local
+printf '\043define DOWNLOAD_PROTO_HTTPS\n\043define IPSTAT_CMD\n\043define PING_CMD\n' > config/local/general.h
+
+# Build x86_64 EFI binaries (with embedded iPXE root CA certificate)
+make bin-x86_64-efi/ipxe.efi bin-x86_64-efi/snponly.efi "${opts[@]}" -j$(nproc)
+
+# Build i386 (32-bit) EFI binaries
+make bin-i386-efi/ipxe.efi "${opts[@]}" -j$(nproc)
+
+# Build BIOS/legacy binaries
+make bin-i386-pcbios/ipxe.lkrn bin-i386-pcbios/ipxe.pxe bin-i386-pcbios/undionly.kpxe bin-i386-pcbios/undionly.kkpxe "${opts[@]}" -j$(nproc)
+
+# Build combined ISO (needs both EFI and BIOS binaries)
+make bin/ipxe.iso "${opts[@]}" -j$(nproc)
+
+# Install to /usr/lib/ipxe
+DEST="$B_INSTALLDIR/usr/lib/ipxe"
+mkdir -p "$DEST"
+
+# EFI binaries
+cp bin-x86_64-efi/ipxe.efi "$DEST/ipxe-amd64.efi"
+ln -s ipxe-amd64.efi "$DEST/ipxe.efi"
+cp bin-x86_64-efi/snponly.efi "$DEST/snponly.efi"
+cp bin-i386-efi/ipxe.efi "$DEST/ipxe-i386.efi"
+
+# BIOS/legacy binaries
+cp bin-i386-pcbios/ipxe.lkrn "$DEST/ipxe.lkrn"
+cp bin-i386-pcbios/ipxe.pxe "$DEST/ipxe.pxe"
+cp bin-i386-pcbios/undionly.kpxe "$DEST/undionly.kpxe"
+cp bin-i386-pcbios/undionly.kkpxe "$DEST/undionly.kkpxe"
+
+# ISO image
+cp bin/ipxe.iso "$DEST/ipxe.iso"
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: ipxe
+Version: B_VERSION
+Section: admin
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: iPXE network boot firmware - custom B_ORG build
+ iPXE is the leading open source network boot firmware. It provides a
+ full PXE implementation enhanced with additional features such as
+ booting from HTTP, HTTPS, iSCSI, FCoE, or AoE SAN, and scripting
+ support.
+ .
+ This package provides EFI binaries for x86_64 and i386 (IA-32),
+ legacy BIOS/PCBIOS binaries, and a bootable ISO image.
+Homepage: https://ipxe.org/
