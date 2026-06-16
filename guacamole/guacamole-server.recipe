@@ -5,15 +5,22 @@ arch=amd64
 B_GITVER https://github.com/apache/guacamole-server
 
 [REQUIRED]
-autoconf libtool make libpng-dev libjpeg-dev libcairo2-dev uuid-dev libossp-uuid-dev gcc libssl-dev libssh2-1-dev libwebp-dev libpulse-dev libvncserver-dev libtelnet-dev freerdp2-B_PF libpango1.0-dev libavutil-dev libswscale-dev libvorbis-dev
+autoconf automake libtool pkg-config make libpng-dev libjpeg-dev libcairo2-dev uuid-dev libossp-uuid-dev gcc libssl-dev libssh2-1-dev libwebp-dev libpulse-dev libvncserver-dev libtelnet-dev freerdp2-B_PF libpango1.0-dev libavutil-dev libswscale-dev libvorbis-dev
 
 [BUILD]
 B_GET git https://github.com/apache/guacamole-server guacamole-server
 cd guacamole-server
 git checkout ${B_VERSION}
 
+# freerdp2 is installed under /opt/freerdp2 by the custom LNW package.
+# Make sure pkg-config, the compiler and the linker can find it.
+export PKG_CONFIG_PATH=/opt/freerdp2/lib/pkgconfig:/usr/lib/x86_64-linux-gnu/pkgconfig
+export CPPFLAGS="-I/opt/freerdp2/include/freerdp2 -I/opt/freerdp2/include/winpr2"
+export LIBRARY_PATH=/opt/freerdp2/lib:$LIBRARY_PATH
+export LD_LIBRARY_PATH=/opt/freerdp2/lib:$LD_LIBRARY_PATH
+
 autoreconf -fi
-./configure --with-systemd-dir=/lib/systemd/system --prefix=/opt/guacamole --with-ssh --with-rdp --with-vnc --with-terminal --with-telnet --with-webp --enable-allow-freerdp-snapshots
+./configure --prefix=/opt/guacamole --with-ssh --with-rdp --with-vnc --with-terminal --with-telnet --with-webp --enable-allow-freerdp-snapshots
 make -j $(nproc)
 make install DESTDIR=$B_INSTALLDIR
 mkdir -p $B_INSTALLDIR/var/lib/guacamole
@@ -33,4 +40,4 @@ Architecture: B_ARCH
 Maintainer: B_MAIL
 Description: Guacamole server custom B_ORG build
 Homepage: https://guacamole.apache.org/
-Depends: libpng16-16,libpango1.0-0,libtelnet2,libssh2-1,libwebp6
+Depends: libpng16-16,libpango-1.0-0,libtelnet2,libssh2-1,libwebp7,libvncclient1,libpulse0,libcairo2,freerdp2-B_PF
