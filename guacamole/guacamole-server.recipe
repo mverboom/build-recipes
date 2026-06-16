@@ -40,4 +40,4 @@ Architecture: B_ARCH
 Maintainer: B_MAIL
 Description: Guacamole server custom B_ORG build
 Homepage: https://guacamole.apache.org/
-Depends: libpng16-16,libpango-1.0-0,libtelnet2,libssh2-1,libwebp7,libvncclient1,libpulse0,libcairo2,freerdp2-B_PF
+Depends: libpng16-16t64,libpango-1.0-0,libtelnet2,libssh2-1,libwebp7,libvncclient1,libpulse0,libcairo2,freerdp2-B_PF
