@@ -22,6 +22,12 @@ fi
 chown -R termix:termix /var/lib/termix /var/log/termix
 chmod 750 /var/lib/termix /var/log/termix
 
+# Enable and start guacd (required for RDP/VNC/Telnet remote desktop)
+if [ -f /lib/systemd/system/guacd.service ]; then
+    systemctl enable guacd || true
+    systemctl start guacd || true
+fi
+
 # Enable termix nginx site, disable default
 if [ -f /etc/nginx/sites-enabled/default ]; then
     rm -f /etc/nginx/sites-enabled/default

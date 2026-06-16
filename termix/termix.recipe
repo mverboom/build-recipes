@@ -55,4 +55,4 @@ Architecture: B_ARCH
 Maintainer: B_MAIL
 Description: Termix SSH and remote desktop management B_ORG build
 Homepage: https://github.com/Termix-SSH/Termix
-Depends: nodejs-lts-B_PF, nginx
+Depends: nodejs-lts-B_PF, nginx, guacamole-server-B_PF

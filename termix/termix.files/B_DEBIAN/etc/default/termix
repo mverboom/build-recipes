@@ -1,1 +1,5 @@
 # Termix configuration variables
+
+# Guacamole daemon (guacd) connection settings for remote desktop (RDP/VNC/Telnet)
+GUACD_HOST=localhost
+GUACD_PORT=4822

@@ -1,6 +1,7 @@
 [Unit]
 Description=Termix SSH and remote desktop management server
-After=network.target
+After=network.target guacd.service
+Wants=guacd.service
 
 [Service]
 User=termix
@@ -9,6 +10,8 @@ WorkingDirectory=/opt/termix
 ExecStart=/usr/bin/node dist/backend/backend/starter.js
 Environment=NODE_ENV=production
 Environment=DATA_DIR=/var/lib/termix
+Environment=GUACD_HOST=localhost
+Environment=GUACD_PORT=4822
 EnvironmentFile=-/etc/default/termix
 Restart=on-failure
 RestartSec=5
