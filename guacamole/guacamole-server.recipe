@@ -20,7 +20,7 @@ export LIBRARY_PATH=/opt/freerdp2/lib:$LIBRARY_PATH
 export LD_LIBRARY_PATH=/opt/freerdp2/lib:$LD_LIBRARY_PATH
 
 autoreconf -fi
-./configure --prefix=/opt/guacamole --with-ssh --with-rdp --with-vnc --with-terminal --with-telnet --with-webp --enable-allow-freerdp-snapshots
+./configure --prefix=/opt/guacamole --with-systemd-dir=/lib/systemd/system --with-ssh --with-rdp --with-vnc --with-terminal --with-telnet --with-webp --enable-allow-freerdp-snapshots
 make -j $(nproc)
 make install DESTDIR=$B_INSTALLDIR
 mkdir -p $B_INSTALLDIR/var/lib/guacamole
