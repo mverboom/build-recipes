@@ -1,0 +1,94 @@
+# PegaProx - Multi-Cluster Management for Proxmox VE & XCP-ng
+# Python Flask web application with embedded venv for pip dependencies.
+#
+[INFO]
+arch=amd64
+
+[VERSION]
+B_GITVER -r 's/^v//' https://github.com/PegaProx/project-pegaprox
+
+[REQUIRED]
+python3 python3-pip python3-venv python3-dev git gcc g++ make libffi-dev libssl-dev
+
+[BUILD]
+B_GET git https://github.com/PegaProx/project-pegaprox pegaprox
+cd pegaprox
+git checkout tags/v$B_VERSION
+
+# --- Create Python virtual environment and install dependencies ---
+DEST=$B_INSTALLDIR/opt/pegaprox/venv
+python3 -m venv "$DEST"
+"$DEST/bin/pip" install --upgrade pip
+"$DEST/bin/pip" install -r requirements.txt
+
+# Fix venv paths: replace build-time path with install-time path
+cd "$DEST/bin"
+shopt -s extglob
+sed -i "s|$DEST|/opt/pegaprox/venv|g" !(__pycache__)
+cd -
+sed -i "s|$DEST|/opt/pegaprox/venv|g" "$DEST/pyvenv.cfg"
+
+# --- Copy application files ---
+APP=$B_INSTALLDIR/opt/pegaprox
+mkdir -p "$APP"
+
+cp pegaprox_multi_cluster.py "$APP/"
+cp -r pegaprox "$APP/"
+cp -r web "$APP/"
+cp -r static "$APP/"
+cp -r images "$APP/"
+cp -r plugins "$APP/"
+cp version.json "$APP/"
+cp requirements.txt "$APP/"
+cp update.sh "$APP/"
+cp LICENSE "$APP/"
+cp README.md "$APP/"
+
+# --- Create wrapper script ---
+cat > "$APP/pegaprox-wrapper" << 'WRAPPEREOF'
+#!/bin/sh
+exec /opt/pegaprox/venv/bin/python /opt/pegaprox/pegaprox_multi_cluster.py "$@"
+WRAPPEREOF
+chmod 755 "$APP/pegaprox-wrapper"
+
+# --- Symlink wrapper to /usr/bin ---
+mkdir -p $B_INSTALLDIR/usr/bin
+ln -s /opt/pegaprox/pegaprox-wrapper $B_INSTALLDIR/usr/bin/pegaprox
+
+# --- Data, log, and config directories ---
+mkdir -p $B_INSTALLDIR/var/lib/pegaprox/config
+mkdir -p $B_INSTALLDIR/var/lib/pegaprox/backups
+mkdir -p $B_INSTALLDIR/var/log/pegaprox
+mkdir -p $B_INSTALLDIR/etc/pegaprox
+
+# --- Symlinks for mutable directories (app uses relative paths from CWD) ---
+# config/ holds the SQLite DB, encrypted configs, SSL certs, sessions
+ln -s /var/lib/pegaprox/config "$APP/config"
+# logs/ holds per-cluster log files
+ln -s /var/log/pegaprox "$APP/logs"
+# backups/ holds configuration backups
+ln -s /var/lib/pegaprox/backups "$APP/backups"
+
+# --- Remove .git and build artifacts from copy ---
+rm -rf "$APP/pegaprox/api/__pycache__"
+find "$APP" -name '__pycache__' -type d -exec rm -rf {} + 2>/dev/null || true
+find "$APP" -name '*.pyc' -delete 2>/dev/null || true
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: pegaprox
+Version: B_VERSION
+Section: web
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: Multi-Cluster Management for Proxmox VE & XCP-ng
+ PegaProx is a modern web-based management interface for Proxmox VE and
+ XCP-ng clusters. Manage multiple clusters from a single dashboard with
+ live monitoring, VM management, automated tasks, cross-cluster load
+ balancing, VNC/SSH consoles, and more.
+Homepage: https://pegaprox.com
+Depends: python3, openssh-client, sshpass, openssl, ca-certificates, psmisc, sqlite3

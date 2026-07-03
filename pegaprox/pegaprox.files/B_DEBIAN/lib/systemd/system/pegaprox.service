@@ -1,0 +1,32 @@
+[Unit]
+Description=PegaProx - Multi-Cluster Management for Proxmox VE & XCP-ng
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=pegaprox
+Group=pegaprox
+WorkingDirectory=/opt/pegaprox
+
+# Use venv Python and include system paths for ssh, sshpass, openssl, etc.
+Environment=PATH=/opt/pegaprox/venv/bin:/usr/local/bin:/usr/bin:/bin
+
+ExecStart=/opt/pegaprox/venv/bin/python /opt/pegaprox/pegaprox_multi_cluster.py
+Restart=on-failure
+RestartSec=5
+
+# Allow binding to privileged ports (if user configures port 443 etc.)
+AmbientCapabilities=CAP_NET_BIND_SERVICE
+
+# Security
+PrivateTmp=true
+NoNewPrivileges=true
+
+# Logging
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=pegaprox
+
+[Install]
+WantedBy=multi-user.target

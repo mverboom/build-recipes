@@ -1,0 +1,31 @@
+#!/bin/sh
+set -e
+
+if [ "$1" = "purge" ] ; then
+    systemctl stop pegaprox 2>/dev/null || true
+    systemctl disable pegaprox 2>/dev/null || true
+
+    if getent passwd pegaprox >/dev/null; then
+        if which deluser >/dev/null 2>&1; then
+            deluser --quiet --system pegaprox || echo "Could not remove pegaprox user."
+        fi
+    fi
+
+    if getent group pegaprox >/dev/null; then
+        if which delgroup >/dev/null 2>&1; then
+            delgroup --quiet --system pegaprox || echo "Could not remove pegaprox group."
+        fi
+    fi
+
+    # Remove encryption key
+    rm -f /etc/pegaprox/secret.key
+    rmdir /etc/pegaprox 2>/dev/null || true
+
+    # Remove data and log directories on purge
+    rm -rf /var/lib/pegaprox
+    rm -rf /var/log/pegaprox
+fi
+
+# Remove systemd unit file leftovers
+rm -f /lib/systemd/system/pegaprox.service
+systemctl daemon-reload 2>/dev/null || true

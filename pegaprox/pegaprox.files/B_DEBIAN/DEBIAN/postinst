@@ -1,0 +1,62 @@
+#!/bin/sh
+set -e
+
+# Create pegaprox system group
+if ! getent group pegaprox > /dev/null; then
+    addgroup --quiet --system pegaprox
+fi
+
+# Create pegaprox system user
+if ! getent passwd pegaprox > /dev/null; then
+    adduser --quiet --system \
+        --ingroup pegaprox \
+        --home /opt/pegaprox \
+        --no-create-home \
+        --disabled-password --shell /bin/bash \
+        pegaprox
+    usermod -c "PegaProx daemon" pegaprox
+fi
+
+# Set permissions on data and log directories
+chown -R pegaprox:pegaprox /var/lib/pegaprox /var/log/pegaprox
+chmod 750 /var/lib/pegaprox /var/log/pegaprox
+
+# Set ownership of application directory (venv must be readable by pegaprox)
+chown -R root:pegaprox /opt/pegaprox
+chmod -R g+r /opt/pegaprox
+# Wrapper must be executable
+chmod 755 /opt/pegaprox/pegaprox-wrapper
+
+# Config directory must be owned by pegaprox (app writes DB and configs here)
+chown -R pegaprox:pegaprox /var/lib/pegaprox/config
+chmod 700 /var/lib/pegaprox/config
+
+# --- Generate master encryption key if not present ---
+# The keystore looks for /etc/pegaprox/secret.key as tier-4 default.
+# Key format: 32 raw bytes, urlsafe-base64-encoded.
+# Mode 0640 (root:pegaprox) so the service can read it via group.
+SYS_KEY_DIR=/etc/pegaprox
+SYS_KEY="$SYS_KEY_DIR/secret.key"
+
+if [ ! -f "$SYS_KEY" ]; then
+    mkdir -p "$SYS_KEY_DIR"
+    chmod 750 "$SYS_KEY_DIR"
+    chown root:pegaprox "$SYS_KEY_DIR"
+
+    python3 -c "
+import base64, os, secrets
+key = base64.urlsafe_b64encode(secrets.token_bytes(32))
+fd = os.open('$SYS_KEY', os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o640)
+try:
+    os.write(fd, key)
+finally:
+    os.close(fd)
+" 2>/dev/null && {
+        chmod 640 "$SYS_KEY"
+        chown root:pegaprox "$SYS_KEY"
+    } || echo "pegaprox: Could not pre-generate master key, app will generate on first boot"
+fi
+
+# Enable and start the service
+systemctl enable pegaprox
+systemctl restart pegaprox
