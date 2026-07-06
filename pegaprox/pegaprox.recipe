@@ -35,6 +35,23 @@ mkdir -p "$APP"
 cp pegaprox_multi_cluster.py "$APP/"
 cp -r pegaprox "$APP/"
 cp -r web "$APP/"
+
+# --- Patch: disable sponsor nag modal (shows after login for admins) ---
+# Inserts an early return in the useEffect that triggers the sponsor modal,
+# so it never fires for any user. The compiled web/index.html preserves
+# variable names from the JSX source, making this a safe string replacement.
+python3 -c "
+import sys
+f = sys.argv[1]
+with open(f, 'r') as fh:
+    content = fh.read()
+old = 'if(!user||!isAdmin)return;const key=' + chr(0x60) + 'pegaprox_sponsor_v2'
+new = 'return;if(!user||!isAdmin)return;const key=' + chr(0x60) + 'pegaprox_sponsor_v2'
+content = content.replace(old, new)
+with open(f, 'w') as fh:
+    fh.write(content)
+" "$APP/web/index.html"
+
 cp -r static "$APP/"
 cp -r images "$APP/"
 cp -r plugins "$APP/"

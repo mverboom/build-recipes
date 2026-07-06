@@ -57,6 +57,10 @@ finally:
     } || echo "pegaprox: Could not pre-generate master key, app will generate on first boot"
 fi
 
-# Enable and start the service
-systemctl enable pegaprox
-systemctl restart pegaprox
+# Reload systemd to pick up the newly installed unit file
+systemctl daemon-reload
+
+# Enable and start the service (non-fatal so package install doesn't fail
+# if systemd has a transient issue or the unit was just installed)
+systemctl enable pegaprox || true
+systemctl restart pegaprox || true

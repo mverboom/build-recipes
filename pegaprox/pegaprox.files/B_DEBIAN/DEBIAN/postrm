@@ -24,8 +24,9 @@ if [ "$1" = "purge" ] ; then
     # Remove data and log directories on purge
     rm -rf /var/lib/pegaprox
     rm -rf /var/log/pegaprox
+
+   # Remove systemd unit file leftovers
+   rm -f /lib/systemd/system/pegaprox.service
+   systemctl daemon-reload 2>/dev/null || true
 fi
 
-# Remove systemd unit file leftovers
-rm -f /lib/systemd/system/pegaprox.service
-systemctl daemon-reload 2>/dev/null || true
