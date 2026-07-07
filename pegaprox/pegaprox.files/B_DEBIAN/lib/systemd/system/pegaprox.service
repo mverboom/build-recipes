@@ -11,6 +11,7 @@ WorkingDirectory=/opt/pegaprox
 
 # Use venv Python and include system paths for ssh, sshpass, openssl, etc.
 Environment=PATH=/opt/pegaprox/venv/bin:/usr/local/bin:/usr/bin:/bin
+EnvironmentFile=-/etc/default/pegaprox
 
 ExecStart=/opt/pegaprox/venv/bin/python /opt/pegaprox/pegaprox_multi_cluster.py
 Restart=on-failure
