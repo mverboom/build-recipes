@@ -17,6 +17,9 @@ echo "node-linker=hoisted" >> .npmrc
 pnpm i
 pnpm run build
 rm -rf LICENSE README.md .git .github .gitignore test .vscode .npmrc .npmignore update.sh docker images npm-shrinkwrap.json .dockerignore .eslintignore .eslintrc.json data
+cat > process-title.js << 'PEOF'
+process.title = 'z2m-' + (process.env.Z2M_INSTANCE || 'default');
+PEOF
 mkdir -p "$B_INSTALLDIR/opt/zigbee2mqtt"
 mkdir -p "$B_INSTALLDIR/var/log/zigbee2mqtt"
 mkdir -p "$B_INSTALLDIR/var/lib/zigbee2mqtt"

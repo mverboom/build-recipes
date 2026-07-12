@@ -3,11 +3,13 @@ Description=zigbee2mqtt (%i)
 After=network.target
 
 [Service]
-ExecStart=/usr/bin/npm start
+ExecStart=/usr/bin/node index.js
 WorkingDirectory=/opt/zigbee2mqtt
 EnvironmentFile=-/etc/default/zigbee2mqtt
 EnvironmentFile=-/etc/default/zigbee2mqtt-%i
 Environment="ZIGBEE2MQTT_DATA=/var/lib/zigbee2mqtt-%i"
+Environment="Z2M_INSTANCE=%i"
+Environment="NODE_OPTIONS=--require /opt/zigbee2mqtt/process-title.js"
 StandardOutput=inherit
 StandardError=inherit
 Restart=always
