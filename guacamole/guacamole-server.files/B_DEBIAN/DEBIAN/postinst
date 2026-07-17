@@ -1,0 +1,11 @@
+#!/bin/sh
+
+set -e
+
+# Enable and start guacd so remote desktop protocols (RDP/VNC/Telnet) work
+# immediately after the package is installed.
+if [ -f /lib/systemd/system/guacd.service ]; then
+    systemctl daemon-reload >/dev/null 2>&1 || true
+    systemctl enable guacd || true
+    systemctl restart guacd || true
+fi
