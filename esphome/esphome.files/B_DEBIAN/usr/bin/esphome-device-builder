@@ -1,0 +1,7 @@
+#!/bin/sh
+test "$USER" != "esphome" && { echo "Only run as esphome user."; exit 1; }
+
+test "$http_proxy" != "" && export HTTP_PROXY="$http_proxy"
+test "$https_proxy" != "" && export HTTPS_PROXY="$https_proxy"
+
+/var/lib/esphome-venv/bin/esphome-device-builder "$@"

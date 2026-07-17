@@ -1,0 +1,10 @@
+/var/log/authelia/*.log {
+    weekly
+    rotate 4
+    compress
+    delaycompress
+    missingok
+    notifempty
+    copytruncate
+    su authelia authelia
+}

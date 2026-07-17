@@ -7,12 +7,13 @@ EnvironmentFile=/etc/default/esphome
 PermissionsStartOnly=true
 ExecStartPre=/bin/mkdir -p /var/run/esphome/
 ExecStartPre=/bin/chown -R esphome:esphome /var/run/esphome/
-ExecStart=/usr/bin/esphome dashboard /var/lib/esphome $AUTH $PORT
+ExecStart=/usr/bin/esphome-device-builder /var/lib/esphome $AUTH $PORT
 WorkingDirectory=/var/lib/esphome
 StandardOutput=inherit
 StandardError=inherit
 Restart=always
 User=esphome
+UMask=0002
 
 [Install]
 WantedBy=multi-user.target

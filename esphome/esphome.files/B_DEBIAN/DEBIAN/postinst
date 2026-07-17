@@ -16,6 +16,8 @@ if test "$1" = "configure"; then
            esphome
        usermod -c "ESPHome user" esphome
    fi
+   # Add www-data (lighttpd) to esphome group so it can access the unix socket
+   adduser --quiet www-data esphome 2>/dev/null || true
    chown -R esphome:esphome /var/lib/esphome /var/lib/esphome-venv
    if ! test -e /etc/esphome/privkey.pem; then
       openssl req \

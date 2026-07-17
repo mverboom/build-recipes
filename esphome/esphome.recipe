@@ -16,7 +16,7 @@ DEST=$B_INSTALLDIR/var/lib/esphome-venv
 mkdir -p "$DEST"
 python3 -m venv $DEST
 source $DEST/bin/activate
-pip install esphome==$B_VERSION
+pip install esphome==$B_VERSION 'esphome-device-builder[esphome]'
 deactivate
 cd "$DEST/bin"
 shopt -s extglob
