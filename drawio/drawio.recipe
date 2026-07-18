@@ -5,10 +5,9 @@ arch=amd64
 B_GITVER https://github.com/jgraph/drawio
 
 [BUILD]
-B_GET git https://github.com/jgraph/drawio drawio
-cd drawio
-git checkout v$B_VERSION
-cd src/main
+rm -rf drawio
+git clone --depth 1 --branch "v$B_VERSION" https://github.com/jgraph/drawio drawio
+cd drawio/src/main
 mkdir -p $B_INSTALLDIR/opt/drawio/
 mv webapp $B_INSTALLDIR/opt/drawio/
 
