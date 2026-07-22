@@ -12,6 +12,7 @@ export PATH=/opt/rustc/bin:${PATH}
 B_GET git -s https://github.com/rustdesk/rustdesk-server.git rustdesk-server
 cd rustdesk-server
 git checkout $B_VERSION
+export SODIUM_USE_PKG_CONFIG=1
 cargo build --release
 mkdir -p $B_INSTALLDIR/opt/rustdesk/bin
 cp target/release/hbbs target/release/hbbr target/release/rustdesk-utils $B_INSTALLDIR/opt/rustdesk/bin/
