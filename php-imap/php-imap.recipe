@@ -1,0 +1,57 @@
+[INFO]
+arch=amd64,arm64
+
+[VERSION]
+B_GITVER https://github.com/php/pecl-mail-imap
+
+[REQUIRED]
+php8.4-dev libssl-dev
+
+[BUILD]
+# Build c-client (UW IMAP library) from source - no longer available in Debian Trixie
+B_GET git https://github.com/uw-imap/imap uw-imap
+cd uw-imap
+# Build with -fPIC so the static library can be linked into the PHP shared extension
+# Suppress errors for old C code patterns that modern GCC rejects
+make slx EXTRACFLAGS="-fPIC -Wno-implicit-function-declaration -Wno-implicit-int -Wno-int-conversion -Wno-incompatible-pointer-types -Wno-deprecated-declarations" SPECIALS="SSLINCLUDE=/usr/include/openssl SSLLIB=/usr/lib SSLCERTS=/etc/ssl/certs SSLKEYS=/etc/ssl/private MAILSPOOL=/var/mail"
+
+# Install c-client headers and static library to a temporary prefix
+mkdir -p /tmp/c-client-prefix/include/c-client /tmp/c-client-prefix/lib
+cp c-client/*.h c-client/*.c /tmp/c-client-prefix/include/c-client/
+cp c-client/c-client.a /tmp/c-client-prefix/lib/libc-client.a
+cd ..
+
+# Build the PECL php-imap extension
+B_GET git https://github.com/php/pecl-mail-imap php-imap-src
+cd php-imap-src
+git checkout ${B_VERSION}
+phpize
+./configure --with-imap=/tmp/c-client-prefix --with-imap-ssl
+make
+
+# Install extension to package
+PHPAPI=$(php-config --phpapi)
+PHPVER=$(php-config --version | cut -d. -f1,2)
+mkdir -p $B_INSTALLDIR/usr/lib/php/$PHPAPI
+cp modules/imap.so $B_INSTALLDIR/usr/lib/php/$PHPAPI/
+
+mkdir -p $B_INSTALLDIR/etc/php/$PHPVER/mods-available
+echo "extension=imap.so" > $B_INSTALLDIR/etc/php/$PHPVER/mods-available/imap.ini
+
+[PKG]
+type=deb
+
+[DEB]
+Package: php8.4-imap
+Version: B_VERSION
+Section: php
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: IMAP module for PHP
+ This module provides IMAP protocol support for PHP, built from
+ the PECL php-imap extension linked against a self-built c-client
+ library (UW IMAP), which is no longer packaged in Debian Trixie.
+Homepage: https://github.com/php/pecl-mail-imap
+Provides: php-imap
+Depends: phpapi-20240924, php-common (>= 2:95~), libssl3t64
