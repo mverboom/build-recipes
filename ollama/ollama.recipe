@@ -17,12 +17,19 @@ git checkout v$B_VERSION
 
 # Build the native payload (llama-server, shared libs, CPU backends) via cmake superbuild
 # Also builds the Go binary with embedded version info
-cmake -DCMAKE_INSTALL_PREFIX=$B_INSTALLDIR/opt/ollama -DOLLAMA_VERSION=$B_VERSION --preset 'Default'
-cmake --build --parallel $(nproc) --preset 'Default'
+# NOTE: env -u DESTDIR -- the build system exports DESTDIR (~/build) into the
+# container. cmake --install prepends $DESTDIR to every destination, which
+# breaks ollama's superbuild: its internal staging area uses the absolute
+# path $CMAKE_BINARY_DIR/lib/ollama, and a DESTDIR prefix sends the staged
+# payloads to the wrong place while the top-level install then cannot find
+# them. Strip DESTDIR from cmake's environment so installs land where
+# CMAKE_INSTALL_PREFIX (= $B_INSTALLDIR/opt/ollama) points.
+env -u DESTDIR cmake -DCMAKE_INSTALL_PREFIX=$B_INSTALLDIR/opt/ollama -DOLLAMA_VERSION=$B_VERSION --preset 'Default'
+env -u DESTDIR cmake --build --parallel $(nproc) --preset 'Default'
 
 # Install the Go binary and all native payloads
 # The component name is ollama-local per cmake/local.cmake
-cmake --install build --component ollama-local
+env -u DESTDIR cmake --install build --component ollama-local
 
 B_LINKFILE /opt/ollama/bin/ollama /usr/bin
 
