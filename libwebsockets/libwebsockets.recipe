@@ -5,7 +5,7 @@ arch=amd64
 B_GITVER https://libwebsockets.org/repo/libwebsockets
 
 [REQUIRED]
-cmake libssl-dev g++
+cmake libgnutls28-dev g++
 
 [BUILD]
 B_GET git https://libwebsockets.org/repo/libwebsockets libwebsockets
@@ -30,3 +30,4 @@ Architecture: B_ARCH
 Maintainer: B_MAIL
 Description: Libwebsockets custom B_ORG build
 Homepage: https://libwebsockets.org/
+Depends: libgnutls30t64
