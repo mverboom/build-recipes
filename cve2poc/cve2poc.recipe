@@ -1,0 +1,46 @@
+[INFO]
+arch=amd64
+
+[VERSION]
+B_GITHUBVER https://github.com/0liverFlow/CVE2PoC main
+
+[REQUIRED]
+python3-venv python3-pip
+
+[BUILD]
+B_GET git https://github.com/0liverFlow/CVE2PoC cve2poc
+cd cve2poc
+DEST=$B_INSTALLDIR/opt/cve2poc
+mkdir -p $DEST
+python3 -m venv $DEST
+source $DEST/bin/activate
+pip3 install .
+deactivate
+
+cd $DEST/bin
+shopt -s extglob
+sed -i "s|$DEST|/opt/cve2poc|g" !(__pycache__)
+
+B_LINKFILE /opt/cve2poc/bin/cve2poc /usr/bin
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: cve2poc
+Version: B_VERSION
+Section: security
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: CVE2PoC - Search PoCs related to a CVE ID
+ CVE2PoC is a tool that helps penetration testers, bug hunters, and security
+ researchers quickly find public exploits, Proof-of-Concepts (PoCs), and
+ advisories related to a CVE ID.
+ .
+ It aggregates public exploits from GitHub, Nuclei, ExploitDB and Metasploit,
+ retrieves CVE intelligence (CVSS, CWE, EPSS, CISA KEV), and can generate
+ detailed technical reports.
+Homepage: https://github.com/0liverFlow/CVE2PoC
+Depends: python3
