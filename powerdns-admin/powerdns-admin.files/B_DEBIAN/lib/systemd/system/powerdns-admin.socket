@@ -1,5 +1,5 @@
 [Unit]
-Description=PowerDNS-Admin socket
+Description=PowerDNS Admin socket
 
 [Socket]
 ListenStream=/run/powerdns-admin/socket

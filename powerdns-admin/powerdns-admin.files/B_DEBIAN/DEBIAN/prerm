@@ -1,0 +1,8 @@
+#!/bin/sh
+
+if test "$1" = "remove"; then
+   systemctl stop powerdns-admin.service
+   systemctl disable powerdns-admin.service
+   #rm -rf /var/lib/powerdns-admin
+   #deluser --quiet pdnsadmin
+fi

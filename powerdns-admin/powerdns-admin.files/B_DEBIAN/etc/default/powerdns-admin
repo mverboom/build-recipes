@@ -1,0 +1,3 @@
+FLASK_CONF=/etc/powerdns-admin/config.py
+FLASK_APP=/opt/powerdns-admin/powerdnsadmin/__init__.py
+PYTHONPATH=/opt/powerdns-admin/lib/python3.13/site-packages
