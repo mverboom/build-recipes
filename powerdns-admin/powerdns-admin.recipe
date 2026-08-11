@@ -16,8 +16,10 @@ cd powerdns-admin
 #git checkout v$B_VERSION
 # Remove alsyundawy IT Solution promotion from templates
 patch -p1 < $B_FILES/remove-alsyundawy-promo.patch
-# Remove unused backup/variant login templates containing alsyundawy branding
-rm -f powerdnsadmin/templates/[0-9]*login*.html powerdnsadmin/templates/1login-asli.html
+# Remove version-string branding from base.html footer (version-agnostic so version bumps don't break the patch)
+sed -i 's/ Modified By Alsyundawy//' powerdnsadmin/templates/base.html
+# Remove unused dead variant templates containing alsyundawy branding
+rm -f powerdnsadmin/templates/[0-9]*.html
 # Remove custom alsyundawy logo files (original PDA has no logo.png)
 rm -f powerdnsadmin/static/img/logo*.png
 DIR=opt/powerdns-admin

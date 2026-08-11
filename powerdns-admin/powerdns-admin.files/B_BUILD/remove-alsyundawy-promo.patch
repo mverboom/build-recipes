@@ -1,37 +1,18 @@
-diff --git a/powerdnsadmin/templates/base.html b/powerdnsadmin/templates/base.html
-index b5aa823..6737b53 100644
---- a/powerdnsadmin/templates/base.html
-+++ b/powerdnsadmin/templates/base.html
-@@ -219,7 +219,7 @@
-         <strong>Copyright &copy; <a href="https://github.com/PowerDNS-Admin/PowerDNS-Admin">PowerDNS-Admin</a>.</strong>
-         A web-based PowerDNS administration
-         interface with advanced features.
--        <span class="float-right">Version 0.4.2 Modified By Alsyundawy</span>
-+        <span class="float-right">Version 0.4.2</span>
-     </footer>
- </div>
- <!-- ./wrapper -->
 diff --git a/powerdnsadmin/templates/login.html b/powerdnsadmin/templates/login.html
-index fcedbeb..d639b96 100644
+index 6bc6675..48a7e07 100644
 --- a/powerdnsadmin/templates/login.html
 +++ b/powerdnsadmin/templates/login.html
-@@ -592,23 +592,6 @@ form {
+@@ -614,17 +614,6 @@ form {
  <body>
    <div class="page" id="pageRoot">
  
 -    <header class="site-header">
 -      <a href="/" aria-label="Home" title="{{ SETTING.get('site_name') or SITE_NAME }}">
--        <!--
--          Always load the bright/light logo (dark_src) in both modes so the white subtitle
--          text is fully legible on dark backgrounds.
--          The redundant inline swap-script has been removed — the main JS block handles this.
--        -->
 -        <img id="siteLogo"
 -             src="{{ dark_src }}"
 -             data-light-src="{{ dark_src }}"
 -             data-dark-src="{{ dark_src }}"
 -             alt="{{ SETTING.get('site_name') or SITE_NAME }} logo"
--             width="auto"
 -             height="72">
 -      </a>
 -    </header>
@@ -39,12 +20,27 @@ index fcedbeb..d639b96 100644
      <button id="themeToggle" class="theme-toggle" aria-label="Toggle color theme" title="Toggle color theme" type="button">
        <svg id="themeIcon" width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
          <path d="M12 3v2"           stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6"/>
-@@ -736,9 +719,7 @@ form {
+@@ -748,9 +737,7 @@ form {
        {% endif %}
  
        <footer class="footer">
 -        Powered by <a href="https://github.com/alsyundawy/PowerDNS-Admin" target="_blank" rel="noopener noreferrer">PowerDNS-Admin</a>
--        <span aria-hidden="true" style="opacity:0.6;margin:0 8px">|</span>
+-        <span aria-hidden="true" class="footer-sep">|</span>
+-        Modified by <a href="https://alsyundawy.com" target="_blank" rel="noopener noreferrer">ALSYUNDAWY IT SOLUTION</a>
++        Powered by PowerDNS-Admin
+       </footer>
+     </main>
+ 
+diff --git a/powerdnsadmin/templates/register.html b/powerdnsadmin/templates/register.html
+index bea3f56..6212a82 100644
+--- a/powerdnsadmin/templates/register.html
++++ b/powerdnsadmin/templates/register.html
+@@ -791,9 +791,7 @@ form {
+       </div>
+ 
+       <footer class="footer">
+-        Powered by <a href="https://powerdnsadmin.org" target="_blank" rel="noopener noreferrer">PowerDNS-Admin</a>
+-        <span aria-hidden="true" class="footer-sep">|</span>
 -        Modified by <a href="https://alsyundawy.com" target="_blank" rel="noopener noreferrer">ALSYUNDAWY IT SOLUTION</a>
 +        Powered by PowerDNS-Admin
        </footer>
