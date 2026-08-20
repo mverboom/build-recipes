@@ -11,6 +11,7 @@ rustc-B_PF gcc
 B_GET git https://github.com/prefix-dev/pixi pixi
 cd pixi
 git checkout v${B_VERSION}
+cargo update quinn-proto --precise 0.11.15
 cargo build --release
 mkdir -p $B_INSTALLDIR/usr/bin
 cp target/release/pixi $B_INSTALLDIR/usr/bin
