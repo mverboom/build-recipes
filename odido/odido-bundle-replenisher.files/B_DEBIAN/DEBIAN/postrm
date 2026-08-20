@@ -1,0 +1,11 @@
+#!/bin/sh
+
+set -e
+
+if [ "$1" = "purge" ] ; then
+    if getent passwd odido >/dev/null; then
+        if which deluser >/dev/null 2>&1; then
+            deluser --quiet --system odido || echo "Could not remove odido user."
+        fi
+    fi
+fi

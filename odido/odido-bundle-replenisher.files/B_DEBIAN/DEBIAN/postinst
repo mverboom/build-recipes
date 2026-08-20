@@ -1,0 +1,24 @@
+#!/bin/sh
+
+if test "$1" = "configure"; then
+  if ! getent group odido > /dev/null; then
+      addgroup --quiet --system odido
+  fi
+
+  if ! getent passwd odido > /dev/null; then
+      adduser --quiet --system \
+          --ingroup odido \
+          --home /opt/odido-bundle-replenisher \
+          --no-create-home \
+          --disabled-password --shell /bin/bash \
+          odido
+      usermod -c "Odido bundle replenisher user" odido
+  fi
+
+  chown -R odido:odido /etc/odido-bundle-replenisher.cfg
+
+  systemctl enable odido-bundle-replenisher.service
+  systemctl restart odido-bundle-replenisher.service
+else
+  systemctl restart odido-bundle-replenisher.service
+fi

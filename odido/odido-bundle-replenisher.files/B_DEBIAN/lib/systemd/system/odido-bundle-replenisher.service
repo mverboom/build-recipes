@@ -1,0 +1,17 @@
+[Unit]
+Description=Odido Bundle Replenisher
+After=network.target
+
+[Service]
+Type=simple
+User=odido
+Group=odido
+StandardOutput=journal
+StandardError=journal
+WorkingDirectory=/opt/odido-bundle-replenisher
+ExecStart=/usr/bin/odido-bundle-replenisher
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
