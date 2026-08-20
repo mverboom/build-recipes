@@ -1,5 +1,6 @@
 [INFO]
 arch=amd64
+gittag=release-$B_VERSION-tag
 
 [VERSION]
 B_GITVER -r 's/^release-//' -r 's/-tag$//' https://github.com/Termix-SSH/Termix
