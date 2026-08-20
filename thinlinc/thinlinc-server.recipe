@@ -5,7 +5,7 @@ arch=amd64
 unzip
 
 [VERSION]
-wget -q -O - https://www.cendio.com/thinlinc/download | sed -n "/server\/tl-[0-9\.]\+-server.zip/ {s#.*server/tl-\([0-9\.]\+\)-server.zip.*#\1#p; q}"
+wget -q -O - https://www.cendio.com/thinlinc/download | grep -oE 'value="[0-9.]+( \(Latest\))?"' | head -n 1 | sed -E 's/.*value="([0-9.]+).*/\1/'
 
 [BUILD]
 B_GET http https://www.cendio.com/downloads/server/tl-${B_VERSION}-server.zip server.zip
