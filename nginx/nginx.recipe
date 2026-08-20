@@ -2,7 +2,7 @@
 arch=amd64
 
 [VERSION]
-wget -O - -q http://nginx.org/en/download.html | awk '/<a href="\/download/ { split($0, a, "href=\"/download/"); print substr(a[2],7,index(a[2],".tar.gz")-7); }'
+wget -O - -q https://nginx.org/en/download.html | awk '/<a href="\/download/ { split($0, a, "href=\"/download/"); print substr(a[2],7,index(a[2],".tar.gz")-7); }'
 
 [REQUIRED]
 gcc zlib1g-dev libpcre2-dev libpam0g-dev make libressl-B_PF libmaxminddb-dev libxslt1-dev
@@ -11,7 +11,7 @@ gcc zlib1g-dev libpcre2-dev libpam0g-dev make libressl-B_PF libmaxminddb-dev lib
 gcc zlib1g-dev libpcre3-dev libpam0g-dev make libressl-B_PF libmaxminddb-dev libxslt1-dev
 
 [BUILD]
-B_GET http http://nginx.org/download/nginx-$B_VERSION.tar.gz nginx.tar.gz
+B_GET http https://nginx.org/download/nginx-$B_VERSION.tar.gz nginx.tar.gz
 mkdir nginx
 tar xzf nginx.tar.gz -C nginx --strip-components 1
 
