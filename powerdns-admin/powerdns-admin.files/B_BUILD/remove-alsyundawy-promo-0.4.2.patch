@@ -1,0 +1,38 @@
+diff --git a/powerdnsadmin/templates/login.html b/powerdnsadmin/templates/login.html
+index ce20e34..35874cc 100644
+--- a/powerdnsadmin/templates/login.html
++++ b/powerdnsadmin/templates/login.html
+@@ -591,22 +591,6 @@ form {
+ <body>
+   <div class="page" id="pageRoot">
+ 
+-    <header class="site-header" role="banner">
+-      <a href="/" aria-label="Home" title="{{ SETTING.get('site_name') or SITE_NAME }}">
+-        <!--
+-          Always load the bright/light logo (dark_src) in both modes so the white subtitle
+-          text is fully legible on dark backgrounds.
+-          The redundant inline swap-script has been removed — the main JS block handles this.
+-        -->
+-        <img id="siteLogo"
+-             src="{{ dark_src }}"
+-             data-light-src="{{ dark_src }}"
+-             data-dark-src="{{ dark_src }}"
+-             alt="{{ SETTING.get('site_name') or SITE_NAME }} logo"
+-             width="auto"
+-             height="72" />
+-      </a>
+-    </header>
+ 
+     <button id="themeToggle" class="theme-toggle" aria-label="Toggle color theme" title="Toggle color theme" type="button">
+       <svg id="themeIcon" width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+@@ -731,9 +715,7 @@ form {
+       {% endif %}
+ 
+       <footer class="footer">
+-        Powered by <a href="https://github.com/alsyundawy/PowerDNS-Admin" target="_blank" rel="noopener noreferrer">PowerDNS-Admin</a>
+-        <span aria-hidden="true" style="opacity:0.6;margin:0 8px">|</span>
+-        Modified by <a href="https://alsyundawy.com" target="_blank" rel="noopener noreferrer">ALSYUNDAWY IT SOLUTION</a>
++        Powered by PowerDNS-Admin
+       </footer>
+     </main>
+ 
