@@ -12,8 +12,11 @@ releaseid=$( curl -s -L https://api.github.com/repos/FreeCAD/FreeCAD/releases | 
 url=$( curl -s -L https://api.github.com/repos/FreeCAD/FreeCAD/releases/${releaseid}/assets | jq -r '.[].browser_download_url' | grep "Linux-x86.*.AppImage$" )
 B_GET http "$url" freecad
 chmod 755 freecad
-mkdir -p "${B_INSTALLDIR}/usr/bin"
-mv -v freecad "${B_INSTALLDIR}/usr/bin"
+./freecad --appimage-extract
+mkdir -p "${B_INSTALLDIR}/opt/freecad"
+cp -a squashfs-root/usr/. "${B_INSTALLDIR}/opt/freecad/"
+B_LINKFILE /opt/freecad/bin/freecad /usr/bin
+B_LINKFILE /opt/freecad/bin/freecadcmd /usr/bin
 
 [PKG]
 type=deb
@@ -28,4 +31,3 @@ Architecture: B_ARCH
 Maintainer: B_MAIL
 Description: freecad custom B_ORG build
 Homepage: https://www.freecad.org/
-
