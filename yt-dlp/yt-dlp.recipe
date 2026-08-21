@@ -16,6 +16,12 @@ git checkout ${B_VERSION}
 make
 make PREFIX=${dest} install
 
+[SECURITY]
+# SRCGUARD false positive: pyproject.toml lists the optional dependency
+# curl-cffi (a Python package name), which the heuristic matches as
+# 'curl' network access in a build script. No actual network access.
+srcguard-ignore=yt-dlp/pyproject.toml
+
 [PKG]
 type=deb
 torepo=y
