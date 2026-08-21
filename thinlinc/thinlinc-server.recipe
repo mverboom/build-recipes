@@ -11,7 +11,33 @@ wget -q -O - https://www.cendio.com/thinlinc/download | grep -oE 'value="[0-9.]+
 B_GET http https://www.cendio.com/downloads/server/tl-${B_VERSION}-server.zip server.zip
 unzip -q server.zip
 cd "tl-${B_VERSION}-server"
-mv packages/thinlinc-server_${B_VERSION}-*_amd64.deb ${B_INSTALLDIR}
+DEB=$(ls packages/thinlinc-server_${B_VERSION}-*_amd64.deb | head -1)
+DEBNAME=$(basename "$DEB")
+dpkg-deb -x "$DEB" tmpdir
+dpkg-deb --control "$DEB"
+# Remove the final "exit 0" from the upstream postinst so our
+# tl-setup trigger runs before it.
+sed -i '${/^exit 0$/d}' DEBIAN/postinst
+cat >> DEBIAN/postinst <<'EOF'
+
+# Run tl-setup unattended if an answers file exists. Deferred via
+# systemd-run so it runs after apt has released its locks (tl-setup
+# may need to install packages itself).
+if [ -f /etc/thinlinc-answers ] && [ -x /opt/thinlinc/sbin/tl-setup ]; then
+    if command -v systemd-run >/dev/null 2>&1; then
+        systemd-run --no-block --unit=thinlinc-setup \
+            /bin/sh -c 'i=0; while [ $i -lt 360 ] && lslocks 2>/dev/null | grep -qE "/var/lib/dpkg/lock(-frontend)?"; do sleep 5; i=$((i+1)); done; /opt/thinlinc/sbin/tl-setup -a /etc/thinlinc-answers' \
+            || true
+    else
+        /opt/thinlinc/sbin/tl-setup -a /etc/thinlinc-answers || true
+    fi
+fi
+exit 0
+EOF
+chmod 755 DEBIAN/postinst
+mv DEBIAN tmpdir/
+dpkg-deb -b tmpdir "$DEBNAME"
+mv "$DEBNAME" ${B_INSTALLDIR}
 
 [PKG]
 type=deb
