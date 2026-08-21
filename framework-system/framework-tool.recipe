@@ -1,5 +1,9 @@
 [INFO]
 arch=amd64
+# framework_uefi/Makefile (not built: workspace default-members are only
+# framework_lib + framework_tool) downloads UEFI shell/OVMF firmware via curl
+# from official sources. Legitimate build-time downloads, not the XZ pattern.
+srcguard=advisory
 
 [VERSION]
 B_GITHUBVER https://github.com/FrameworkComputer/framework-system main
