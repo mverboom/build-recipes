@@ -1,6 +1,14 @@
 [INFO]
 arch=all
 
+[SECURITY]
+# Upstream Makefile (not used by this recipe, only mysqltuner.pl and the two
+# data files are packaged) contains dev/test tooling: a curl|sudo bash to
+# install slimtoolkit and git clones of the project's Docker test-env repos.
+# Legitimate upstream dev tooling, not the XZ pattern, and never executed here.
+srcguard=enforce
+srcguard-ignore=mysqltuner/Makefile
+
 [VERSION]
 git ls-remote --tags https://github.com/major/MySQLTuner-perl | grep -v '{}' | cut -d'/' -f 3 | sed "s/^v//" | sort -t. -k 1,1n -k 2,2n -k 3,3n -k 4,4n | tail -1
 

@@ -1,11 +1,12 @@
 [INFO]
 arch=amd64
+
+[SECURITY]
 # framework_uefi/Makefile (not built: workspace default-members are only
 # framework_lib + framework_tool) downloads UEFI shell/OVMF firmware via curl
 # from official sources. Legitimate build-time downloads, not the XZ pattern.
-srcguard=advisory
-
-[SECURITY]
+srcguard=enforce
+srcguard-ignore=framework-system/framework_uefi/Makefile
 # proc-macro-error2 (transitive build-time dep via clap_derive) is unmaintained;
 # informational advisory, no patched version exists, not shipped in the package.
 vulnscan-ignore=RUSTSEC-2026-0173

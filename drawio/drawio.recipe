@@ -1,6 +1,14 @@
 [INFO]
 arch=amd64
 
+[SECURITY]
+# image-size@2.0.2 in etc/imageResize (build-time tool, not shipped/used) has
+# 2 HIGH DoS advisories. No fixed version exists (npm latest is still 2.0.2,
+# repo archived). Suppress the two known IDs; enforce stays active for any
+# other finding.
+vulnscan=enforce
+vulnscan-ignore=GHSA-5p2g-fcmc-qvqq,GHSA-w3rx-r6r6-pgpr
+
 [VERSION]
 B_GITVER https://github.com/jgraph/drawio
 
