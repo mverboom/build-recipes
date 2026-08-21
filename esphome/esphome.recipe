@@ -6,9 +6,10 @@ arch=amd64
 
 [SECURITY]
 # cryptography 48.0.1 is Darwin-only (macOS x86_64); Linux installs 50.0.0 (fixed version)
+vulnscan-ignore=GHSA-g6cj-pr64-35w5,GHSA-jwv3-5hgf-82ww,GHSA-m2h6-j472-rp4c
 # starlette DoS via urlencoded form parsing; platformio 6.1.19 requires starlette<0.53, fix is in 1.3.1+
 # starlette SSRF/NTLM via UNC paths in StaticFiles; Windows-only, not applicable on Linux
-vulnscan-ignore=GHSA-g6cj-pr64-35w5,GHSA-jwv3-5hgf-82ww,GHSA-m2h6-j472-rp4c,GHSA-82w8-qh3p-5jfq,GHSA-wqp7-x3pw-xc5r
+vulnscan-ignore=GHSA-82w8-qh3p-5jfq,GHSA-wqp7-x3pw-xc5r
 
 [REQUIRED]
 python3 python3-pip python3-venv
