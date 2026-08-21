@@ -5,6 +5,11 @@ arch=amd64
 # from official sources. Legitimate build-time downloads, not the XZ pattern.
 srcguard=advisory
 
+[SECURITY]
+# proc-macro-error2 (transitive build-time dep via clap_derive) is unmaintained;
+# informational advisory, no patched version exists, not shipped in the package.
+vulnscan-ignore=RUSTSEC-2026-0173
+
 [VERSION]
 B_GITHUBVER https://github.com/FrameworkComputer/framework-system main
 
