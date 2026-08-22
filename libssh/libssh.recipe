@@ -1,14 +1,16 @@
 [INFO]
 arch=amd64
+# Version tag in the repo is not v$B_VERSION/$B_VERSION; shallow refresh must fetch the exact tag for checkout.
+gittag=libssh-$B_VERSION
 
 [VERSION]
-B_GITVER -F libssh- https://git.libssh.org/projects/libssh.git/
+B_GITVER -F libssh- https://github.com/libssh/libssh-mirror/
 
 [REQUIRED]
 cmake gcc zlib1g-dev libssl-dev g++
 
 [BUILD]
-B_GET git https://git.libssh.org/projects/libssh.git libssh
+B_GET git https://github.com/libssh/libssh-mirror libssh
 cd libssh
 git checkout libssh-$B_VERSION
 mkdir build

@@ -6,6 +6,8 @@ libprotobuf-dev libseccomp-dev libcap-ng-dev protobuf-compiler libpolkit-gobject
 
 [INFO]
 arch=amd64
+# Version tag in the repo is not v$B_VERSION/$B_VERSION; shallow refresh must fetch the exact tag for checkout.
+gittag=usbguard-$B_VERSION
 
 [BUILD]
 B_GET git https://github.com/usbguard/usbguard.git usbguard

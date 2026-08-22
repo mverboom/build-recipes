@@ -1,5 +1,7 @@
 [INFO]
 arch=amd64
+# Version tag in the repo is not v$B_VERSION/$B_VERSION; shallow refresh must fetch the exact tag for checkout.
+gittag=continuous-QT6
 
 [VERSION]
 B_GITVER -D -f V  https://github.com/collin80/SavvyCAN.git

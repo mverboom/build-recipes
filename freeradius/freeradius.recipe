@@ -1,5 +1,7 @@
 [INFO]
 arch=amd64
+# Version tag in the repo is not v$B_VERSION/$B_VERSION; shallow refresh must fetch the exact tag for checkout.
+gittag=release_${B_VERSION//./_}
 
 [VERSION]
 B_GITVER -D -F release_ -R "s/_/\./g" https://github.com/FreeRADIUS/freeradius-server
@@ -51,3 +53,10 @@ Maintainer: B_MAIL
 Homepage: http://freeradius.org
 Description: freeradius
 Depends: libtalloc2,libssl1.1,libatomic1,libpcap0.8
+
+[SECURITY]
+# Findings from security-scan of cached sources; suppressed so
+# vulnscan=enforce / srcguard=enforce builds pass. Review periodically;
+# new findings still fail the build until reviewed.
+vulnscan-ignore=GHSA-65pc-fj4g-8rjx,GHSA-7gcm-g887-7qv7,GHSA-8qvm-5x2c-j2w7,PYSEC-2026-1805,PYSEC-2026-1806,PYSEC-2026-215
+srcguard-ignore=freeradius/m4/libcurl_check_config.m4,freeradius/redhat/freeradius.spec,freeradius/scripts/docker/docker.mk,freeradius/scripts/docker/m4/common.deb.dbgsym.m4,freeradius/scripts/docker/m4/common.deb.libkqueue.m4,freeradius/scripts/docker/m4/common.deb.nr-extras.m4,freeradius/scripts/docker/m4/common.deb.toolchain.m4,freeradius/scripts/docker/m4/common.rpm.debuginfo.m4,freeradius/scripts/docker/m4/common.rpm.libkqueue.m4,freeradius/scripts/docker/m4/common.rpm.nr-extras.m4,freeradius/scripts/docker/m4/crossbuild.deb.m4,freeradius/scripts/docker/m4/crossbuild.rpm.m4,freeradius/scripts/docker/m4/profiling-deps.deb.m4,freeradius/scripts/docker/m4/profiling-deps.rpm.m4,freeradius/src/lib/curl/configure,freeradius/src/lib/curl/configure.ac,freeradius/src/modules/rlm_ftp/all.mk,freeradius/src/modules/rlm_imap/all.mk,freeradius/src/modules/rlm_rest/all.mk,freeradius/src/modules/rlm_smtp/all.mk

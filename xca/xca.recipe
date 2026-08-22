@@ -1,5 +1,7 @@
 [INFO]
 arch=amd64
+# Version tag in the repo is not v$B_VERSION/$B_VERSION; shallow refresh must fetch the exact tag for checkout.
+gittag=RELEASE.$B_VERSION
 
 [VERSION]
 B_GITVER -i RELEASE. -F "^RELEASE." https://github.com/chris2511/xca/
