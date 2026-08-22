@@ -35,9 +35,16 @@ fi
 exit 0
 EOF
 chmod 755 DEBIAN/postinst
+# Re-version the package with the distro suffix (e.g. 4.21.0-lnw+deb13)
+# like the other recipes, so packages built for different Debian releases
+# (and rebuilds) never collide on the repository server.
+DEBDIST=$(lsb_release -r -s | cut -d'.' -f 1)
+NEWVER="${B_VERSION}-${PKGPOSTFIX}+deb${DEBDIST}"
+sed -i "s/^Version:.*/Version: ${NEWVER}/" DEBIAN/control
 mv DEBIAN tmpdir/
-dpkg-deb -b tmpdir "$DEBNAME"
-mv "$DEBNAME" ${B_INSTALLDIR}
+NEWDEBNAME="thinlinc-server_${NEWVER}_${B_ARCH}.deb"
+dpkg-deb -b tmpdir "$NEWDEBNAME"
+mv "$NEWDEBNAME" ${B_INSTALLDIR}
 
 [PKG]
 type=deb

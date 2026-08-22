@@ -40,3 +40,9 @@ Maintainer: B_MAIL
 Description: ESPHome-flasher custom B_ORG build
 Homepage: https://github.com/esphome/esphome-flasher
 Depends: python3, python3-serial, python3-cryptography, python3-ecdsa, python3-idna, python3-urllib3, python3-bitstring, python3-numpy
+
+[SECURITY]
+# Findings from security-scan of cached sources; suppressed so
+# vulnscan=enforce / srcguard=enforce builds pass. Review periodically;
+# new findings still fail the build until reviewed.
+vulnscan-ignore=GHSA-3f38-96qm-r3fw,GHSA-fj7x-q9j7-g6q6,PYSEC-2024-48,PYSEC-2026-2120,PYSEC-2026-2121

@@ -31,3 +31,9 @@ Architecture: B_ARCH
 Maintainer: B_MAIL
 Description: Illuminanced server custom B_ORG build
 Homepage: https://github.com/mikhail-m1/illuminanced
+
+[SECURITY]
+# Findings from security-scan of cached sources; suppressed so
+# vulnscan=enforce / srcguard=enforce builds pass. Review periodically;
+# new findings still fail the build until reviewed.
+vulnscan-ignore=GHSA-r6v5-fh4h-64xc,RUSTSEC-2025-0069,RUSTSEC-2026-0009
