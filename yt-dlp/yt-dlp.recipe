@@ -8,13 +8,14 @@ B_GITVER https://github.com/yt-dlp/yt-dlp
 make zip pandoc
 
 [BUILD]
-dest=$B_INSTALLDIR/usr
-
 B_GET git https://github.com/yt-dlp/yt-dlp yt-dlp
 cd yt-dlp
 git checkout ${B_VERSION}
 make
-make PREFIX=${dest} install
+# The build system exports DESTDIR into the build environment, and yt-dlp's
+# Makefile install target uses $(DESTDIR)$(PREFIX). Pass both explicitly so
+# files land in B_INSTALLDIR instead of a doubled path (empty package).
+make DESTDIR=$B_INSTALLDIR PREFIX=/usr install
 
 [SECURITY]
 # SRCGUARD false positive: pyproject.toml lists the optional dependency
