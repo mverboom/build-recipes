@@ -13,6 +13,9 @@ cd script-server
 DEST=$B_INSTALLDIR/opt/script-server-dev
 mkdir -p "$DEST"
 tools/init.py --no-npm
+# Apply local patches (see script-server-dev.files/B_BUILD/apply-title-prefix.sh):
+# runtime-configurable tab title prefix via SCRIPT_SERVER_TITLE_PREFIX env var.
+$B_FILES/apply-title-prefix.sh
 mkdir -p "$B_INSTALLDIR"/etc/script-server-dev/theme
 sed -i 's#"filename": "logs/server.log"#"filename": "/var/log/script-server-dev/server.log"#' conf/logging.json
 mv conf/* "$B_INSTALLDIR"/etc/script-server-dev

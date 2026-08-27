@@ -1,2 +1,4 @@
 # Settings for script-server-dev
+# Prefix prepended to the browser tab title, e.g. "ss - ". Empty = no prefix.
+SCRIPT_SERVER_TITLE_PREFIX="ss - "
 OPTS="-d /etc/script-server-dev -l /var/log/script-server-dev -t /var/lib/script-server-dev"
