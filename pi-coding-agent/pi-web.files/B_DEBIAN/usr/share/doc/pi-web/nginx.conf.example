@@ -1,0 +1,52 @@
+# Reference nginx configuration for PI WEB behind a reverse proxy.
+#
+# PI WEB is deployment-independent: one build works at "/" and at
+# trailing-slash prefixes such as /piweb/. This example serves it at
+# https://secure.verboom.net/piweb/.
+#
+# Adapt the auth lines to your Authelia setup (see your other locations).
+# Apply authentication to the WHOLE /piweb/ location - do not create
+# unprotected exceptions for /api/ or /pi-web-plugins/.
+
+# http context (once per nginx config):
+# map $http_upgrade $connection_upgrade {
+#     default upgrade;
+#     '' close;
+# }
+
+# Inside the secure.verboom.net server block:
+
+    # Authelia auth for this location (match your existing pattern)
+    location = /auth/verify {
+        internal;
+        proxy_pass http://authelia:9091/api/verify;
+        proxy_pass_request_body off;
+        proxy_set_header Content-Length "";
+        proxy_set_header X-Original-URL $scheme://$http_host$request_uri;
+        proxy_set_header X-Original-Method $request_method;
+    }
+
+    # Slashless prefix -> trailing-slash document URL (the app base)
+    location = /piweb {
+        return 308 /piweb/$is_args$args;
+    }
+
+    location ^~ /piweb/ {
+        auth_request /auth/verify;
+        auth_request_set $auth_cookie $upstream_http_set_cookie;
+        add_header Set-Cookie $auth_cookie;
+        proxy_pass_request_headers on;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+
+        # The trailing slash strips /piweb/ before forwarding; PI WEB
+        # serves root paths on its localhost listener.
+        proxy_pass http://127.0.0.1:8504/;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header Authorization $http_authorization;
+        proxy_set_header Cookie $http_cookie;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection $connection_upgrade;
+        proxy_read_timeout 1h;
+    }

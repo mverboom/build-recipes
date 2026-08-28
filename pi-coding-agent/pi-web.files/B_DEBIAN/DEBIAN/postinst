@@ -1,0 +1,51 @@
+#!/bin/sh
+set -e
+
+# The service user is configured in /etc/default/pi-web (PI_WEB_USER,
+# default pi-web). The service launcher resolves the user's home and
+# stores all PI WEB data under ~/.pi-web in it.
+SVC_USER=pi-web
+if [ -f /etc/default/pi-web ]; then
+    SVC_USER=$(sed -n 's/^PI_WEB_USER=//p' /etc/default/pi-web | tail -1)
+    [ -n "$SVC_USER" ] || SVC_USER=pi-web
+fi
+
+# Resolve the service user's home (used for the data root).
+SVC_HOME=$(getent passwd "$SVC_USER" 2>/dev/null | cut -d: -f6)
+[ -n "$SVC_HOME" ] || SVC_HOME=/var/lib/pi-web/home
+
+# Create the default pi-web system group and user. Its home lives in the
+# /var/lib tree, so all its data stays out of /home.
+if ! getent group pi-web > /dev/null; then
+    addgroup --quiet --system pi-web
+fi
+if ! getent passwd pi-web > /dev/null; then
+    adduser --quiet --system \
+        --ingroup pi-web \
+        --home /var/lib/pi-web/home \
+        --no-create-home \
+        --disabled-password --shell /bin/bash \
+        pi-web
+    usermod -c "PI WEB daemon" pi-web
+else
+    usermod -d /var/lib/pi-web/home pi-web 2>/dev/null || true
+fi
+
+# Data root: ~/.pi-web in the service user's home.
+DATA_ROOT="$SVC_HOME/.pi-web"
+if id "$SVC_USER" >/dev/null 2>&1; then
+    mkdir -p "$DATA_ROOT"
+    chown -R "$SVC_USER:$(id -gn "$SVC_USER")" "$DATA_ROOT"
+fi
+
+# If an existing user is configured, make sure their pi agent dir exists.
+if [ "$SVC_USER" != "pi-web" ]; then
+    mkdir -p "$SVC_HOME/.pi/agent"
+    chown "$SVC_USER:$(id -gn "$SVC_USER")" "$SVC_HOME/.pi" "$SVC_HOME/.pi/agent" 2>/dev/null || true
+fi
+
+chmod 755 /usr/lib/pi-web/pi-web-launch
+
+systemctl daemon-reload
+systemctl enable pi-web-sessiond pi-web-server
+systemctl restart pi-web-sessiond pi-web-server || true

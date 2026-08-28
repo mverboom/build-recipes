@@ -1,0 +1,31 @@
+# PI WEB settings
+#
+# This file is read with shell semantics by the service launcher
+# (/usr/lib/pi-web/pi-web-launch), so values may reference the service
+# user's home directory as ${HOME}. All PI WEB data lives under ~/.pi-web
+# in that home (a hidden directory, so a normal user's home stays tidy).
+#
+# PI WEB can run arbitrary commands on this machine (it drives the pi
+# coding agent) and has no built-in authentication. Keep it behind an
+# authenticated reverse proxy (e.g. Authelia) or on a private network,
+# not on the public internet.
+
+# User the PI WEB services run as. Default: pi-web, a dedicated system user
+# whose home is /var/lib/pi-web/home (in the /var/lib tree). Set it to an
+# existing account (e.g. mark) to reuse that user's pi setup — the agent
+# directory below then points at their real ~/.pi/agent, so web sessions
+# share sessions and credentials with the console pi.
+PI_WEB_USER=pi-web
+
+# Data root: everything below is relative to the service user's home.
+PI_WEB_DATA_DIR=${HOME}/.pi-web
+
+# pi's own config directory (~/.pi/agent). For an existing user this is
+# their real pi setup, so it is picked up automatically.
+PI_CODING_AGENT_DIR=${HOME}/.pi/agent
+
+# TCP port the web UI listens on (bound to localhost, behind the proxy).
+PI_WEB_HOST=127.0.0.1
+PI_WEB_PORT=8504
+
+NODE_ENV=production

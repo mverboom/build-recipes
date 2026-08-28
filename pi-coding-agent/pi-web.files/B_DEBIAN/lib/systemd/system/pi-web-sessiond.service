@@ -1,0 +1,17 @@
+# The session daemon runs as the user configured in /etc/default/pi-web
+# (PI_WEB_USER, default pi-web). The launcher resolves the user and drops
+# to it with setpriv before exec'ing node (systemd's User= cannot take its
+# value from an environment file).
+[Unit]
+Description=PI WEB session daemon
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/pi-web
+ExecStart=/usr/lib/pi-web/pi-web-launch sessiond
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

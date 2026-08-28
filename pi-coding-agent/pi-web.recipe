@@ -1,0 +1,55 @@
+[INFO]
+arch=amd64
+
+[VERSION]
+B_GITVER -r 's/^v//' https://github.com/jmfederico/pi-web/
+
+[REQUIRED]
+nodejs-22-B_PF python3 make g++
+
+[BUILD]
+# PI WEB ships a prebuilt dist in the npm package, so no compilation is
+# needed beyond node-pty's native module (built by npm install's scripts).
+export npm_config_prefix=$B_INSTALLDIR/opt/pi-web
+npm install @jmfederico/pi-web@$B_VERSION --prefix $B_INSTALLDIR/opt/pi-web
+
+# PI WEB declares the pi agent packages as peerDependencies and imports
+# @earendil-works/pi-coding-agent and @earendil-works/pi-ai at runtime.
+# The agent ships separately in the pi-coding-agent package; depend on
+# that and symlink its modules instead of bundling another copy here
+# (same approach as pithagoras).
+rm -rf $B_INSTALLDIR/opt/pi-web/node_modules/@earendil-works
+mkdir -p $B_INSTALLDIR/opt/pi-web/node_modules/@earendil-works
+ln -s /opt/pi-coding-agent/node_modules/@earendil-works/pi-coding-agent \
+      $B_INSTALLDIR/opt/pi-web/node_modules/@earendil-works/pi-coding-agent
+ln -s /opt/pi-coding-agent/node_modules/@earendil-works/pi-coding-agent/node_modules/@earendil-works/pi-ai \
+      $B_INSTALLDIR/opt/pi-web/node_modules/@earendil-works/pi-ai
+
+B_LINKFILE /opt/pi-web/node_modules/.bin/pi-web /usr/bin
+B_LINKFILE /opt/pi-web/node_modules/.bin/pi-web-server /usr/bin
+B_LINKFILE /opt/pi-web/node_modules/.bin/pi-web-sessiond /usr/bin
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: pi-web
+Version: B_VERSION
+Section: pi-web
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: Web UI for the pi coding agent custom B_ORG build
+ PI WEB keeps pi coding agent sessions running in real server-side
+ workspaces and gives a fast web UI to supervise, redirect, and review
+ work from any device. Sessions survive browser disconnects. Runs as a
+ configurable user (see /etc/default/pi-web); uses the pi-coding-agent
+ package for the agent itself.
+Homepage: https://pi-web.dev/
+Depends: nodejs-22-B_PF (>= 22.19.0),pi-coding-agent-B_PF (>= 0.84.0),git,openssh-client,ca-certificates
+
+[SECURITY]
+# Findings from security-scan of cached sources; suppressed so
+# vulnscan=enforce / srcguard=enforce builds pass. Review periodically;
+# new findings still fail the build until reviewed.

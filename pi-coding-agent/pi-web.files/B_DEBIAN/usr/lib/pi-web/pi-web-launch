@@ -1,0 +1,61 @@
+#!/bin/sh
+# PI WEB service launcher.
+#
+# systemd's User= directive cannot take its value from an environment file,
+# and EnvironmentFile values do not expand $HOME. This launcher (run as root
+# by the unit) therefore loads the configuration with shell semantics, so
+# /etc/default/pi-web may reference the service user's home as ${HOME},
+# resolves the user and its home, then drops privileges with setpriv and
+# execs the node process. All PI WEB data lives under ~/.pi-web in that home.
+set -e
+
+DAEMON="${1:-server}"
+case "$DAEMON" in
+    sessiond) SCRIPT=/usr/bin/pi-web-sessiond ;;
+    server)   SCRIPT=/usr/bin/pi-web-server ;;
+    *)
+        echo "pi-web-launch: unknown daemon '$DAEMON' (expected 'sessiond' or 'server')" >&2
+        exit 1
+        ;;
+esac
+
+# The inherited HOME (root's, or the caller's) is not authoritative: HOME is
+# either set explicitly in the config or resolved from the service user's
+# account. Start clean so only those two sources count.
+unset HOME
+
+# First pass: pick up the service user (PI_WEB_USER) so HOME can be
+# resolved from the account.
+[ -r /etc/default/pi-web ] && . /etc/default/pi-web
+: "${PI_WEB_USER:=pi-web}"
+
+if ! getent passwd "$PI_WEB_USER" >/dev/null 2>&1; then
+    echo "pi-web-launch: user '$PI_WEB_USER' does not exist" >&2
+    exit 1
+fi
+
+# HOME: from the account unless the config set it explicitly.
+if [ -z "${HOME:-}" ]; then
+    HOME=$(getent passwd "$PI_WEB_USER" | cut -d: -f6)
+fi
+export HOME
+
+# Second pass: re-source so ${HOME}-relative values evaluate correctly.
+[ -r /etc/default/pi-web ] && . /etc/default/pi-web
+
+# Defaults: everything under ~/.pi-web in the service user's home.
+: "${PI_WEB_DATA_DIR:=$HOME/.pi-web}"
+: "${PI_CODING_AGENT_DIR:=$HOME/.pi/agent}"
+: "${PI_WEB_HOST:=127.0.0.1}"
+: "${PI_WEB_PORT:=8504}"
+: "${NODE_ENV:=production}"
+
+export PI_WEB_USER PI_WEB_DATA_DIR PI_CODING_AGENT_DIR \
+       PI_WEB_HOST PI_WEB_PORT NODE_ENV
+
+# Make sure the data dir exists and belongs to the service user.
+mkdir -p "$PI_WEB_DATA_DIR"
+chown "$PI_WEB_USER:$(id -gn "$PI_WEB_USER")" "$PI_WEB_DATA_DIR" 2>/dev/null || true
+
+exec setpriv --reuid="$PI_WEB_USER" --regid="$(id -gn "$PI_WEB_USER")" \
+    --init-groups /usr/bin/node "$SCRIPT"

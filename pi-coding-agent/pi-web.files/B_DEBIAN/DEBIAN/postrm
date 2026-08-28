@@ -1,0 +1,13 @@
+#!/bin/sh
+set -e
+
+if [ "$1" = "purge" ] ; then
+    systemctl stop pi-web-sessiond pi-web-server 2>/dev/null || true
+    if getent passwd pi-web >/dev/null; then
+        if which deluser >/dev/null 2>&1; then
+            deluser --quiet --system pi-web || echo "Could not remove pi-web user."
+        fi
+    fi
+    # Data is left in place (/var/lib/pi-web/home, or the configured
+    # user's ~/.pi-web) so a reinstall keeps existing sessions.
+fi
