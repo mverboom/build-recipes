@@ -1,0 +1,13 @@
+/var/log/forgejo/*.log {
+	daily
+	missingok
+	rotate 14
+	compress
+	delaycompress
+	notifempty
+	create 0640 git adm
+	sharedscripts
+	postrotate
+		invoke-rc.d forgejo restart >/dev/null 2>&1
+	endscript
+}

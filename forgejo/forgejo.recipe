@@ -2,22 +2,25 @@
 arch=amd64
 
 [VERSION]
-B_GITVER -e "dev" https://codeberg.org/forgejo/forgejo
+B_GITVER -i '^15\.0\.' https://codeberg.org/forgejo/forgejo
 
 [REQUIRED]
-nodejs-lts-B_PF golang-B_PF gcc make
+make golang-B_PF gcc nodejs-lts-B_PF
 
 [BUILD]
+export GOROOT=/opt/go
+# Keep the Go module cache out of srcguard's scan path
+export GOMODCACHE=/tmp/vendor
+export PATH=${PATH}:${GOROOT}/bin
 B_GET git https://codeberg.org/forgejo/forgejo forgejo
 cd forgejo
-git checkout v${B_VERSION}
-make frontend
+git checkout v$B_VERSION
+# Forgejo's Makefile defaults EXECUTABLE=gitea; ship a forgejo-named binary
 TAGS="bindata timetzdata sqlite sqlite_unlock_notify" make build
-rm -rf .[^.] .??* node_modules web_src Makefile main.go public
-mkdir -p $B_INSTALLDIR/etc/forgejo
-cp custom/conf/app.example.ini $B_INSTALLDIR/etc/forgejo/
-mkdir -p $B_INSTALLDIR/opt/forgejo
-tar cfB - templates gitea | ( cd $B_INSTALLDIR/opt/forgejo ; tar xfB - )
+cp -f gitea forgejo
+mkdir -p $B_INSTALLDIR/opt/forgejo/
+tar cfB - public templates forgejo | ( cd $B_INSTALLDIR/opt/forgejo ; tar xfB - )
+B_LINKFILE /opt/forgejo/forgejo /usr/bin
 
 [PKG]
 type=deb
@@ -30,6 +33,6 @@ Section: forgejo
 Priority: optional
 Architecture: B_ARCH
 Maintainer: B_MAIL
-Description: forgejo custom B_ORG build
-Homepage: https://codeberg.org/forgejo/forgejo
+Homepage: https://forgejo.org
+Description: Forgejo B_PF custom build
 Depends: git

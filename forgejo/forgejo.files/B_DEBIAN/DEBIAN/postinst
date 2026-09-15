@@ -1,36 +1,34 @@
 #!/bin/sh
-# postinst script for forgejo
-#
-# see: dh_installdeb(1)
 
 set -e
 
-setup_git_user() {
-   # Create a git system group
-   if ! getent group git > /dev/null; then
-       addgroup --quiet --system git
-   fi
-
-   if ! getent passwd git >/dev/null; then
-      adduser --quiet --system --ingroup git --no-create-home --home /var/lib/forgejo --shell /usr/sbin/nologin git
-   fi
-}
-
 case "$1" in
-configure)
-   setup_git_user
-   chown git:git /var/lib/forgejo /var/log/forgejo /etc/forgejo
-   systemctl enable forgejo
-;;
-abort-upgrade|abort-remove|abort-deconfigure)
-;;
-
-*)
-   echo "postinst called with unknown argument \`$1'" >&2
-   exit 1
-;;
+  configure)
+    if ! getent passwd git > /dev/null; then
+       adduser --disabled-password --quiet --system --group \
+          --home /var/git --no-create-home \
+          --gecos "git user" --shell /bin/bash git
+    fi
+    if ! test -d /var/git/data
+    then
+       mkdir -p /var/git/data
+    fi
+    chown -R git:git /var/git
+    chown git:git /etc/forgejo/app.ini
+    if ! test -d /var/log/forgejo
+    then
+       mkdir /var/log/forgejo
+    fi
+    chown git:git /var/log/forgejo
+    chown git:git /etc/forgejo/app.ini /etc/forgejo
+    sed -i "s/127.0.0.1/$(hostname --fqdn)/" /etc/forgejo/app.ini
+    if ! test -e /etc/forgejo/cert.pem; then
+       cd /etc/forgejo
+       su -s /bin/bash -c "/opt/forgejo/forgejo cert --host $(hostname --fqdn)" git
+    fi
+    systemctl enable forgejo
+    systemctl start forgejo
+  ;;
 esac
-
-systemctl restart forgejo
 
 exit 0

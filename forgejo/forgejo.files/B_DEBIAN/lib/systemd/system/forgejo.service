@@ -1,17 +1,15 @@
 [Unit]
-Description=Forgejo (Beyond coding. We forge.)
+Description=forgejo
 After=network.target
 
 [Service]
-StartLimitInterval=5
-StartLimitBurst=10
+Type=simple
 User=git
 Group=git
-WorkingDirectory=/var/lib/forgejo
-#RuntimeDirectory=forgejo
-ExecStart=/opt/forgejo/gitea web --config /etc/forgejo/app.ini
+WorkingDirectory=/var/git
+ExecStart=/opt/forgejo/forgejo web --config /etc/forgejo/app.ini
 Restart=always
-Environment=USER=git HOME=/var/lib/forgejo GITEA_WORK_DIR=/var/lib/forgejo
+Environment=USER=git HOME=/var/git
 
 [Install]
 WantedBy=multi-user.target
