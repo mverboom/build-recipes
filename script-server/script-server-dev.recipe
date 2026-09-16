@@ -17,8 +17,11 @@ mkdir -p "$DEST"
 #                              SCRIPT_SERVER_TITLE_PREFIX env var
 #   apply-deeplink-prefill.sh  deep-link URL parameter prefill survives the
 #                              dependent-values wipe race
+#   apply-keep-last-finished.sh keep the most recent finished execution per
+#                              script visible in the live tabs (browser session)
 $B_FILES/apply-title-prefix.sh
 $B_FILES/apply-deeplink-prefill.sh
+$B_FILES/apply-keep-last-finished.sh
 # Build web/ from web-src of the same git checkout. Do NOT use
 # `tools/init.py --no-npm`: that downloads the prebuilt web bundle from the
 # GitHub `dev` release, which goes stale (it was last published 2025-12-26)
