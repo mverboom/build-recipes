@@ -4,9 +4,9 @@ set -e
 
 systemctl stop forgejo > /dev/null || true
 
-if test "$1" = "purge"; then
-   deluser --quiet --system git > /dev/null || true
-   delgroup --quiet git > /dev/null || true
-fi
-
+# IMPORTANT: never delete the shared "git" user on purge.
+# Forgejo's repositories and app data live under /var/git, the git user is
+# shared with other tooling (cdist/ssh glue, the sshpiper key sync), and
+# removing it would orphan all of that and break a reinstall. Data is left
+# in place on purpose; remove it manually if you really mean to.
 exit 0

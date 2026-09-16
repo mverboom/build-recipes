@@ -4,9 +4,8 @@ set -e
 
 systemctl stop gitea > /dev/null || true
 
-if test "$1" = "purge"; then
-   deluser --quiet --system git > /dev/null || true
-   delgroup --quiet git > /dev/null || true
-fi
-
+# IMPORTANT: never delete the shared "git" user on purge.
+# /var/git holds the repositories and the git user is shared with other
+# tooling; removing it would orphan the data and break a reinstall.
+# Data is left in place on purpose.
 exit 0
