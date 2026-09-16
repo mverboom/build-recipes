@@ -1,18 +1,20 @@
 #!/usr/bin/env bash
 # script-server-dev: prepend a runtime-configured prefix to the browser tab title.
 #
-# The prefix value is read server-side from the environment variable
-# SCRIPT_SERVER_TITLE_PREFIX (set in /etc/default/script-server-dev by the
-# package) and sent to the frontend as `titlePrefix` in the server config.
-# The frontend DocumentTitleManager (compiled bundle) is patched to prepend it
-# to document.title, so the tab shows e.g.:
+# The prefix is read server-side from SCRIPT_SERVER_TITLE_PREFIX (set in
+# /etc/default/script-server-dev) and exposed as `titlePrefix` in the server
+# config. The frontend prepends it to document.title, so the tab shows e.g.:
 #     ss - Network bond - Cdist script server
 #
-# Backend changes (Python source, applied to the git checkout):
+# The recipe builds web/ from web-src of the same git checkout (no prebuilt
+# bundle download), so all frontend changes are applied to web-src/src.
+#
+# Backend (Python source):
 #   src/model/server_conf.py    - title_prefix field, read from env
 #   src/model/external_model.py - expose it as 'titlePrefix' in server config
-# Frontend changes (compiled bundle from the dev web zip):
-#   web/js/*.js - SET_CONFIG stores titlePrefix, DocumentTitleManager prepends it
+# Frontend (web-src source):
+#   store/serverConfig.js              - keep titlePrefix from the API
+#   components/DocumentTitleManager.vue - prepend it to document.title
 #
 # Every replacement is guarded: if the expected pattern is not found the build
 # fails with a clear message, so an upstream change that breaks this patch is
@@ -44,22 +46,35 @@ if ! grep -q "'titlePrefix': server_config.title_prefix," src/model/external_mod
 fi
 
 # --- 3. Frontend: serverConfig store keeps titlePrefix from the API ----------
-if ! grep -q 'e.titlePrefix=t.titlePrefix' web/js/*.js; then
-    sed -i 's#SET_CONFIG:function(e,t){e.serverName=t.title,e.version=t.version,e.enableScriptTitles=t.enableScriptTitles#&,e.titlePrefix=t.titlePrefix#' \
-        web/js/*.js \
-        && grep -q 'e.titlePrefix=t.titlePrefix' web/js/*.js \
-        || fail 'could not patch web bundle (serverConfig SET_CONFIG pattern changed upstream?)'
+SC=web-src/src/main-app/store/serverConfig.js
+if ! grep -q 'titlePrefix: null,' "$SC"; then
+    sed -i 's#^        enableScriptTitles: null,#        enableScriptTitles: null,\n        titlePrefix: null,#' "$SC" \
+        && grep -q 'titlePrefix: null,' "$SC" \
+        || fail "could not patch $SC (state pattern changed upstream?)"
+fi
+if ! grep -q 'state.titlePrefix = config.titlePrefix;' "$SC"; then
+    sed -i 's#^            state.serverName = config.title;#            state.serverName = config.title;\n            state.titlePrefix = config.titlePrefix;#' "$SC" \
+        && grep -q 'state.titlePrefix = config.titlePrefix;' "$SC" \
+        || fail "could not patch $SC (SET_CONFIG pattern changed upstream?)"
 fi
 
 # --- 4. Frontend: DocumentTitleManager prepends the prefix --------------------
-if ! grep -q 'this.$store.state.serverConfig.titlePrefix' web/js/*.js; then
-    sed -i 's#document.title=this.selectedScript+" - "+this.serverName:document.title=this.serverName#document.title=(this.$store.state.serverConfig.titlePrefix||"")+this.selectedScript+" - "+this.serverName:document.title=(this.$store.state.serverConfig.titlePrefix||"")+this.serverName#g' \
-        web/js/*.js \
-        && grep -q 'this.$store.state.serverConfig.titlePrefix' web/js/*.js \
-        || fail 'could not patch web bundle (DocumentTitleManager pattern changed upstream?)'
+DT=web-src/src/main-app/components/DocumentTitleManager.vue
+if ! grep -q 'titlePrefix: state => state.titlePrefix' "$DT"; then
+    sed -i "s#^      enableScriptTitles: state => isNull(state.enableScriptTitles) || state.enableScriptTitles\$#      enableScriptTitles: state => isNull(state.enableScriptTitles) || state.enableScriptTitles,\n      titlePrefix: state => state.titlePrefix || ''#" "$DT" \
+        && grep -q 'titlePrefix: state => state.titlePrefix' "$DT" \
+        || fail "could not patch $DT (mapState pattern changed upstream?)"
+fi
+if ! grep -q 'document.title = this.titlePrefix +' "$DT"; then
+    sed -i "s#        document.title = this.selectedScript + ' - ' + this.serverName;#        document.title = this.titlePrefix + this.selectedScript + ' - ' + this.serverName;#" "$DT" \
+        && sed -i "s#        document.title = this.serverName;#        document.title = this.titlePrefix + this.serverName;#" "$DT" \
+        && grep -q 'document.title = this.titlePrefix +' "$DT" \
+        || fail "could not patch $DT (updateTitle pattern changed upstream?)"
 fi
 
 # --- Sanity checks ------------------------------------------------------------
+grep -q 'document.title = this.titlePrefix + this.serverName;' "$DT" \
+    || fail 'both updateTitle branches were not patched'
 python3 -m py_compile src/model/server_conf.py src/model/external_model.py \
     || fail 'python syntax check failed after patching'
 find src -name __pycache__ -type d -exec rm -rf {} + 2>/dev/null
