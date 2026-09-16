@@ -1,0 +1,36 @@
+[INFO]
+arch=amd64
+excludefromall=1
+
+[VERSION]
+B_GITVER -f 9.9.9 -i 2. https://github.com/influxdata/influxdb
+
+[REQUIRED]
+golang-B_PF gotools-B_PF make dep-B_PF asciidoc pkg-config protobuf-compiler protoc-gen-go tmpl gcc rustc-B_PF
+
+[BUILD]
+export PATH=/opt/go/bin:${PATH}
+
+B_GET git https://github.com/influxdata/influxdb influxdb
+cd influxdb
+git checkout v$B_VERSION
+make
+mkdir -p $B_INSTALLDIR/opt/influxdb/bin
+cp bin/linux/influxd $B_INSTALLDIR/opt/influxdb/bin
+B_LINKFILES /opt/influxdb/bin /usr/bin
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: influxdb
+Version: B_VERSION
+Section: influxdb
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: Influxdb custom B_ORG build
+Homepage: https://www.influxdata.com/
+Depends: influx-cli-B_PF
+
