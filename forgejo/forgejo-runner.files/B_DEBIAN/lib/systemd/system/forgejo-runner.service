@@ -1,0 +1,18 @@
+[Unit]
+Description=Forgejo Actions runner
+Documentation=https://forgejo.org/docs/latest/admin/actions/
+After=network-online.target docker.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=forgejo-runner
+Group=forgejo-runner
+WorkingDirectory=/var/lib/forgejo-runner
+EnvironmentFile=-/etc/default/forgejo-runner
+ExecStart=/usr/bin/forgejo-runner daemon --config /etc/forgejo-runner/config.yaml
+Restart=always
+RestartSec=30
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,45 @@
+#!/bin/sh
+# Maintainer script for the Forgejo Actions runner package.
+set -e
+
+case "$1" in
+    configure)
+        if ! getent group forgejo-runner > /dev/null; then
+            addgroup --quiet --system forgejo-runner
+        fi
+        if ! getent passwd forgejo-runner > /dev/null; then
+            adduser --quiet --system --ingroup forgejo-runner \
+                --home /var/lib/forgejo-runner --no-create-home \
+                --gecos "Forgejo Actions runner" --shell /bin/bash forgejo-runner
+        fi
+
+        # Registration file (contains the runner token) and cache, so keep the
+        # directory private to the runner account.
+        install -d -m 0750 -o forgejo-runner -g forgejo-runner /var/lib/forgejo-runner
+
+        # The docker backend reaches the local daemon through the socket, which
+        # is owned by root:docker.
+        if getent group docker > /dev/null; then
+            adduser --quiet forgejo-runner docker > /dev/null
+        else
+            echo "Note: no docker group on this system, jobs can only run with the host backend." >&2
+        fi
+
+        systemctl enable forgejo-runner > /dev/null 2>&1 || true
+
+        # `daemon` exits immediately without a server connection, so only start
+        # the service once the runner is registered: either the uuid and token
+        # are in the config file, or a legacy .runner registration exists.
+        if [ -f /var/lib/forgejo-runner/.runner ] || \
+           grep -q '^[[:space:]]*url:' /etc/forgejo-runner/config.yaml; then
+            systemctl restart forgejo-runner || true
+        else
+            echo "Forgejo Runner is installed but has no server connection yet." >&2
+            echo "Create a runner in the Forgejo web UI (e.g. /admin/actions/runners)," >&2
+            echo "put the uuid and token it shows in the server section of" >&2
+            echo "/etc/forgejo-runner/config.yaml, then run 'systemctl start forgejo-runner'." >&2
+        fi
+    ;;
+esac
+
+exit 0

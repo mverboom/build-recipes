@@ -1,0 +1,42 @@
+# Forgejo Runner configuration.
+#
+# The annotated example for the installed version is in
+# /usr/share/doc/forgejo-runner/config.example.yaml; options not set here use
+# their documented default.
+#
+# A runner needs a uuid and a token from the Forgejo instance before it can
+# start. Create the runner in the Forgejo web UI (as administrator at
+# /admin/actions/runners, or the equivalent page for an organization, user or
+# repository), copy the uuid and token it displays into the server section
+# below and start the service:
+#
+# server:
+#   connections:
+#     forgejo:
+#       url: https://git.example.net/
+#       uuid: <uuid shown by Forgejo>
+#       token: <token shown by Forgejo>
+
+log:
+  level: info
+  # What is sent to the Forgejo instance and shown with the job in the web UI.
+  job_level: info
+
+runner:
+  # Where the deprecated `forgejo-runner register` command writes its
+  # registration, for instances that still register that way.
+  file: /var/lib/forgejo-runner/.runner
+  # Jobs executed at the same time by this runner.
+  capacity: 1
+  # <label>:<backend>[:<image>] - the jobs this runner accepts. Workflows pick
+  # a runner with `runs-on:`, so replace these with the labels your workflows
+  # use. Images come from the Forgejo OCI mirror to avoid Docker Hub rate
+  # limits.
+  labels:
+    - ubuntu-latest:docker://data.forgejo.org/oci/node:lts-trixie
+    - ubuntu-24.04:docker://data.forgejo.org/oci/node:24-trixie
+    - ubuntu-22.04:docker://data.forgejo.org/oci/node:22-trixie
+
+cache:
+  enabled: true
+  dir: /var/lib/forgejo-runner/cache
