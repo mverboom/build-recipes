@@ -1,0 +1,47 @@
+#!/bin/sh
+# postrm script for influxdb
+
+set -e
+
+
+case "$1" in
+    purge|remove|upgrade|failed-upgrade|abort-install|abort-upgrade|disappear)
+      # Always remove /var/run/influxdb
+      rm -rf /var/run/influxdb
+
+      # Only remove /var/lib/influxdb and /var/log/influxdb on purge
+      if [ "${1}" = "purge" ] ; then
+          rm -rf /var/lib/influxdb
+          rm -rf /var/log/influxdb
+      fi
+    ;;
+
+    *)
+        echo "postrm called with unknown argument \`$1'" >&2
+        exit 1
+    ;;
+esac
+
+if [ "$1" = "purge" ] ; then
+	update-rc.d influxdb remove >/dev/null
+fi
+
+
+if [ -d /run/systemd/system ] ; then
+	systemctl --system daemon-reload >/dev/null || true
+fi
+
+if [ "$1" = "remove" ]; then
+	if [ -x "/usr/bin/deb-systemd-helper" ]; then
+		deb-systemd-helper mask influxdb.service >/dev/null
+	fi
+fi
+
+if [ "$1" = "purge" ]; then
+	if [ -x "/usr/bin/deb-systemd-helper" ]; then
+		deb-systemd-helper purge influxdb.service >/dev/null
+		deb-systemd-helper unmask influxdb.service >/dev/null
+	fi
+fi
+
+exit 0
