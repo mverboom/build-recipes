@@ -1,0 +1,28 @@
+diff --git a/backend/app/api/handlers/v1/v1_ctrl_auth.go b/backend/app/api/handlers/v1/v1_ctrl_auth.go
+index 0d4a341..c4e0cdf 100644
+--- a/backend/app/api/handlers/v1/v1_ctrl_auth.go
++++ b/backend/app/api/handlers/v1/v1_ctrl_auth.go
+@@ -520,6 +520,11 @@ func (ctrl *V1Controller) HandleOIDCLogin() errchain.HandlerFunc {
+ 			return validate.NewRequestError(fmt.Errorf("OIDC is not enabled"), http.StatusForbidden)
+ 		}
+ 
++		// LNW patch: lazily re-initialize the OIDC provider when it was unavailable
++		// at startup (e.g. the issuer was briefly unreachable during boot).
++		if ctrl.oidcProvider == nil {
++			ctrl.initOIDCProvider()
++		}
+ 		if ctrl.oidcProvider == nil {
+ 			span.SetAttributes(attribute.String("oidc.outcome", "provider_unavailable"))
+ 			log.Error().Msg("OIDC provider not initialized")
+@@ -558,6 +563,11 @@ func (ctrl *V1Controller) HandleOIDCCallback() errchain.HandlerFunc {
+ 			return validate.NewRequestError(fmt.Errorf("OIDC is not enabled"), http.StatusForbidden)
+ 		}
+ 
++		// LNW patch: lazily re-initialize the OIDC provider when it was unavailable
++		// at startup (e.g. the issuer was briefly unreachable during boot).
++		if ctrl.oidcProvider == nil {
++			ctrl.initOIDCProvider()
++		}
+ 		if ctrl.oidcProvider == nil {
+ 			span.SetAttributes(attribute.String("oidc.outcome", "provider_unavailable"))
+ 			log.Error().Msg("OIDC provider not initialized")
