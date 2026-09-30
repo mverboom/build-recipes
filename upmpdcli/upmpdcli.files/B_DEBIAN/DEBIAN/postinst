@@ -1,0 +1,23 @@
+#!/bin/sh
+ 
+if test "$1" = "configure"; then
+  # Create a upmpdcli system group
+  if ! getent group upmpdcli > /dev/null; then
+      addgroup --quiet --system upmpdcli
+  fi
+  
+  # Create a upmpdcli system user
+  if ! getent passwd upmpdcli > /dev/null; then
+      adduser --quiet --system \
+          --ingroup upmpdcli \
+          --no-create-home \
+          --disabled-password --shell /bin/bash \
+          upmpdcli
+      usermod -c "upmpdcli user" upmpdcli
+  fi
+
+  systemctl enable upmpdcli
+  systemctl start upmpdcli
+else
+  systemctl restart upmpdcli
+fi
