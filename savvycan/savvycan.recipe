@@ -16,6 +16,12 @@ qmake6 qt6-serialbus-dev qt6-declarative-dev qt6-tools-dev make g++
 B_GET git https://github.com/collin80/SavvyCAN.git savvycan
 cd savvycan
 git checkout continuous-QT6
+# Upstream refactor (ISOTP/UDS handler) added bus_protocols/handler_factory.cpp
+# to CMakeLists.txt but forgot SavvyCAN.pro; add it for the qmake build.
+# Guard against duplication in case upstream fixes the .pro themselves.
+if [ -f bus_protocols/handler_factory.cpp ] && ! grep -q 'handler_factory.cpp' SavvyCAN.pro; then
+    echo 'SOURCES += bus_protocols/handler_factory.cpp' >> SavvyCAN.pro
+fi
 qmake6 PREFIX="$B_INSTALLDIR/opt/savvycan"
 make -j $(nproc)
 make install
