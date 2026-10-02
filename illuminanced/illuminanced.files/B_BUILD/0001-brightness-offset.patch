@@ -1,0 +1,72 @@
+diff --git a/src/main.rs b/src/main.rs
+index b87ddef..4c5d791 100644
+--- a/src/main.rs
++++ b/src/main.rs
+@@ -118,23 +118,46 @@ fn main_loop(
+         config.step_barrier(),
+     );
+     debug!("k: s:{:?}", stepped_brightness);
++    // LNW: brightness keys (or any other tool) change the backlight behind our back.
++    // Remember what we wrote, so such a change can be turned into an offset on top of
++    // the calculated brightness instead of being overwritten again on the next step.
++    let mut last_written = read_file_to_u32(config.backlight_filename());
++    let mut offset: i64 = 0;
+     loop {
++        if let (Some(current), Some(previous)) = (
++            read_file_to_u32(config.backlight_filename()),
++            last_written,
++        ) {
++            if current != previous {
++                offset += current as i64 - previous as i64;
++                last_written = Some(current);
++                info!(
++                    "brightness changed outside illuminanced: {} -> {}, offset {}",
++                    previous, current, offset
++                );
++            }
++        }
+         match read_file_to_u32(illuminance_filename) {
+             Some(illuminance) => {
+                 let illuminance_k = kalman.process(illuminance as f32);
+                 let brightness = light_convertor.get_light(illuminance_k as u32);
+                 debug!("{}, {}, {}", illuminance, illuminance_k, brightness);
+                 if let Some(new) = stepped_brightness.update(brightness) {
++                    // LNW: apply the user's offset on top of the calculated level
++                    let value = (new as i64 + offset)
++                        .clamp(config.min_backlight() as i64, max_brightness as i64)
++                        as u32;
+                     info!(
+-                        "raw {}, kalman {}, new level {} new brightness {}",
+-                        illuminance, illuminance_k, brightness, new
++                        "raw {}, kalman {}, new level {} new brightness {} offset {} value {}",
++                        illuminance, illuminance_k, brightness, new, offset, value
+                     );
+-                    set_brightness(config, new);
++                    set_brightness(config, value);
++                    last_written = Some(value);
+                 }
+             }
+             _ => error!("Cannot read illuminance"),
+         }
+-        if try_process_switch(&mut switch_monitor, config, max_brightness) {
++        if try_process_switch(&mut switch_monitor, config, max_brightness, &mut last_written) {
+             stepped_brightness.update(config.light_steps() as f32);
+         }
+     }
+@@ -150,6 +173,7 @@ fn try_process_switch(
+     switch_monitor: &mut switch_monitor::SwitchMonitor,
+     config: &Config,
+     max_brightness: u32,
++    last_written: &mut Option<u32>,
+ ) -> bool {
+     let mut timeout = config.check_period_in_seconds();
+     loop {
+@@ -171,6 +195,8 @@ fn try_process_switch(
+                     info!("maximum by event");
+                 }
+                 set_brightness(config, max_brightness);
++                // LNW: this write is ours; do not turn it into an offset
++                *last_written = Some(max_brightness);
+                 timeout = 3600;
+             }
+         }
