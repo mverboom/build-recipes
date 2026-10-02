@@ -10,6 +10,7 @@ make golang-B_PF
 [BUILD]
 export GOROOT=/opt/go
 export PATH=${PATH}:${GOROOT}/bin
+export GOMODCACHE=/tmp/vendor
 B_GET git https://gitea.com/gitea/runner/ act_runner
 cd act_runner
 git checkout v$B_VERSION
@@ -33,8 +34,3 @@ Homepage: https://gitea.io
 Description: act_runner B_PF custom build
 Depends: docker.io
 
-[SECURITY]
-# Findings from security-scan of cached sources; suppressed so
-# vulnscan=enforce / srcguard=enforce builds pass. Review periodically;
-# new findings still fail the build until reviewed.
-vulnscan-ignore=GO-2026-5932
