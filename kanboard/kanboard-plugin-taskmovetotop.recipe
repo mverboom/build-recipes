@@ -1,0 +1,29 @@
+[INFO]
+arch=all
+
+[VERSION]
+B_GITVER https://codeberg.org/solidcharity/kanboard-TaskMoveToTopAction
+
+[BUILD]
+B_GET git https://codeberg.org/solidcharity/kanboard-TaskMoveToTopAction TaskMoveToTopAction
+cd TaskMoveToTopAction
+git checkout v$B_VERSION
+rm -rf .git
+cd ..
+mkdir -p $B_INSTALLDIR/var/lib/kanboard/plugins
+tar cfB - TaskMoveToTopAction | ( cd $B_INSTALLDIR/var/lib/kanboard/plugins ; tar xfB - )
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: kanboard-plugin-taskmovetotop
+Version: B_VERSION
+Section: kanboard-plugin-taskmovetotop
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: Kanboard plugin taskmovetotop custom B_ORG build
+Homepage: https://codeberg.org/solidcharity/kanboard-TaskMoveToTopAction
+Depends: kanboard-B_PF
