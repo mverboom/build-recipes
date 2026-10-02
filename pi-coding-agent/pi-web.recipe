@@ -49,7 +49,3 @@ Description: Web UI for the pi coding agent custom B_ORG build
 Homepage: https://pi-web.dev/
 Depends: nodejs-22-B_PF (>= 22.19.0),pi-coding-agent-B_PF (>= 0.84.0),git,openssh-client,ca-certificates
 
-[SECURITY]
-# Findings from security-scan of cached sources; suppressed so
-# vulnscan=enforce / srcguard=enforce builds pass. Review periodically;
-# new findings still fail the build until reviewed.
