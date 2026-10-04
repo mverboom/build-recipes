@@ -46,7 +46,7 @@ yarn install --pure-lockfile
 sed -i 's/import imghdr/#import imghdr/' powerdnsadmin/routes/user.py
 flask assets build
 rm -rf .git docs docker docker-test
-rm -f requirements.txt *.md LICENSE docker-compose-* VERSION docker-compose.yml
+rm -f requirements*.txt requirements.txt.zip *.md LICENSE docker-compose-* VERSION docker-compose.yml
 
 deactivate
 var="$B_INSTALLDIR/var/lib/powerdns-admin"

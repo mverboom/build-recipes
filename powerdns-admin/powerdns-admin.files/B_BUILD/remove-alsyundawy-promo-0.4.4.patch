@@ -1,0 +1,76 @@
+diff --git a/powerdnsadmin/templates/login.html b/powerdnsadmin/templates/login.html
+index 5cc81af..9f6f1cc 100644
+--- a/powerdnsadmin/templates/login.html
++++ b/powerdnsadmin/templates/login.html
+@@ -830,21 +830,6 @@
+ 
+   <body>
+     <div class="page" id="pageRoot">
+-      <header class="site-header">
+-        <a
+-          href="/"
+-          aria-label="Home"
+-          title="{{ SETTING.get('site_name') or SITE_NAME }}"
+-        >
+-          <img
+-            id="siteLogo"
+-            src="{{ dark_src }}"
+-            data-light-src="{{ dark_src }}"
+-            data-dark-src="{{ dark_src }}"
+-            alt="{{ SETTING.get('site_name') or SITE_NAME }} logo"
+-            height="72">
+-        </a>
+-      </header>
+ 
+       <button
+         id="themeToggle"
+@@ -1095,21 +1080,7 @@
+         {% endif %}
+ 
+         <footer class="footer">
+-          Powered by
+-          <a
+-            href="https://github.com/alsyundawy/PowerDNS-Admin"
+-            target="_blank"
+-            rel="noopener noreferrer"
+-            >PowerDNS-Admin</a
+-          >
+-          <span aria-hidden="true" class="footer-sep">|</span>
+-          Modified by
+-          <a
+-            href="https://alsyundawy.com"
+-            target="_blank"
+-            rel="noopener noreferrer"
+-            >ALSYUNDAWY IT SOLUTION</a
+-          >
++          Powered by PowerDNS-Admin
+         </footer>
+       </main>
+     </div>
+diff --git a/powerdnsadmin/templates/register.html b/powerdnsadmin/templates/register.html
+index d3744e6..7aeaf6b 100644
+--- a/powerdnsadmin/templates/register.html
++++ b/powerdnsadmin/templates/register.html
+@@ -1000,21 +1000,7 @@
+         </div>
+ 
+         <footer class="footer">
+-          Powered by
+-          <a
+-            href="https://github.com/alsyundawy/PowerDNS-Admin"
+-            target="_blank"
+-            rel="noopener noreferrer"
+-            >PowerDNS-Admin</a
+-          >
+-          <span aria-hidden="true" class="footer-sep">|</span>
+-          Modified by
+-          <a
+-            href="https://alsyundawy.com"
+-            target="_blank"
+-            rel="noopener noreferrer"
+-            >ALSYUNDAWY IT SOLUTION</a
+-          >
++          Powered by PowerDNS-Admin
+         </footer>
+       </main>
+     </div>
