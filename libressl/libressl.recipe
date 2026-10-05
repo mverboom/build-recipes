@@ -12,6 +12,7 @@ B_GET git https://github.com/libressl-portable/portable libressl
 cd libressl
 git checkout v${B_VERSION}
 B_GET git https://github.com/libressl/openbsd/ openbsd
+git -C openbsd fetch --depth 1 origin tag "libressl-v${B_VERSION}"
 ./autogen.sh
 ./configure --prefix=/opt/libressl
 make -j $(nproc)
