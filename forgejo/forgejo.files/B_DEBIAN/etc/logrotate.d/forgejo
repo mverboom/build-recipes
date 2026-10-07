@@ -8,6 +8,6 @@
 	create 0640 git adm
 	sharedscripts
 	postrotate
-		invoke-rc.d forgejo restart >/dev/null 2>&1
+		systemctl reload forgejo >/dev/null 2>&1
 	endscript
 }

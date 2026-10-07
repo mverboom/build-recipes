@@ -8,6 +8,7 @@ User=git
 Group=git
 WorkingDirectory=/var/git
 ExecStart=/opt/forgejo/forgejo web --config /etc/forgejo/app.ini
+ExecReload=/bin/kill -USR1 $MAINPID
 Restart=always
 Environment=USER=git HOME=/var/git
 
