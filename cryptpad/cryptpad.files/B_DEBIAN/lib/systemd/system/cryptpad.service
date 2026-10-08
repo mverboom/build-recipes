@@ -3,6 +3,7 @@ Description=Cryptpad
 
 [Service]
 Environment=NODE_ENV=production
+Environment=NODE_PATH=/opt/cryptpad/node_modules
 Type=simple
 User=cryptpad
 Group=cryptpad
