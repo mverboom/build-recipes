@@ -17,6 +17,15 @@ if test "$1" = "configure"; then
       usermod -c "Cryptpad user" cryptpad
   fi
 
+  # Generate the instance's HTML pages (social-preview meta tags, preloading
+  # versions) from config.js + infra.js. Writes into the persistent customize/
+  # directory, which the server prefers over the packaged www/. Run as root
+  # here; the chown below makes the generated files cryptpad-owned. Failure is
+  # not fatal (e.g. a fresh install without config.js yet).
+  if [ -f /etc/cryptpad/config.js ] && command -v node >/dev/null 2>&1; then
+      ( cd /opt/cryptpad && node scripts/build.js ) >/dev/null 2>&1 || true
+  fi
+
   chown -R cryptpad:cryptpad /var/lib/cryptpad /etc/cryptpad /var/log/cryptpad
 
   systemctl enable cryptpad

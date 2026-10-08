@@ -14,6 +14,10 @@ B_GET git https://github.com/xwiki-labs/cryptpad cryptpad
 cd cryptpad
 git checkout $B_VERSION
 npm install
+# cryptpad-server 1.0.1 collapses second-stage command errors into a
+# generic "Execution error" and the front only returns {error}, so the
+# restricted-registration checkup (test 8) fails. Restore the real code.
+node $B_FILES/patch-cpsrv.js
 npm run install:components
 ACCEPT_LICENSE=y ./install-office.sh
 mkdir -p $B_INSTALLDIR/opt/cryptpad $B_INSTALLDIR/etc/cryptpad $B_INSTALLDIR/var/lib/cryptpad/datastore $B_INSTALLDIR/var/lib/cryptpad/data/pins $B_INSTALLDIR/var/lib/cryptpad/data/tasks $B_INSTALLDIR/var/lib/cryptpad/block $B_INSTALLDIR/var/lib/cryptpad/blob $B_INSTALLDIR/var/lib/cryptpad/data/blobstage $B_INSTALLDIR/var/lib/cryptpad/customize $B_INSTALLDIR/var/lib/cryptpad/plugins $B_INSTALLDIR/var/log/cryptpad
