@@ -19,6 +19,13 @@ npm install
 # restricted-registration checkup (test 8) fails. Restore the real code.
 node $B_FILES/patch-cpsrv.js
 npm run install:components
+# The 2026.9.0 client opens a document's checkpoint Office version when
+# exporting/downloading, so old editors must keep shipping. install-office.sh
+# defaults oldest_needed_version to v9, which drops v1-v8 and breaks exports of
+# documents last saved under them (the nightly backup stalled on a v8 doc). Pin
+# the range the estate has used since at least the 2024.12 package (v1-v7).
+mkdir -p onlyoffice-conf
+printf 'oldest_needed_version=v1\n' > onlyoffice-conf/onlyoffice.properties
 ACCEPT_LICENSE=y ./install-office.sh
 mkdir -p $B_INSTALLDIR/opt/cryptpad $B_INSTALLDIR/etc/cryptpad $B_INSTALLDIR/var/lib/cryptpad/datastore $B_INSTALLDIR/var/lib/cryptpad/data/pins $B_INSTALLDIR/var/lib/cryptpad/data/tasks $B_INSTALLDIR/var/lib/cryptpad/block $B_INSTALLDIR/var/lib/cryptpad/blob $B_INSTALLDIR/var/lib/cryptpad/data/blobstage $B_INSTALLDIR/var/lib/cryptpad/customize $B_INSTALLDIR/var/lib/cryptpad/plugins $B_INSTALLDIR/var/log/cryptpad
 mv config/config.example.js config.js
