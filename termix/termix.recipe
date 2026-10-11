@@ -1,9 +1,8 @@
 [INFO]
 arch=amd64
-gittag=release-$B_VERSION-tag
 
 [VERSION]
-B_GITVER -r 's/^release-//' -r 's/-tag$//' https://github.com/Termix-SSH/Termix
+B_GITVER -r "s/^v//" -r "s/^release-//" -r "s/-tag$//" https://github.com/Termix-SSH/Termix
 
 [REQUIRED]
 nodejs-lts-B_PF python3 make g++
@@ -11,46 +10,53 @@ nodejs-lts-B_PF python3 make g++
 [BUILD]
 B_GET git https://github.com/Termix-SSH/Termix termix
 cd termix
-git checkout release-$B_VERSION-tag
+git checkout v$B_VERSION
 
-# Install all dependencies and build frontend + backend
-npm ci
-# Build frontend with subpath base /termix/ so OIDC callbacks and
-# frontend routes work correctly behind reverse proxy at /termix/
+# Install all dependencies (incl. build tools), but skip npm lifecycle
+# scripts: upstream docker/Dockerfile does the same and applies only the ssh2
+# patch explicitly for the server.
+npm ci --ignore-scripts
+node scripts/patch-ssh2-agent.cjs
+
+# Build frontend (Vite), backend (tsc), plugin SDK and bundled plugins.
+# VITE_BASE_PATH=/termix/ because the app runs behind a reverse proxy subpath.
 export VITE_BASE_PATH=/termix/
+NODE_OPTIONS="--max-old-space-size=3072" npm run build
 
-npm run build
+# The container image injects the base path into the shell at run time; bake it
+# in here instead, so /termix/sw.js and the shell know where they are served.
+TERMIX_BASE="${VITE_BASE_PATH%/}"
+sed -i "s|__TERMIX_SW_BASE_PATH__|$TERMIX_BASE|g" dist/sw.js
+sed -i "s|name=\"termix-base-path\" content=\"\"|name=\"termix-base-path\" content=\"$TERMIX_BASE\"|g" dist/index.html
 
-# Switch to production dependencies only
+# Production dependencies only, mirroring docker/Dockerfile production-deps:
+# build better-sqlite3 from source and rebuild the other native modules.
 rm -rf node_modules
 npm ci --omit=dev --ignore-scripts
-npm rebuild better-sqlite3 bcryptjs
+node scripts/patch-ssh2-agent.cjs
+rm -rf node_modules/better-sqlite3/prebuilds
+npm run build-release --prefix node_modules/better-sqlite3
+npm rebuild bcryptjs ssh2
 
-# Copy entire dist output (frontend + backend) to /opt/termix/dist/
-# The backend serves frontend via express.static from process.cwd()/dist
-# Locales and fonts are bundled into dist by Vite since 2.3.0
+# dist/ holds the frontend plus dist/backend (server) and dist/plugins
+# (the bundled plugin artifacts).
 mkdir -p $B_INSTALLDIR/opt/termix/dist
 cp -r dist/* $B_INSTALLDIR/opt/termix/dist/
 
-# Install production dependencies and package.json
+# Runtime dependencies and metadata.
 cp -r node_modules $B_INSTALLDIR/opt/termix/
 cp package.json $B_INSTALLDIR/opt/termix/
+cp -r drizzle $B_INSTALLDIR/opt/termix/
 
-# Install the workspace packages. node_modules/@termix/plugin-sdk is an npm
-# workspace symlink to ../../packages/plugin-sdk, so that tree has to be
-# shipped as well. Since 2.9.0 the backend imports @termix/plugin-sdk/*
-# (backend, settings, db, ddl, manifest, ...) built into packages/plugin-sdk/dist,
-# so a dangling symlink makes the backend exit with ERR_MODULE_NOT_FOUND.
-mkdir -p $B_INSTALLDIR/opt/termix/packages
-cp -r packages/* $B_INSTALLDIR/opt/termix/packages/
-rm -rf $B_INSTALLDIR/opt/termix/packages/*/node_modules
+# The @termix-ssh/plugin-sdk workspace package: node_modules/@termix-ssh/plugin-sdk
+# is a symlink to ../../packages/plugin-sdk and the backend imports its subpaths.
+mkdir -p $B_INSTALLDIR/opt/termix/packages/plugin-sdk
+cp packages/plugin-sdk/package.json $B_INSTALLDIR/opt/termix/packages/plugin-sdk/
+cp -r packages/plugin-sdk/dist $B_INSTALLDIR/opt/termix/packages/plugin-sdk/
 
 # Data and log directories
-mkdir -p $B_INSTALLDIR/var/lib/termix/uploads
+mkdir -p $B_INSTALLDIR/var/lib/termix
 mkdir -p $B_INSTALLDIR/var/log/termix
-
-# Symlink uploads into /opt/termix so the hardcoded path works via /var
-ln -s /var/lib/termix/uploads $B_INSTALLDIR/opt/termix/uploads
 
 [PKG]
 type=deb
@@ -66,4 +72,3 @@ Maintainer: B_MAIL
 Description: Termix SSH and remote desktop management B_ORG build
 Homepage: https://github.com/Termix-SSH/Termix
 Depends: nodejs-lts-B_PF, nginx, guacamole-server-B_PF
-

@@ -1,5 +1,10 @@
 # Termix configuration variables
 
+# Base path the UI is served from behind the reverse proxy. Used to build
+# OIDC callback and other absolute URLs, and must match the VITE_BASE_PATH the
+# frontend was built with.
+VITE_BASE_PATH=/termix/
+
 # Guacamole daemon (guacd) connection settings for remote desktop (RDP/VNC/Telnet)
 GUACD_HOST=localhost
 GUACD_PORT=4822
