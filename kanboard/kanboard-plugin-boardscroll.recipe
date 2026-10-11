@@ -1,0 +1,24 @@
+[INFO]
+arch=all
+
+[VERSION]
+echo "1.0.0"
+
+[BUILD]
+mkdir -p $B_INSTALLDIR/var/lib/kanboard/plugins
+cp -r $B_FILES/BoardScrollFix $B_INSTALLDIR/var/lib/kanboard/plugins/
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: kanboard-plugin-boardscroll
+Version: B_VERSION
+Section: kanboard-plugin-boardscroll
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: Kanboard plugin boardscroll custom B_ORG build
+Homepage: https://github.com/mverboom/build-recipes
+Depends: kanboard-B_PF
