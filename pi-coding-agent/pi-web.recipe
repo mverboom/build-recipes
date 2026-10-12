@@ -18,11 +18,13 @@ npm install @jmfederico/pi-web@$B_VERSION --prefix $B_INSTALLDIR/opt/pi-web
 # The agent ships separately in the pi-coding-agent package; depend on
 # that and symlink its modules instead of bundling another copy here
 # (same approach as pithagoras).
+# pi-ai is taken from its npm-hoisted top-level location; if a future
+# pi-coding-agent release changes its npm layout, update the path below.
 rm -rf $B_INSTALLDIR/opt/pi-web/node_modules/@earendil-works
 mkdir -p $B_INSTALLDIR/opt/pi-web/node_modules/@earendil-works
 ln -s /opt/pi-coding-agent/node_modules/@earendil-works/pi-coding-agent \
       $B_INSTALLDIR/opt/pi-web/node_modules/@earendil-works/pi-coding-agent
-ln -s /opt/pi-coding-agent/node_modules/@earendil-works/pi-coding-agent/node_modules/@earendil-works/pi-ai \
+ln -s /opt/pi-coding-agent/node_modules/@earendil-works/pi-ai \
       $B_INSTALLDIR/opt/pi-web/node_modules/@earendil-works/pi-ai
 
 B_LINKFILE /opt/pi-web/node_modules/.bin/pi-web /usr/bin
