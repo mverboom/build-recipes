@@ -1,0 +1,15 @@
+#!/bin/sh
+# Start the Dashy Node backend, but only when DASHY_MODE=server. In static mode
+# the enabled unit exits immediately so nginx can serve /opt/dashy/dist.
+set -e
+
+if [ -r /etc/default/dashy ]; then
+    . /etc/default/dashy
+fi
+
+if [ "${DASHY_MODE:-static}" != "server" ]; then
+    echo "dashy: DASHY_MODE=${DASHY_MODE:-static}, not starting the backend (static mode)"
+    exit 0
+fi
+
+exec /usr/bin/node /opt/dashy/server.js

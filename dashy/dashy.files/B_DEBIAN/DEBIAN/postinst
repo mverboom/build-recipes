@@ -1,0 +1,40 @@
+#!/bin/sh
+
+set -e
+
+# Create the dashboard system group and user
+if ! getent group dashy > /dev/null; then
+    addgroup --quiet --system dashy
+fi
+if ! getent passwd dashy > /dev/null; then
+    adduser --quiet --system \
+        --ingroup dashy \
+        --home /opt/dashy \
+        --no-create-home \
+        --disabled-password --shell /bin/bash \
+        dashy
+    usermod -c "Dashy dashboard daemon" dashy
+fi
+
+# Seed the writable config on first install; never clobber later edits.
+if [ ! -e /var/lib/dashy/conf.yml ] && [ -f /usr/share/dashy/conf.yml.default ]; then
+    install -o dashy -g dashy -m 0640 /usr/share/dashy/conf.yml.default /var/lib/dashy/conf.yml
+fi
+
+chown -R dashy:dashy /var/lib/dashy
+
+# In standalone mode nginx serves the config through the symlink, so the web
+# server group needs read access to the file and traverse access to the dir.
+if getent group www-data > /dev/null; then
+    chown dashy:www-data /var/lib/dashy 2>/dev/null || true
+    chown dashy:www-data /var/lib/dashy/conf.yml 2>/dev/null || true
+fi
+chmod 0750 /var/lib/dashy
+chmod 0640 /var/lib/dashy/conf.yml 2>/dev/null || true
+
+# The unit is always enabled; /usr/bin/dashy-server reads DASHY_MODE from
+# /etc/default/dashy and only starts the backend in "server" mode, so the same
+# package works standalone (static nginx) or with the Node backend. After
+# editing that file, apply the change with: systemctl restart dashy
+systemctl enable dashy
+systemctl restart dashy

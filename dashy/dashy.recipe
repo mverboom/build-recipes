@@ -11,13 +11,39 @@ nodejs-lts-B_PF
 B_GET git https://github.com/Lissy93/dashy dashy
 cd dashy
 git checkout $B_VERSION
+
+# Build the frontend with the full (dev) dependency set.
 npm install
 npm run build
-cd dist
-mkdir -p $B_INSTALLDIR/opt/dashy $B_INSTALLDIR/etc/dashy
-mv conf.yml $B_INSTALLDIR/etc/dashy/conf.yml
-mv * $B_INSTALLDIR/opt/dashy
-ln -s /etc/dashy/conf.yml $B_INSTALLDIR/opt/dashy/conf.yml
+
+# Install the application the same way as the upstream Docker image, so the
+# server's hardcoded paths resolve: rootDir = dirname(services)/.. = /opt/dashy
+# and it serves dist/ and public/ relative to that.
+mkdir -p $B_INSTALLDIR/opt/dashy/src/utils/config
+cp -r dist $B_INSTALLDIR/opt/dashy/
+cp -r public $B_INSTALLDIR/opt/dashy/
+cp -r services $B_INSTALLDIR/opt/dashy/
+cp src/utils/config/ConfigSchema.json $B_INSTALLDIR/opt/dashy/src/utils/config/
+cp server.js package.json $B_INSTALLDIR/opt/dashy/
+
+# Default config, seeded into /var/lib/dashy on first install and never
+# overwritten afterwards (the web UI edits the live copy).
+install -D -m 0644 user-data/conf.yml $B_INSTALLDIR/usr/share/dashy/conf.yml.default
+
+# Drop the dev dependencies but keep the exact versions that were just used to
+# build (mirrors the Dockerfile "deps" stage, without a lockfile to re-resolve).
+npm prune --omit=dev
+cp -r node_modules $B_INSTALLDIR/opt/dashy/
+
+# Runtime data: the writable config (USER_DATA_DIR) and its backups.
+mkdir -p $B_INSTALLDIR/var/lib/dashy/config-backups
+
+# One config file for both modes. The Node server reads it as
+# USER_DATA_DIR/conf.yml; in standalone mode nginx serves the same file through
+# the symlink below. /etc/dashy keeps the historical path for convenience.
+mkdir -p $B_INSTALLDIR/etc/dashy
+ln -sf /var/lib/dashy/conf.yml $B_INSTALLDIR/etc/dashy/conf.yml
+ln -sf /var/lib/dashy/conf.yml $B_INSTALLDIR/opt/dashy/dist/conf.yml
 
 [PKG]
 type=deb
@@ -32,4 +58,4 @@ Architecture: B_ARCH
 Maintainer: B_MAIL
 Description: Dashy custom B_ORG build
 Homepage: https://dashy.to
-
+Depends: nodejs-lts-B_PF

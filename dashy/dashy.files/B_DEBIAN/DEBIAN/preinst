@@ -1,0 +1,13 @@
+#!/bin/sh
+
+set -e
+
+# Older packages kept the live config at /etc/dashy/conf.yml. From now on it
+# lives at /var/lib/dashy/conf.yml (USER_DATA_DIR, where the server writes it),
+# with /etc/dashy/conf.yml as a symlink. Move any edited copy across before the
+# new symlink is unpacked over it.
+if [ -f /etc/dashy/conf.yml ] && [ ! -L /etc/dashy/conf.yml ] \
+        && [ ! -e /var/lib/dashy/conf.yml ]; then
+    mkdir -p /var/lib/dashy
+    mv /etc/dashy/conf.yml /var/lib/dashy/conf.yml
+fi

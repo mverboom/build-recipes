@@ -1,0 +1,17 @@
+[Unit]
+Description=Dashy dashboard server
+Documentation=https://dashy.to/docs
+After=network.target
+
+[Service]
+Type=simple
+User=dashy
+Group=dashy
+WorkingDirectory=/opt/dashy
+EnvironmentFile=-/etc/default/dashy
+ExecStart=/usr/bin/dashy-server
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

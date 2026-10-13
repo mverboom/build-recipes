@@ -1,0 +1,12 @@
+# Dashy operation mode.
+#   static - frontend only; nginx serves /opt/dashy/dist directly
+#   server - run the Node backend on HOST:PORT (enables saving config from the
+#            web UI, status checks and the other server-side endpoints)
+# After editing DASHY_MODE, apply it with: systemctl restart dashy
+DASHY_MODE=server
+
+# Server mode settings (ignored in static mode)
+HOST=127.0.0.1
+PORT=4000
+USER_DATA_DIR=/var/lib/dashy
+NODE_ENV=production

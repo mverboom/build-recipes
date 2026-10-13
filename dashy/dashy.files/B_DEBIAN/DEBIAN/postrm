@@ -1,0 +1,12 @@
+#!/bin/sh
+
+set -e
+
+if [ "$1" = "purge" ] ; then
+    systemctl stop dashy 2>/dev/null || true
+    if getent passwd dashy >/dev/null; then
+        if which deluser >/dev/null 2>&1; then
+            deluser --quiet --system dashy || echo "Could not remove dashy user."
+        fi
+    fi
+fi
