@@ -1,0 +1,43 @@
+[INFO]
+arch=amd64
+excludefromall=1
+
+[VERSION]
+B_GITVER https://github.com/librespeed/speedtest-cli
+
+[REQUIRED]
+golang-B_PF
+
+[BUILD]
+B_GET git https://github.com/librespeed/speedtest-cli librespeed-cli
+cd librespeed-cli
+git checkout v$B_VERSION
+export GOROOT=/opt/go
+export PATH=$PATH:$GOROOT/bin
+export GOPATH=$(pwd)
+export CGO_ENABLED=0
+# Stamp the version into the binary (defs.* are empty otherwise).
+BUILD_DATE=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+go build -trimpath -o librespeed-cli \
+    -ldflags "-w -s -X github.com/librespeed/speedtest-cli/defs.ProgName=librespeed-cli -X github.com/librespeed/speedtest-cli/defs.ProgVersion=v$B_VERSION -X github.com/librespeed/speedtest-cli/defs.BuildDate=$BUILD_DATE" \
+    main.go
+./librespeed-cli --version
+mkdir -p $B_INSTALLDIR/usr/bin
+install -m 0755 librespeed-cli $B_INSTALLDIR/usr/bin/librespeed-cli
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: librespeed-cli
+Version: B_VERSION
+Section: net
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+# Debian ships its own (older) librespeed-cli; take over /usr/bin/librespeed-cli.
+Replaces: librespeed-cli
+Conflicts: librespeed-cli
+Description: LibreSpeed command line client custom B_ORG build
+Homepage: https://github.com/librespeed/speedtest-cli
