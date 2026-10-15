@@ -1,0 +1,38 @@
+# LibreSpeedy - modern Jetpack Compose Android client for LibreSpeed backends.
+# You enter the backend URL in the app (or load the public server list), so the
+# APK does not need to be rebuilt per server.
+[INFO]
+arch=all
+
+[VERSION]
+B_GITVER https://gitlab.com/olidroid/librespeedy
+
+[BUILD]
+B_GET git https://gitlab.com/olidroid/librespeedy librespeedy
+cd librespeedy
+git checkout v$B_VERSION
+
+# The project compiles against SDK 36, but the build image only ships
+# android-34/android-35, so install platform 36 + its build-tools. sdkmanager
+# runs as root (builduser has passwordless sudo) because $ANDROID_HOME is
+# root-owned.
+export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin
+yes | sudo sdkmanager --licenses > /dev/null 2>&1 || true
+sudo sdkmanager --install "platforms;android-36" "build-tools;36.0.0"
+
+# The release build type expects a signing config from keystore.properties.
+# Drop it so Gradle emits app-release-unsigned.apk and the build system signs
+# the APK with the configured keystore.
+sed -i '/signingConfig = signingConfigs.getByName("release")/d' app/build.gradle.kts
+grep -q 'signingConfig = signingConfigs.getByName' app/build.gradle.kts && { echo "ERROR: signing config patch failed"; exit 1; }
+
+./gradlew --no-daemon :app:assembleRelease
+
+mkdir -p "$B_INSTALLDIR"
+cp app/build/outputs/apk/release/app-release-unsigned.apk "$B_INSTALLDIR/"
+
+[PKG]
+type=apk
+
+[APK]
+sign=yes
