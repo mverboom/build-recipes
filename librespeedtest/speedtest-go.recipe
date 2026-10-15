@@ -16,6 +16,10 @@ export GOROOT=/opt/go
 export PATH=$PATH:$GOROOT/bin
 export GOPATH=$(pwd)
 export CGO_ENABLED=0
+# Upstream pins golang.org/x/crypto from 2022, whose CRITICAL advisories
+# fail B_VULNSCAN (enforce). Build against a current x/crypto (go get
+# refreshes go.mod/go.sum for this build only).
+go get golang.org/x/crypto@v0.58.0
 go build -ldflags "-w -s" -trimpath -buildvcs=false -o speedtest .
 
 DEST=$B_INSTALLDIR/opt/speedtest-go
@@ -51,3 +55,8 @@ Architecture: B_ARCH
 Maintainer: B_MAIL
 Description: LibreSpeed Go backend (speedtest-go) custom B_ORG build
 Homepage: https://github.com/librespeed/speedtest-go
+
+[SECURITY]
+# Upstream ships an RPM spec that downloads its own source with curl; it is an
+# upstream packaging file this build does not use.
+srcguard-ignore=speedtest-go/rpm/el7/SPECS/librespeedgo.spec
