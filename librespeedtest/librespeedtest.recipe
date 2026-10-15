@@ -14,6 +14,14 @@ rm -rf .git .github .logo doc.md README.md
 sed -i 's/db_type.*;/db_type="sqlite";/; s#Sqlite_db_file.*;#Sqlite_db_file="/var/lib/librespeedtest/db.sql";#' results/telemetry_settings.php
 mv results/telemetry_settings.php $B_INSTALLDIR/etc/librespeedtest
 ln -s /etc/librespeedtest/telemetry_settings.php results/telemetry_settings.php
+# The modern UI and stability page read their server list from server-list.json.
+# Upstream ships the public librespeed.org backends there, which makes the
+# modern design test the hosted service instead of this installation. Replace
+# it with a single entry for the local backend (paths relative to the web root).
+printf '%s\n' '[{"name":"local","server":"./","dlURL":"backend/garbage.php","ulURL":"backend/empty.php","pingURL":"backend/empty.php","getIpURL":"backend/getIP.php","sponsorName":"","sponsorURL":"","id":1}]' > server-list.json
+cp server-list.json servers.json
+# Make the modern design the default (classic stays available via ?design=classic)
+sed -i 's/"useNewDesign": false/"useNewDesign": true/' config.json
 #ln -s example-singleServer-full.html index.html
 tar cfB - . | ( cd $DEST ; tar xfB - )
 
