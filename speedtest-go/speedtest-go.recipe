@@ -1,0 +1,53 @@
+[INFO]
+arch=amd64
+excludefromall=1
+
+[VERSION]
+B_GITVER https://github.com/librespeed/speedtest-go
+
+[REQUIRED]
+golang-B_PF
+
+[BUILD]
+B_GET git https://github.com/librespeed/speedtest-go speedtest-go
+cd speedtest-go
+git checkout v$B_VERSION
+export GOROOT=/opt/go
+export PATH=$PATH:$GOROOT/bin
+export GOPATH=$(pwd)
+export CGO_ENABLED=0
+go build -ldflags "-w -s" -trimpath -buildvcs=false -o speedtest .
+
+DEST=$B_INSTALLDIR/opt/speedtest-go
+mkdir -p $DEST $B_INSTALLDIR/var/lib/speedtest-go $B_INSTALLDIR/etc/speedtest-go
+install -m 0755 speedtest $DEST/speedtest
+
+# The frontend (classic + modern designs) is embedded in the binary, but keep a
+# copy on disk so the modern UI's server-list.json and settings.json can be
+# overridden from /etc (see the symlinks below).
+install -d $DEST/assets
+cp -a web/assets/. $DEST/assets/
+
+# Upstream's design switcher defaults to the classic design and only honours
+# ?design=. Make the modern design the default (?design=classic still works),
+# matching the PHP librespeedtest package.
+perl -0777 -pi -e 's{// Default to classic design\n(\s*)redirectToOldDesign\(\);}{// Default to modern design\n${1}redirectToNewDesign();}' $DEST/assets/design-switch.js
+grep -q 'Default to modern design' $DEST/assets/design-switch.js || { echo "ERROR: could not patch design-switch.js"; exit 1; }
+
+# Editable frontend configuration, served from the assets directory.
+ln -sf /etc/speedtest-go/server-list.json $DEST/assets/server-list.json
+ln -sf /etc/speedtest-go/settings.json $DEST/assets/settings.json
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: speedtest-go
+Version: B_VERSION
+Section: net
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: LibreSpeed Go backend (speedtest-go) custom B_ORG build
+Homepage: https://github.com/librespeed/speedtest-go

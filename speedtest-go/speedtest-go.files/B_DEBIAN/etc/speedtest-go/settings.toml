@@ -1,0 +1,48 @@
+# speedtest-go configuration. See
+# https://github.com/librespeed/speedtest-go for the full reference.
+
+# Bind address. Keep 127.0.0.1 when running behind a reverse proxy (nginx),
+# or use "" to listen on all interfaces.
+bind_address="127.0.0.1"
+
+# Backend listen port.
+listen_port=8989
+
+# PROXY protocol port (0 disables it). Only needed behind a proxy that speaks
+# the PROXY protocol; plain nginx does not.
+proxyprotocol_port=0
+
+# Server location used for distance calculation. 0/0 auto-detects at startup.
+server_lat=0
+server_lng=0
+ipinfo_api_key=""
+
+# Directory the web frontend is served from. Must exist for the modern UI's
+# server-list.json/settings.json overrides to take effect (otherwise the
+# embedded assets are used).
+assets_path="/opt/speedtest-go/assets"
+
+# Password for the /stats page. Changed to a random value on first install.
+statistics_password="PASSWORD"
+redact_ip_addresses=false
+enable_id_obfuscation=false
+
+# Telemetry/results database:
+#   none, memory, bolt, sqlite, mysql, postgresql, mssql
+# "none" disables telemetry and result-image sharing.
+database_type="sqlite"
+database_file="/var/lib/speedtest-go/speedtest.db"
+
+database_hostname=""
+database_name=""
+database_username=""
+database_password=""
+database_port=""
+
+# Optional offline GeoIP database (.mmdb) for ISP/country detection.
+geoip_database_file=""
+
+enable_tls=false
+enable_http2=false
+tls_cert_file=""
+tls_key_file=""

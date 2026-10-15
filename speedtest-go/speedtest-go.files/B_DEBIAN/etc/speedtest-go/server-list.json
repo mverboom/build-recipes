@@ -1,0 +1,13 @@
+[
+  {
+    "name": "local",
+    "server": "./",
+    "dlURL": "backend/garbage.php",
+    "ulURL": "backend/empty.php",
+    "pingURL": "backend/empty.php",
+    "getIpURL": "backend/getIP.php",
+    "sponsorName": "",
+    "sponsorURL": "",
+    "id": 1
+  }
+]

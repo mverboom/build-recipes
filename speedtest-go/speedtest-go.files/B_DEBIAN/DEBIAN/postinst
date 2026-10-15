@@ -1,0 +1,33 @@
+#!/bin/sh
+
+set -e
+
+if ! getent group speedtest-go > /dev/null; then
+    addgroup --quiet --system speedtest-go
+fi
+if ! getent passwd speedtest-go > /dev/null; then
+    adduser --quiet --system \
+        --ingroup speedtest-go \
+        --home /var/lib/speedtest-go \
+        --no-create-home \
+        --disabled-password --shell /bin/false \
+        speedtest-go
+    usermod -c "speedtest-go daemon" speedtest-go
+fi
+
+chown -R speedtest-go:speedtest-go /var/lib/speedtest-go
+
+# Replace the upstream default /stats password on first install so the
+# statistics page is not left wide open with the literal "PASSWORD".
+if grep -q 'statistics_password="PASSWORD"' /etc/speedtest-go/settings.toml 2>/dev/null; then
+    pw=$(head -c 32 /dev/urandom | base64 | tr -d '/+=' | cut -c1-24)
+    sed -i "s/statistics_password=\"PASSWORD\"/statistics_password=\"$pw\"/" /etc/speedtest-go/settings.toml
+    echo "speedtest-go: generated /stats password: $pw"
+    echo "speedtest-go: change it in /etc/speedtest-go/settings.toml if desired"
+fi
+
+systemctl daemon-reload > /dev/null 2>&1 || true
+systemctl enable speedtest-go
+systemctl restart speedtest-go
+
+exit 0

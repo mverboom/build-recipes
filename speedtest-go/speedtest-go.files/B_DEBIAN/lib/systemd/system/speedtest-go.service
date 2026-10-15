@@ -1,0 +1,33 @@
+[Unit]
+Description=LibreSpeed speedtest-go server
+Documentation=https://github.com/librespeed/speedtest-go
+After=network.target
+
+[Service]
+Type=simple
+User=speedtest-go
+Group=speedtest-go
+WorkingDirectory=/opt/speedtest-go
+ExecStart=/opt/speedtest-go/speedtest -c /etc/speedtest-go/settings.toml
+Restart=on-failure
+RestartSec=5
+
+# Hardening: the server only needs its telemetry database under
+# /var/lib/speedtest-go and an unprivileged TCP port.
+NoNewPrivileges=yes
+PrivateTmp=yes
+PrivateDevices=yes
+ProtectSystem=strict
+ProtectHome=yes
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectControlGroups=yes
+RestrictAddressFamilies=AF_INET AF_INET6
+LockPersonality=yes
+MemoryDenyWriteExecute=yes
+SystemCallArchitectures=native
+CapabilityBoundingSet=
+ReadWritePaths=/var/lib/speedtest-go
+
+[Install]
+WantedBy=multi-user.target
