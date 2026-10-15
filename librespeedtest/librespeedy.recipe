@@ -17,8 +17,8 @@ git checkout v$B_VERSION
 # runs as root (builduser has passwordless sudo) because $ANDROID_HOME is
 # root-owned.
 export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin
-yes | sudo sdkmanager --licenses > /dev/null 2>&1 || true
-sudo sdkmanager --install "platforms;android-36" "build-tools;36.0.0"
+yes | sudo "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --licenses > /dev/null 2>&1 || true
+sudo "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --install "platforms;android-36" "build-tools;36.0.0"
 
 # The release build type expects a signing config from keystore.properties.
 # Drop it so Gradle emits app-release-unsigned.apk and the build system signs
