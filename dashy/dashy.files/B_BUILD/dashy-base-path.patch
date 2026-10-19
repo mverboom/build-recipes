@@ -1,0 +1,167 @@
+diff --git a/index.html b/index.html
+index 71a7903..dbf7f9e 100644
+--- a/index.html
++++ b/index.html
+@@ -7,14 +7,14 @@
+   <meta name="viewport" content="width=device-width,initial-scale=1.0">
+   <meta name="referrer" content="no-referrer">
+   <!-- Favicon, App Icon -->
+-  <link rel="icon" type="image/png" sizes="64x64" href="/web-icons/favicon-64x64.png">
+-  <link rel="icon" type="image/png" sizes="32x32" href="/web-icons/favicon-32x32.png">
+-  <link rel="icon" type="image/png" sizes="16x16" href="/web-icons/favicon-16x16.png">
+-  <link rel="icon" type="image/png" href="/favicon.ico" />
+-  <link rel="stylesheet" type="text/css" href="/loading-screen.css" />
+-  <link rel="stylesheet" type="text/css" href="/theme-fonts.css" media="print" onload="this.media='all'" />
++  <link rel="icon" type="image/png" sizes="64x64" href="%BASE_URL%web-icons/favicon-64x64.png">
++  <link rel="icon" type="image/png" sizes="32x32" href="%BASE_URL%web-icons/favicon-32x32.png">
++  <link rel="icon" type="image/png" sizes="16x16" href="%BASE_URL%web-icons/favicon-16x16.png">
++  <link rel="icon" type="image/png" href="%BASE_URL%favicon.ico" />
++  <link rel="stylesheet" type="text/css" href="%BASE_URL%loading-screen.css" />
++  <link rel="stylesheet" type="text/css" href="%BASE_URL%theme-fonts.css" media="print" onload="this.media='all'" />
+   <!-- Lets the browser offer Dashy as a keyword search engine, for jumping to apps by alias -->
+-  <link rel="search" type="application/opensearchdescription+xml" title="Dashy" href="/opensearch.xml" />
++  <link rel="search" type="application/opensearchdescription+xml" title="Dashy" href="%BASE_URL%opensearch.xml" />
+   <!-- Default Page Title -->
+   <title>Dashy</title>
+ </head>
+diff --git a/src/components/Configuration/ConfigContainer.vue b/src/components/Configuration/ConfigContainer.vue
+index beb57d1..216afe4 100644
+--- a/src/components/Configuration/ConfigContainer.vue
++++ b/src/components/Configuration/ConfigContainer.vue
+@@ -149,7 +149,7 @@ export default {
+     configPath() {
+       return this.$store.state.currentConfigInfo?.confPath
+       || import.meta.env.VITE_APP_CONFIG_PATH
+-      || '/conf.yml';
++      || `${import.meta.env.BASE_URL}conf.yml`;
+     },
+     currentTheme() {
+         return this.$store.getters.appConfig?.theme || '';
+diff --git a/src/components/InteractiveEditor/ExportConfigMenu.vue b/src/components/InteractiveEditor/ExportConfigMenu.vue
+index 89a6f1e..31eda22 100644
+--- a/src/components/InteractiveEditor/ExportConfigMenu.vue
++++ b/src/components/InteractiveEditor/ExportConfigMenu.vue
+@@ -167,7 +167,7 @@ export default {
+     currentConfigPath() {
+       return this.$store.state.currentConfigInfo?.confPath
+         || import.meta.env.VITE_APP_CONFIG_PATH
+-        || '/conf.yml';
++        || `${import.meta.env.BASE_URL}conf.yml`;
+     },
+     currentConfigHref() {
+       return formatConfigPath(this.currentConfigPath);
+diff --git a/src/components/LinkItems/ItemIcon.vue b/src/components/LinkItems/ItemIcon.vue
+index e6a1a26..556af20 100644
+--- a/src/components/LinkItems/ItemIcon.vue
++++ b/src/components/LinkItems/ItemIcon.vue
+@@ -195,7 +195,7 @@ export default {
+     },
+     /* Fetches the path of local images, from Docker container */
+     getLocalImagePath(img) {
+-      return `/${iconCdns.localPath}/${img}`;
++      return `${import.meta.env.BASE_URL}${iconCdns.localPath}/${img}`;
+     },
+     /* Formats the URL for fetching the generative icons */
+     getGenerativeIcon(url, cdn) {
+diff --git a/src/store.js b/src/store.js
+index 6cd2bbe..22089cd 100644
+--- a/src/store.js
++++ b/src/store.js
+@@ -445,7 +445,7 @@ const store = createStore({
+   actions: {
+     /* Fetches the root config file, only ever called by INITIALIZE_CONFIG */
+     async [INITIALIZE_ROOT_CONFIG]({ commit }) {
+-      const configFilePath = import.meta.env.VITE_APP_CONFIG_PATH || '/conf.yml';
++      const configFilePath = import.meta.env.VITE_APP_CONFIG_PATH || `${import.meta.env.BASE_URL}conf.yml`;
+       try {
+         // Attempt to fetch the YAML file
+         const response = await request.get(configFilePath, makeBasicAuthHeaders());
+diff --git a/src/utils/InitServiceWorker.js b/src/utils/InitServiceWorker.js
+index c5c43ba..7aa56cf 100644
+--- a/src/utils/InitServiceWorker.js
++++ b/src/utils/InitServiceWorker.js
+@@ -13,7 +13,7 @@ const AUTH_PROXY_RELOAD_KEY = 'dashy-auth-proxy-reloaded'; // one reload per tab
+ /* Loads conf.yml and returns the parsed object, or null on failure */
+ const loadAppConfig = async () => {
+   try {
+-    const { data } = await request.get('/conf.yml');
++    const { data } = await request.get(`${import.meta.env.BASE_URL}conf.yml`);
+     return yamlLoad(data) || null;
+   } catch (e) {
+     statusErrorMsg(SW_LABEL, 'Failed to load config for SW check', e);
+diff --git a/src/utils/auth/OidcAuth.js b/src/utils/auth/OidcAuth.js
+index e4d95ae..0f7f66f 100644
+--- a/src/utils/auth/OidcAuth.js
++++ b/src/utils/auth/OidcAuth.js
+@@ -84,7 +84,7 @@ class OidcAuth {
+       userStore: new WebStorageStateStore({ store: window.localStorage }),
+       authority: endpoint,
+       client_id: String(clientId),
+-      redirect_uri: `${window.location.origin}`,
++      redirect_uri: `${window.location.origin}${import.meta.env.BASE_URL}`,
+       post_logout_redirect_uri: postLogoutRedirectUri,
+       response_type: 'code',
+       scope: requestedScope,
+diff --git a/src/utils/config/defaults.js b/src/utils/config/defaults.js
+index cdf2345..6abf0cf 100644
+--- a/src/utils/config/defaults.js
++++ b/src/utils/config/defaults.js
+@@ -36,14 +36,16 @@ const defaults = {
+     notFound: '/404',
+   },
+   /* Server Endpoints */
++  /* Prefixed with the Vite base path, so that Dashy also works when it is
++   * served from a sub-directory (built with --base=/dashy/) */
+   serviceEndpoints: {
+-    statusPing: '/status-ping',
+-    statusCheck: '/status-check',
+-    pingCheck: '/ping-check',
+-    save: '/config-manager/save',
+-    systemInfo: '/system-info',
+-    corsProxy: '/cors-proxy',
+-    getUser: '/get-user',
++    statusPing: `${import.meta.env.BASE_URL}status-ping`,
++    statusCheck: `${import.meta.env.BASE_URL}status-check`,
++    pingCheck: `${import.meta.env.BASE_URL}ping-check`,
++    save: `${import.meta.env.BASE_URL}config-manager/save`,
++    systemInfo: `${import.meta.env.BASE_URL}system-info`,
++    corsProxy: `${import.meta.env.BASE_URL}cors-proxy`,
++    getUser: `${import.meta.env.BASE_URL}get-user`,
+   },
+   /* List of built-in themes, to be displayed within the theme-switcher dropdown */
+   builtInThemes: [
+@@ -202,7 +204,7 @@ const defaults = {
+     sh: 'https://cdn.jsdelivr.net/gh/selfhst/icons@latest/webp/{icon}.webp',
+     generative: 'https://api.dicebear.com/7.x/identicon/svg?seed={icon}',
+     generativeFallback: 'https://evatar.io/{icon}',
+-    localPath: './item-icons',
++    localPath: 'item-icons',
+     faviconName: 'favicon.ico',
+     homeLabIcons:
+       'https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/{icon}.svg',
+diff --git a/vite.config.mjs b/vite.config.mjs
+index 0ccceae..3b6c961 100644
+--- a/vite.config.mjs
++++ b/vite.config.mjs
+@@ -57,15 +57,17 @@ export default defineConfig({
+     VitePWA({
+       registerType: 'prompt',
+       useCredentials: true,
++      // Icon URLs are relative to the manifest, which is emitted at the base
++      // path, so the PWA manifest also works when served from /dashy/
+       manifest: {
+         name: 'Dashy',
+         theme_color: '#00af87',
+         background_color: '#0b1021',
+         icons: [
+-          { src: '/web-icons/favicon-64x64.png', sizes: '64x64', type: 'image/png' },
+-          { src: '/web-icons/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
+-          { src: '/web-icons/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
+-          { src: '/web-icons/dashy-logo.png', sizes: '512x512', type: 'image/png' },
++          { src: 'web-icons/favicon-64x64.png', sizes: '64x64', type: 'image/png' },
++          { src: 'web-icons/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
++          { src: 'web-icons/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
++          { src: 'web-icons/dashy-logo.png', sizes: '512x512', type: 'image/png' },
+         ],
+       },
+       workbox: {

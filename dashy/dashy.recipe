@@ -13,8 +13,15 @@ cd dashy
 git checkout $B_VERSION
 
 # Build the frontend with the full (dev) dependency set.
+# Dashy is served from a sub-directory (https://secure.verboom.net/dashy/), which
+# upstream does not support out of the box (Lissy93/dashy#1036). The patch makes
+# the few hardcoded absolute URLs relative to the Vite base path; the base
+# itself comes from the flag on the build command below. The patch must apply
+# cleanly: a new upstream version that changes these lines fails the build here
+# instead of shipping a dashboard that loads its assets from the wrong place.
+patch -p1 --forward < $B_FILES/dashy-base-path.patch
 npm install
-npm run build
+npm run build -- --base=/dashy/
 
 # Install the application the same way as the upstream Docker image, so the
 # server's hardcoded paths resolve: rootDir = dirname(services)/.. = /opt/dashy
