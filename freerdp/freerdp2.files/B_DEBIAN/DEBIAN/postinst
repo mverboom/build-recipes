@@ -1,0 +1,8 @@
+#!/bin/sh
+
+set -e
+
+# /opt/freerdp2/lib is outside the default linker path. Register it so the
+# freerdp2 libraries - and everything linked against them, such as the
+# guacamole-server RDP client plugin - are found at runtime.
+ldconfig

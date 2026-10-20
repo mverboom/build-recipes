@@ -22,6 +22,11 @@ After=network.target
 
 [Service]
 User=daemon
+# FreeRDP needs a writable home directory (configuration/certificate storage);
+# the daemon user's real home (/usr/sbin) is not writable. systemd creates
+# /var/lib/guacd with the right ownership because of StateDirectory.
+StateDirectory=guacd
+Environment=HOME=/var/lib/guacd
 Environment=LD_LIBRARY_PATH=/opt/freerdp2/lib:/opt/guacamole/lib
 ExecStart=/opt/guacamole/sbin/guacd -f
 Restart=on-abnormal

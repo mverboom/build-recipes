@@ -2,6 +2,20 @@
 
 set -e
 
+# This package ships the native systemd unit only. Older versions also
+# installed an LSB init script (/etc/init.d/guacd) that daemonizes with its own
+# pidfile and competes with guacd.service - that combination has kept guacd
+# from starting after an upgrade. Remove the leftover (dpkg keeps it, it is no
+# longer part of the package) and its rc*.d links.
+if [ -f /etc/init.d/guacd ]; then
+    owner=$(dpkg -S /etc/init.d/guacd 2>/dev/null | sed -n 's/^\([^:,]*\):.*/\1/p' | head -1)
+    if [ -z "$owner" ] || [ "$owner" = "guacamole-server-adsnl" ]; then
+        update-rc.d guacd remove >/dev/null 2>&1 || true
+        rm -f /etc/init.d/guacd
+    fi
+fi
+rm -f /etc/rc?.d/[SK]??guacd 2>/dev/null || true
+
 # Enable and start guacd so remote desktop protocols (RDP/VNC/Telnet) work
 # immediately after the package is installed.
 if [ -f /lib/systemd/system/guacd.service ]; then
