@@ -20,7 +20,7 @@ class Plugin extends Base
 
     public function getPluginDescription()
     {
-        return t('Keep the board scroll position when the board is refreshed');
+        return t('Keep the board column position when the board is refreshed or reopened');
     }
 
     public function getPluginAuthor()
@@ -30,7 +30,7 @@ class Plugin extends Base
 
     public function getPluginVersion()
     {
-        return '1.0.0';
+        return '1.1.0';
     }
 
     public function getPluginHomepage()

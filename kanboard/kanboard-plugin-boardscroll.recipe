@@ -2,7 +2,7 @@
 arch=all
 
 [VERSION]
-echo "1.0.0"
+echo "1.1.0"
 
 [BUILD]
 mkdir -p $B_INSTALLDIR/var/lib/kanboard/plugins
