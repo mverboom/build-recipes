@@ -14,20 +14,32 @@ case "$1" in
        mkdir -p /var/git/data
     fi
     chown -R git:git /var/git
-    chown git:git /etc/forgejo/app.ini
     if ! test -d /var/log/forgejo
     then
        mkdir /var/log/forgejo
     fi
     chown git:git /var/log/forgejo
-    chown git:git /etc/forgejo/app.ini /etc/forgejo
-    sed -i "s/127.0.0.1/$(hostname --fqdn)/" /etc/forgejo/app.ini
+    chown git:git /etc/forgejo
+    # /etc/forgejo/app.ini is site configuration owned by the admin. It used
+    # to be shipped as a conffile, which made unattended-upgrades refuse every
+    # new package version with "conffile prompt" (the template is rewritten
+    # with the hostname here, so the on-disk file never matched the package).
+    # The template now lives in /usr/share/forgejo; seed app.ini from it only
+    # when it does not exist yet and never touch it on upgrades.
+    if ! test -e /etc/forgejo/app.ini; then
+       sed "s/127.0.0.1/$(hostname --fqdn)/" \
+          /usr/share/forgejo/app.ini > /etc/forgejo/app.ini
+       chmod 640 /etc/forgejo/app.ini
+    fi
+    chown git:git /etc/forgejo/app.ini
     if ! test -e /etc/forgejo/cert.pem; then
        cd /etc/forgejo
        su -s /bin/bash -c "/opt/forgejo/forgejo cert --host $(hostname --fqdn)" git
     fi
     systemctl enable forgejo
-    systemctl start forgejo
+    # restart, not start: on an upgrade the unit is already active and "start"
+    # would leave the old binary running until the next reboot
+    systemctl restart forgejo
   ;;
 esac
 
