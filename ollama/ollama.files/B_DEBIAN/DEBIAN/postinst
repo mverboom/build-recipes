@@ -19,5 +19,6 @@ if test "$1" = "configure"; then
   systemctl enable ollama.service
   systemctl start ollama.service
 else
+  systemctl daemon-reload
   systemctl restart ollama.service
 fi

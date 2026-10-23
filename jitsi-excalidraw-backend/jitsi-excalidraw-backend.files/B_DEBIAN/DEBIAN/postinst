@@ -16,5 +16,6 @@ if test "$1" = "configure"; then
   systemctl enable jitsi-excalidraw-backend.service
   systemctl start jitsi-excalidraw-backend.service
 else
+  systemctl daemon-reload
   systemctl restart jitsi-excalidraw-backend.service
 fi

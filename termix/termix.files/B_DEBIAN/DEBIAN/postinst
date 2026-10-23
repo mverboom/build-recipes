@@ -37,6 +37,7 @@ if [ -f /etc/nginx/sites-available/termix ] && [ ! -e /etc/nginx/sites-enabled/t
 fi
 
 systemctl enable termix
+systemctl daemon-reload
 systemctl restart termix
 
 # Test nginx config before reloading

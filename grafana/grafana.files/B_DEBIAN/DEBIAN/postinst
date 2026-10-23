@@ -50,6 +50,7 @@ else
 fi
 # End automatically added section
 
+systemctl daemon-reload
 systemctl restart grafana
 
 exit 0

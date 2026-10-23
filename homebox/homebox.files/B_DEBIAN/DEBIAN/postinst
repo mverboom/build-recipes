@@ -18,3 +18,10 @@ if test "$1" = "configure"; then
    chown -R homebox:homebox /var/lib/homebox
    systemctl enable homebox
 fi
+
+# Restart the running service on upgrade so it picks up the new binaries.
+# try-restart leaves a deliberately stopped service stopped.
+if [ -d /run/systemd/system ]; then
+    systemctl daemon-reload
+    systemctl try-restart homebox.service || true
+fi

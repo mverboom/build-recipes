@@ -19,4 +19,5 @@ if test "$1" = "configure"; then
    chown -R tasmocompiler.tasmocompiler /var/lib/tasmocompiler
    systemctl enable tasmocompiler
 fi
+systemctl daemon-reload
 systemctl restart tasmocompiler

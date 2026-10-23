@@ -23,5 +23,6 @@ if test "$1" = "configure"; then
   systemctl enable wbo
   systemctl start wbo
 else
+  systemctl daemon-reload
   systemctl restart wbo
 fi

@@ -47,4 +47,11 @@ else
 fi
 # End automatically added section
 
+# Restart the running service on upgrade so it picks up the new binaries.
+# try-restart leaves a deliberately stopped service stopped.
+if [ -d /run/systemd/system ]; then
+    systemctl daemon-reload
+    systemctl try-restart influxdb.service || true
+fi
+
 exit 0

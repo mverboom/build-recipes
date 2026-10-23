@@ -1,0 +1,6 @@
+# Restart the service when the Node.js runtime is replaced by an upgrade.
+# nodejs-*-B_PF installs /opt/nodejs (symlinked into /usr/bin); dpkg runs this
+# package postinst again when that file is unpacked, and the postinst restarts
+# the service. Without this the service keeps running the old runtime until it
+# is restarted by hand.
+interest-noawait /opt/nodejs/bin/node

@@ -23,6 +23,7 @@ if test "$1" = "configure"; then
   su -s /bin/bash pdnsadmin -c "cd /opt/powerdns-admin && . /etc/default/powerdns-admin; export FLASK_CONF FLASK_APP PYTHONPATH; PATH=/opt/powerdns-admin/bin:$PATH flask db upgrade"
 
   systemctl enable powerdns-admin
+  systemctl daemon-reload
   systemctl restart powerdns-admin
 else
   systemctl restart powerdns-admin

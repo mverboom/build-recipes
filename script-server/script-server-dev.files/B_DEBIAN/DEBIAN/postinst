@@ -20,6 +20,7 @@ if test "$1" = "configure"; then
   chown -R script-dev:script-dev /etc/script-server-dev /var/log/script-server-dev /var/lib/script-server-dev
 
   systemctl enable script-server-dev.service
+  systemctl daemon-reload
   systemctl restart script-server-dev.service
 else
   systemctl restart script-server-dev.service

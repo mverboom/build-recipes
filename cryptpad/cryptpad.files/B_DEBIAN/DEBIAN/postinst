@@ -31,5 +31,6 @@ if test "$1" = "configure"; then
   systemctl enable cryptpad
   systemctl start cryptpad
 else
+  systemctl daemon-reload
   systemctl restart cryptpad
 fi

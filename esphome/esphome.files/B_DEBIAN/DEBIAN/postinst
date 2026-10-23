@@ -36,4 +36,5 @@ if test "$1" = "configure"; then
        -days 3650
    fi
 fi
+systemctl daemon-reload
 systemctl restart esphome.service

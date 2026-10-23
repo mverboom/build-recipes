@@ -18,4 +18,5 @@ if test "$1" = "configure"; then
    fi
    chown -R mgmtcenter:mgmtcenter /etc/management-center
 fi
+systemctl daemon-reload
 systemctl restart management-center.service

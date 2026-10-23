@@ -31,6 +31,7 @@ abort-upgrade|abort-remove|abort-deconfigure)
 ;;
 esac
 
+systemctl daemon-reload
 systemctl restart mosquitto
 
 exit 0

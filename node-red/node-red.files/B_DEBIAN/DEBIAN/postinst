@@ -22,4 +22,5 @@ if [ "$ACTION" = "configure" ]; then
 	systemctl enable node-red
 fi
 
+systemctl daemon-reload
 systemctl restart node-red

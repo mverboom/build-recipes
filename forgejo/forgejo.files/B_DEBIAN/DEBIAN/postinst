@@ -39,6 +39,7 @@ case "$1" in
     systemctl enable forgejo
     # restart, not start: on an upgrade the unit is already active and "start"
     # would leave the old binary running until the next reboot
+    systemctl daemon-reload
     systemctl restart forgejo
   ;;
 esac

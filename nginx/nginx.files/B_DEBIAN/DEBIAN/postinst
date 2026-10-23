@@ -23,5 +23,6 @@ if test "$1" = "configure"; then
   systemctl enable nginx
   systemctl start nginx
 else
+  systemctl daemon-reload
   systemctl restart nginx
 fi

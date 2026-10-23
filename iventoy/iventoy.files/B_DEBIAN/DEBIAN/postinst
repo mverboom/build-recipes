@@ -4,3 +4,10 @@ set -e
 readable=/sys/devices/virtual/dmi/id/product_uuid
 
 test -r "$readable" || { echo "File $readable is not readable, and is required by iventoy."; exit 1; }
+
+# Restart the running service on upgrade so it picks up the new binaries.
+# try-restart leaves a deliberately stopped service stopped.
+if [ -d /run/systemd/system ]; then
+    systemctl daemon-reload
+    systemctl try-restart iventoy.service || true
+fi

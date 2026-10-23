@@ -26,3 +26,10 @@ if [ "$1" = "configure" ]; then
         chown tinyproxy:adm /var/log/tinyproxy/* 2>/dev/null || true
     fi
 fi
+
+# Restart the running service on upgrade so it picks up the new binaries.
+# try-restart leaves a deliberately stopped service stopped.
+if [ -d /run/systemd/system ]; then
+    systemctl daemon-reload
+    systemctl try-restart tinyproxy.service || true
+fi

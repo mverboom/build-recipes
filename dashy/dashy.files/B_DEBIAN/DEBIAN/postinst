@@ -37,4 +37,5 @@ chmod 0640 /var/lib/dashy/conf.yml 2>/dev/null || true
 # package works standalone (static nginx) or with the Node backend. After
 # editing that file, apply the change with: systemctl restart dashy
 systemctl enable dashy
+systemctl daemon-reload
 systemctl restart dashy

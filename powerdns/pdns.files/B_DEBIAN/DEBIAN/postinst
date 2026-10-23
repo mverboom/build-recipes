@@ -19,5 +19,6 @@ if test "$1" = "configure"; then
   systemctl enable pdns.service
   systemctl start pdns.service
 else
+  systemctl daemon-reload
   systemctl restart pdns.service
 fi

@@ -21,4 +21,5 @@ if test "$1" = "configure"; then
    systemctl enable zigbee2mqtt
 fi
 
+systemctl daemon-reload
 systemctl restart zigbee2mqtt*

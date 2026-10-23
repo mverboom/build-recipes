@@ -20,6 +20,7 @@ if test "$1" = "configure"; then
   chown -R script:script /etc/script-server /var/log/script-server /var/lib/script-server
 
   systemctl enable script-server.service
+  systemctl daemon-reload
   systemctl restart script-server.service
 else
   systemctl restart script-server.service

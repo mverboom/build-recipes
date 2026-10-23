@@ -1,0 +1,14 @@
+#!/bin/sh
+# savi-tools postinst: refresh udev (so the hidraw node picks up the new rule
+# on an already-connected base) and the GTK icon cache.
+set -e
+
+if command -v udevadm >/dev/null 2>&1; then
+    udevadm control --reload-rules || true
+    udevadm trigger --subsystem-match=hidraw || true
+fi
+if command -v gtk-update-icon-cache >/dev/null 2>&1; then
+    gtk-update-icon-cache -f -t /usr/share/icons/hicolor >/dev/null 2>&1 || true
+fi
+
+exit 0

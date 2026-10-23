@@ -32,6 +32,7 @@ case "$1" in
         # are in the config file, or a legacy .runner registration exists.
         if [ -f /var/lib/forgejo-runner/.runner ] || \
            grep -q '^[[:space:]]*url:' /etc/forgejo-runner/config.yaml; then
+            systemctl daemon-reload
             systemctl restart forgejo-runner || true
         else
             echo "Forgejo Runner is installed but has no server connection yet." >&2

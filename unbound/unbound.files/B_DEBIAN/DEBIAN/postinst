@@ -25,4 +25,5 @@ if [ ! -f /etc/unbound/unbound_control.key ]; then
    unbound-control-setup 1>/dev/null 2>&1 || true
 fi
 systemctl enable unbound
-systemctl start unbound
+systemctl daemon-reload
+systemctl restart unbound

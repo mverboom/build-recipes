@@ -19,5 +19,6 @@ if test "$1" = "configure"; then
   systemctl enable sftpgo.service
   systemctl start sftpgo.service
 else
+  systemctl daemon-reload
   systemctl restart sftpgo.service
 fi

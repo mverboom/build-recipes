@@ -18,6 +18,7 @@ if test "$1" = "configure"; then
   chown -R odido:odido /etc/odido-bundle-replenisher.cfg
 
   systemctl enable odido-bundle-replenisher.service
+  systemctl daemon-reload
   systemctl restart odido-bundle-replenisher.service
 else
   systemctl restart odido-bundle-replenisher.service

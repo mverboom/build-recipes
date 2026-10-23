@@ -28,6 +28,7 @@ case "$1" in
 
     # Enable and start services
     systemctl enable rustdesk-hbbs rustdesk-hbbr
+    systemctl daemon-reload
     systemctl restart rustdesk-hbbs rustdesk-hbbr
     ;;
 esac
