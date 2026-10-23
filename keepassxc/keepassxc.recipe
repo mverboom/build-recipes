@@ -5,7 +5,7 @@ B_GITVER https://github.com/keepassxreboot/keepassxc
 arch=amd64
 
 [REQUIRED]
-build-essential cmake g++ qtbase5-dev qttools5-dev qttools5-dev-tools libgcrypt20-dev libargon2-dev zlib1g-dev libxi-dev libxtst-dev libqt5x11extras5-dev libyubikey-dev libykpers-1-dev libsodium-dev libcurl4-openssl-dev libqt5svg5-dev libqrencode-dev libquazip5-dev libreadline-dev ruby asciidoctor qtbase5-private-dev libbotan-2-dev libpcsclite-dev libminizip-dev libusb-1.0-0-dev
+build-essential cmake g++ pkg-config qt6-base-dev qt6-tools-dev qt6-svg-dev libbotan-2-dev zlib1g-dev libminizip-dev libpcsclite-dev libusb-1.0-0-dev libkeyutils-dev libqrencode-dev libreadline-dev libxkbcommon-dev libxi-dev libxtst-dev ruby asciidoctor
 
 [BUILD]
 B_GET git https://github.com/keepassxreboot/keepassxc keepassxc
@@ -13,11 +13,19 @@ cd keepassxc
 git checkout $B_VERSION
 mkdir build
 cd build
-cmake -DWITH_XC_ALL=ON -DCMAKE_INSTALL_PREFIX=/opt/keepassxc ..
+# 2.8.0 dropped Qt5 support and the WITH_XC_ALL switch: Qt6 (>= 6.2.4) is now
+# mandatory and the KPXC_FEATURE_* options (browser integration, SSH agent,
+# secret service, network, update checks, docs) all default to ON, which is the
+# same feature set WITH_XC_ALL=ON used to produce. Botan is the only crypto
+# backend; YubiKey (ykcore) and zxcvbn are bundled.
+cmake -DCMAKE_INSTALL_PREFIX=/opt/keepassxc ..
 make -j $(nproc) install DESTDIR=$B_INSTALLDIR
 
 B_LINKFILES /opt/keepassxc/bin/ /usr/bin/
-B_LINKFILES /opt/keepassxc/lib/ /usr/lib/
+# 2.8.0 no longer installs anything under lib/ (the browser proxy moved to
+# bin/); it adds a polkit action for quick unlock, which has to be registered
+# in /usr/share/polkit-1/actions.
+B_LINKFILES /opt/keepassxc/share/polkit-1/actions /usr/share/polkit-1/actions
 B_LINKFILES /opt/keepassxc/share/applications /usr/share/applications
 #B_LINKFILES /opt/keepassxc/share/icons/hicolor/128x128/apps /usr/share/icons/hicolor/128x128/apps
 #B_LINKFILES /opt/keepassxc/share/icons/hicolor/128x128/mimetypes /usr/share/icons/hicolor/128x128/mimetypes
@@ -51,7 +59,7 @@ Architecture: B_ARCH
 Maintainer: B_MAIL
 Description: Cross Platform Password Manager
 Homepage: https://keepassxc.org
-Depends: libargon2-1, libbotan-2-19, libc6-dev, libglib2.0-dev, libminizip1t64, libpcsclite1, libqrencode4, libqt5concurrent5t64, libqt5svg5, libqt5x11extras5, libusb-1.0-0
+Depends: libbotan-2-19, libc6, libgcc-s1, libkeyutils1, libminizip1t64, libpcsclite1, libqrencode4, libqt6concurrent6, libqt6core6t64, libqt6dbus6, libqt6gui6, libqt6network6, libqt6svg6, libqt6svgwidgets6, libqt6widgets6, libreadline8t64, libstdc++6, libusb-1.0-0, libx11-6, libxkbcommon0, libxtst6, zlib1g
 
 [DEB BOOKWORM]
 Package: keepassxc
