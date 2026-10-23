@@ -14,10 +14,6 @@ B_GET git https://github.com/xwiki-labs/cryptpad cryptpad
 cd cryptpad
 git checkout $B_VERSION
 npm install
-# cryptpad-server 1.0.1 collapses second-stage command errors into a
-# generic "Execution error" and the front only returns {error}, so the
-# restricted-registration checkup (test 8) fails. Restore the real code.
-node $B_FILES/patch-cpsrv.js
 npm run install:components
 # The 2026.9.0 client opens a document's checkpoint Office version when
 # exporting/downloading, so old editors must keep shipping. install-office.sh
