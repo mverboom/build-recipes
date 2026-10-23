@@ -11,6 +11,11 @@ npm
 B_GET git https://github.com/jitsi/excalidraw-backend excalidraw-backend
 cd excalidraw-backend
 npm install
+# express 5 pulls in proxy-addr 2.0.7, which has a CRITICAL advisory
+# (GHSA-jqcg-44mw-7w3h / CVE-2026-90711, IP spoofing via an IPv4-mapped IPv6
+# trust subnet) fixed in 2.0.8. express asks for ^2.0.7, so the hoisted 2.0.8
+# satisfies it; --no-save keeps the upstream package.json untouched.
+npm install --no-save proxy-addr@2.0.8
 npm run build
 rm -f .eslintignore LICENSE *.md Dockerfile package-lock.json
 rm -rf .git* dist
