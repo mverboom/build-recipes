@@ -7,15 +7,34 @@ B_GITVER https://github.com/antedebaas/DMARC-SMTPTLS-Reports
 [REQUIRED]
 php-cli composer php-curl php-imap php-xml php-sqlite3
 
-[BUILD]
+# Debian trixie only: from v1.23.0 upstream's composer.json requires php >= 8.5,
+# which no Debian release ships yet (trixie has 8.4, bookworm 8.2). The
+# application source is unchanged since the php >= 8.2 era and every dependency
+# accepts php >= 8.4, so the root requirement is relaxed below to the distro's
+# php. Drop the sed (and this comment) once Debian ships php 8.5.
+[BUILD DEBIAN TRIXIE]
 B_GET git https://github.com/antedebaas/DMARC-SMTPTLS-Reports dmarc-smtptls-reports
 cd dmarc-smtptls-reports
 git checkout v${B_VERSION}
+
+sed -i -E 's/"php": ">=8\.[0-9]+"/"php": ">=8.4"/' composer.json
 
 sed -i 's#DATABASE_URL=.*#DATABASE_URL="sqlite:////var/lib/dmarc-smtptls-reports/database.sqlite"#' .env
 
 composer update
 composer install
+
+# Vendor packages ship their own composer.lock files; syft reads those and
+# reports the dev-only packages they pin (e.g. twig/twig v3.0.3 from
+# buzzingpixel/twig-switch) as if they were installed. Only the project's own
+# lock is used at runtime, so drop the nested ones.
+find vendor -mindepth 3 -maxdepth 3 -name composer.lock -delete
+
+# Upstream ships the Tabler demo bundle including an unused TinyMCE 7.3.0 copy
+# (nothing references libs/tinymce; only tabler-vendors.css class names match).
+# It carries known XSS advisories, so drop the dead library.
+rm -rf public/tabler-*/libs/tinymce
+
 php bin/console cache:clear
 #php bin/console doctrine:migrations:migrate --no-interaction --query-time
 php bin/console assets:install public
@@ -23,7 +42,9 @@ php bin/console cache:warmup
 
 mkdir -p $B_INSTALLDIR/var/lib/dmarc-smtptls-reports/imap
 mkdir -p $B_INSTALLDIR/var/log/dmarc-smtptls-reports
-rmdir var/log
+# var/log and var/imap are not shipped by upstream: make sure nothing is in the
+# way before linking them to the FHS locations.
+rm -rf var/log var/imap
 ln -s /var/log/dmarc-smtptls-reports var/log
 ln -s /var/lib/dmarc-smtptls-reports/imap var/imap
 

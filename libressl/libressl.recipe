@@ -12,6 +12,12 @@ B_GET git https://github.com/libressl-portable/portable libressl
 cd libressl
 git checkout v${B_VERSION}
 B_GET git https://github.com/libressl/openbsd/ openbsd
+# The openbsd tree is a shallow single-branch clone (origin/master only), but
+# update.sh resolves origin/$OPENBSD_BRANCH and, since 4.4.0, runs that lookup
+# with `set -e` -- so the release branch must exist or the build aborts.
+ob_branch=$(cat OPENBSD_BRANCH)
+git -C openbsd fetch --depth 1 origin "refs/heads/${ob_branch}:refs/remotes/origin/${ob_branch}"
+# Pin the matching OpenBSD tag so update.sh checks it out instead of master.
 git -C openbsd fetch --depth 1 origin tag "libressl-v${B_VERSION}"
 ./autogen.sh
 ./configure --prefix=/opt/libressl
