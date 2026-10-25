@@ -5,7 +5,7 @@ arch=amd64
 B_GITVER -r 's/^v//' https://github.com/jmfederico/pi-web/
 
 [REQUIRED]
-nodejs-22-B_PF python3 make g++
+nodejs-lts-B_PF python3 make g++
 
 [BUILD]
 # PI WEB ships a prebuilt dist in the npm package, so no compilation is
@@ -49,5 +49,5 @@ Description: Web UI for the pi coding agent custom B_ORG build
  configurable user (see /etc/default/pi-web); uses the pi-coding-agent
  package for the agent itself.
 Homepage: https://pi-web.dev/
-Depends: nodejs-22-B_PF (>= 22.19.0),pi-coding-agent-B_PF (>= 0.84.0),git,openssh-client,ca-certificates
+Depends: nodejs-lts-B_PF (>= 24.22.1),pi-coding-agent-B_PF (>= 0.84.0),git,openssh-client,ca-certificates
 
