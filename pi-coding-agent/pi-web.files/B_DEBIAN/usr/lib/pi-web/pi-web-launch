@@ -53,9 +53,16 @@ export HOME
 export PI_WEB_USER PI_WEB_DATA_DIR PI_CODING_AGENT_DIR \
        PI_WEB_HOST PI_WEB_PORT NODE_ENV
 
+# Exec the launcher the package ships in dist/bin (exposed through
+# /opt/pi-web/node_modules/.bin). Since pi-web 1.202610.7 that file is a
+# POSIX shell wrapper that discovers the runtime itself (node or bun,
+# PI_WEB_RUNTIME) and validates the entrypoint, so it must NOT be passed to
+# /usr/bin/node -- doing so failed with ERR_UNKNOWN_FILE_EXTENSION ".sh".
+# Whatever the upstream layout is, exec it as-is.
+
 # Make sure the data dir exists and belongs to the service user.
 mkdir -p "$PI_WEB_DATA_DIR"
 chown "$PI_WEB_USER:$(id -gn "$PI_WEB_USER")" "$PI_WEB_DATA_DIR" 2>/dev/null || true
 
 exec setpriv --reuid="$PI_WEB_USER" --regid="$(id -gn "$PI_WEB_USER")" \
-    --init-groups /usr/bin/node "$SCRIPT"
+    --init-groups "$SCRIPT"
