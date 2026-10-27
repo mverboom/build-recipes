@@ -59,7 +59,7 @@ Architecture: B_ARCH
 Maintainer: B_MAIL
 Description: Cross Platform Password Manager
 Homepage: https://keepassxc.org
-Depends: libbotan-2-19, libc6, libgcc-s1, libkeyutils1, libminizip1t64, libpcsclite1, libqrencode4, libqt6concurrent6, libqt6core6t64, libqt6dbus6, libqt6gui6, libqt6network6, libqt6svg6, libqt6svgwidgets6, libqt6widgets6, libreadline8t64, libstdc++6, libusb-1.0-0, libx11-6, libxkbcommon0, libxtst6, zlib1g
+Depends: libbotan-2-19, libc6, libgcc-s1, libkeyutils1, libminizip1t64, libpcsclite1, libqrencode4, libqt6concurrent6, libqt6core6t64, libqt6dbus6, libqt6gui6, libqt6network6, libqt6svg6, libqt6svgwidgets6, libqt6widgets6, libreadline8t64, libstdc++6, libusb-1.0-0, libx11-6, libxkbcommon0, libxtst6, qt6-svg-plugins, zlib1g
 
 [DEB BOOKWORM]
 Package: keepassxc
