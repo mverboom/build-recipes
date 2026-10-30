@@ -12,7 +12,10 @@
 # configured with environment variables instead of a generated settings.py.
 
 run_manage() {
-    su - dsmr -c "cd /opt/dsmrreader/src && ./manage.py $*"
+    # Run through the venv interpreter explicitly: manage.py itself has a
+    # "#!/usr/bin/env python3" shebang, which after an OS upgrade may be a
+    # python3 that does not have Django (postinst must not depend on that).
+    su - dsmr -c "cd /opt/dsmrreader/src && /opt/dsmrreader/.venv/bin/python3 -u ./manage.py $*"
 }
 
 if test "$1" = "configure"; then
