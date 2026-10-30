@@ -1,37 +1,64 @@
 #!/bin/sh
- 
+#
+# DSMR-reader package maintainer script.
+#
+# /etc/dsmrreader/env is NOT a dpkg conffile: the administrator owns it and this
+# script only ever creates it (on first install) or appends a secret key when
+# there is none. Rewriting it after install would make every upgrade stop on a
+# conffile prompt, which unattended-upgrades answers by silently not upgrading
+# the package.
+#
+# Since upstream v6 the application lives in /opt/dsmrreader/src and is
+# configured with environment variables instead of a generated settings.py.
+
+run_manage() {
+    su - dsmr -c "cd /opt/dsmrreader/src && ./manage.py $*"
+}
+
 if test "$1" = "configure"; then
-  # Create a dsmr system group
-  if ! getent group dsmr > /dev/null; then
-      addgroup --quiet --system dsmr
-  fi
-  
-  # Create a dsmr system user
-  if ! getent passwd dsmr > /dev/null; then
-      adduser --quiet --system \
-          --ingroup dsmr \
-          --home /opt/dsmrreader \
-          --no-create-home \
-          --disabled-password --shell /bin/bash \
-          dsmr
-      usermod -c "DSMR user" dsmr
-  fi
+    # Create a dsmr system group
+    if ! getent group dsmr > /dev/null; then
+        addgroup --quiet --system dsmr
+    fi
 
-  chown -R dsmr:dsmr /opt/dsmrreader /var/www/dsmrreader /etc/dsmrreader /var/lib/dsmrreader
+    # Create a dsmr system user
+    if ! getent passwd dsmr > /dev/null; then
+        adduser --quiet --system \
+            --ingroup dsmr \
+            --home /opt/dsmrreader \
+            --no-create-home \
+            --disabled-password --shell /bin/bash \
+            dsmr
+        usermod -c "DSMR user" dsmr
+    fi
 
-  if ! grep -q "^DJANGO_SECRET_KEY" /etc/dsmrreader/env ; then
-     su - dsmr -c ". .venv/bin/activate; ./tools/generate-secret-key.sh;"
-  fi
-  su - dsmr -c ". .venv/bin/activate; . .env; ./manage.py migrate; ./manage.py collectstatic --noinput; ./manage.py dsmr_superuser"
+    mkdir -p /etc/dsmrreader /var/lib/dsmrreader /var/www/dsmrreader
+    chown -R dsmr:dsmr /opt/dsmrreader /var/www/dsmrreader /etc/dsmrreader /var/lib/dsmrreader
 
-  systemctl enable dsmr_backend.service dsmr_datalogger.service dsmr_webinterface.service
-  systemctl restart dsmr_backend.service dsmr_datalogger.service dsmr_webinterface.service
-  if test ! -e /etc/nginx/sites-available/dsmrreader.conf; then
-     rm -f /etc/nginx/sites-enabled/default
-     cp /etc/dsmrreader/nginx.example /etc/nginx/sites-available/dsmrreader.conf
-     ln -s /etc/nginx/sites-available/dsmrreader.conf /etc/nginx/sites-enabled
-     systemctl reload nginx
-  fi
+    if test ! -e /etc/dsmrreader/env; then
+        cp /usr/share/dsmrreader/env.example /etc/dsmrreader/env
+        chown dsmr:dsmr /etc/dsmrreader/env
+        chmod 640 /etc/dsmrreader/env
+    fi
+
+    # Upstream v6 dropped tools/generate-secret-key.sh, generate one ourselves.
+    if ! grep -q "^DJANGO_SECRET_KEY" /etc/dsmrreader/env; then
+        echo "DJANGO_SECRET_KEY=$(/opt/dsmrreader/.venv/bin/python3 -c 'import secrets; print(secrets.token_hex(32))')" >> /etc/dsmrreader/env
+    fi
+
+    run_manage migrate --noinput
+    run_manage collectstatic --noinput
+    run_manage dsmr_superuser
+
+    systemctl enable dsmr_backend.service dsmr_datalogger.service dsmr_webinterface.service
+    systemctl restart dsmr_backend.service dsmr_datalogger.service dsmr_webinterface.service
+
+    if test ! -e /etc/nginx/sites-available/dsmrreader.conf; then
+        rm -f /etc/nginx/sites-enabled/default
+        cp /etc/dsmrreader/nginx.example /etc/nginx/sites-available/dsmrreader.conf
+        ln -s /etc/nginx/sites-available/dsmrreader.conf /etc/nginx/sites-enabled
+        systemctl reload nginx
+    fi
 else
-  systemctl restart dsmr_backend.service dsmr_datalogger.service dsmr_webinterface.service
+    systemctl restart dsmr_backend.service dsmr_datalogger.service dsmr_webinterface.service
 fi

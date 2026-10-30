@@ -1,50 +1,65 @@
 [VERSION]
-B_GITVER https://github.com/dsmrreader/dsmr-reader
+# Pinned on purpose: upstream v6.2.0 (2026-08) raised requires-python to
+# ">=3.14,<4". Debian 13 (trixie) ships Python 3.13, so v6.1.2 is the newest
+# release that can be built there. Bump this only together with a Python
+# >= 3.14 that we ship ourselves.
+echo 6.1.2
 
 [INFO]
 arch=amd64
 
 [REQUIRED]
-python3 python3-psycopg2 python3-pip python3-venv python3-dev default-libmysqlclient-dev build-essential pkg-config libpq-dev
+python3 python3-venv
 
 [BUILD]
 B_GET git https://github.com/dsmrreader/dsmr-reader dsmrreader
 cd dsmrreader
 git checkout v$B_VERSION
+
 DEST=$B_INSTALLDIR/opt/dsmrreader
+CODE=$DEST/src
 VIRT=$DEST/.venv
-mkdir -p $VIRT
+
+# Runtime dependencies, exported from the upstream Poetry lock file so they
+# stay pinned. Poetry itself runs in a throwaway venv only, it must not end up
+# in the package venv (it would pull in ~40 extra distributions).
+python3 -m venv /tmp/dsmr-poetry
+/tmp/dsmr-poetry/bin/pip --quiet install poetry poetry-plugin-export
+cd src
+/tmp/dsmr-poetry/bin/poetry export --only main --without-hashes --output /tmp/dsmr-requirements.txt
+cd ..
+
+# All runtime dependencies are wheels, no compiler or -dev package needed.
 python3 -m venv "$VIRT"
-. $VIRT/bin/activate
-cp dsmrreader/provisioning/django/settings.py.template dsmrreader/settings.py
-mkdir -p "$B_INSTALLDIR"/etc/dsmrreader
-sed -i "s/^DJANGO_DATABASE_HOST/#DJANGO_DATABASE_HOST/" .env.template
-sed -i "s/^DJANGO_DATABASE_PORT/#DJANGO_DATABASE_PORT/" .env.template
-sed -i "s/^DJANGO_DATABASE_USER/#DJANGO_DATABASE_USER/" .env.template
-sed -i "s/^DJANGO_DATABASE_PASSWORD/#DJANGO_DATABASE_PASSWORD/" .env.template
-sed -i "s|^DJANGO_DATABASE_ENGINE=.*|DJANGO_DATABASE_ENGINE=django.db.backends.sqlite3|" .env.template
-sed -i "s|^DJANGO_DATABASE_NAME=.*|DJANGO_DATABASE_NAME=/var/lib/dsmrreader/db.sqlite|" .env.template
-echo "DSMRREADER_ADMIN_USER=admin" >> .env.template
-echo "DSMRREADER_ADMIN_PASSWORD=admin" >> .env.template
-mv .env.template "$B_INSTALLDIR"/etc/dsmrreader/env
-tools/generate-secret-key.sh # ToDo
-pip3 install -r dsmrreader/provisioning/requirements/base.txt
-pip3 install mysqlclient
-deactivate
-pushd "$VIRT/bin"
-shopt -s extglob
-sed -i "s|$VIRT|/opt/dsmrreader/.venv|g" !(__pycache__)
-popd
-ln -s /etc/dsmrreader/env $B_INSTALLDIR/opt/dsmrreader/.env
-rm -rf .git
-mv dsmrreader/provisioning/nginx/dsmr-webinterface $B_INSTALLDIR/etc/dsmrreader/nginx.example
-mv dsmrreader/settings.py "$B_INSTALLDIR"/etc/dsmrreader
-ln -s /etc/dsmrreader/settings.py dsmrreader/settings.py
-mkdir -p "$B_INSTALLDIR"/lib/systemd/system
-cat dsmrreader/provisioning/systemd/dsmr_backend.service | sed "s|/home/dsmr/dsmr-reader|/opt/dsmrreader|g" > "$B_INSTALLDIR"/lib/systemd/system/dsmr_backend.service
-cat dsmrreader/provisioning/systemd/dsmr_datalogger.service | sed "s|/home/dsmr/dsmr-reader|/opt/dsmrreader|g" > "$B_INSTALLDIR"/lib/systemd/system/dsmr_datalogger.service
-cat dsmrreader/provisioning/systemd/dsmr_webinterface.service | sed "s|/home/dsmr/dsmr-reader|/opt/dsmrreader|g" > "$B_INSTALLDIR"/lib/systemd/system/dsmr_webinterface.service
-tar cfB - . | ( cd $DEST ; tar xfB - )
+"$VIRT"/bin/pip --quiet install -r /tmp/dsmr-requirements.txt
+
+# The v6.1.2 lock file (June 2026) predates three security fixes that the
+# vulnerability scan gates on (CRITICAL):
+#   certifi GHSA-6q48-6c7w-9gw2, fixed in 2026.10.18 (lock had 2026.4.22)
+#   pillow  GHSA-w889-685w-c8fh and four more, fixed in 13.0.0 (lock had 12.2.0)
+"$VIRT"/bin/pip --quiet install --upgrade "certifi>=2026.10.18" "pillow>=13.0.0"
+
+# Since v6 the application lives in src/ (manage.py, dsmrreader/, dsmr_*/).
+mkdir -p "$CODE"
+cp -a src/. "$CODE"/
+
+# poetry.lock lists the dev/test dependency groups (black, pytest, mypy, ...)
+# as well. None of them are installed in the venv, but osv-scanner scans the
+# lock file and reports them, so keep build-only tooling out of the package.
+rm -f "$CODE"/poetry.lock
+
+# The venv is created below $B_INSTALLDIR, rewrite the shebangs of its
+# console scripts to the location they will have once installed. Symlinks are
+# skipped on purpose: sed -i would replace .venv/bin/python3 (a symlink to the
+# system interpreter) with a second copy of the 7 MB binary.
+for f in "$VIRT"/bin/*; do
+    test -L "$f" && continue
+    test -f "$f" && sed -i "s|$VIRT|/opt/dsmrreader/.venv|g" "$f"
+done
+
+# Configuration is read with python-decouple, which (in addition to the
+# environment) reads a .env file found in or above dsmrreader/config/.
+ln -s /etc/dsmrreader/env "$CODE"/.env
 
 [PKG]
 type=deb
@@ -59,4 +74,4 @@ Architecture: B_ARCH
 Maintainer: B_MAIL
 Description: dsmrreader saver custom B_ORG build
 Homepage: https://github.com/dsmrreader/dsmr-reader
-Depends: python3,nginx,libmariadb3,mariadb-client-10.5
+Depends: python3,nginx,sqlite3

@@ -1,0 +1,18 @@
+[Unit]
+Description=DSMR Datalogger
+After=network.target
+
+[Service]
+Type=simple
+User=dsmr
+Group=dsmr
+StandardOutput=null
+StandardError=journal
+WorkingDirectory=/opt/dsmrreader/src
+PIDFile=/tmp/dsmrreader--dsmr_datalogger.pid
+ExecStart=/opt/dsmrreader/.venv/bin/python3 -u /opt/dsmrreader/src/manage.py dsmr_datalogger
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,18 @@
+[Unit]
+Description=DMSR Web Interface
+After=network.target
+
+[Service]
+Type=simple
+User=dsmr
+Group=dsmr
+StandardOutput=null
+StandardError=journal
+WorkingDirectory=/opt/dsmrreader/src
+PIDFile=/tmp/dsmrreader--dsmr_webinterface.pid
+ExecStart=/opt/dsmrreader/.venv/bin/gunicorn --timeout 60 --workers 4 --max-requests 500 --bind unix:/tmp/gunicorn--dsmr_webinterface.socket --pid /tmp/gunicorn--dsmr_webinterface.pid dsmrreader.wsgi
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
