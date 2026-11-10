@@ -17,6 +17,23 @@ if test "$1" = "configure"; then
       chown -R openwebui:openwebui /var/lib/open-webui
   fi
 
+  # WEBUI_SECRET_KEY signs the session cookies, so it must be unique per
+  # installation and must not be shipped in the package. Generate it once and
+  # keep it out of /etc/default/openwebui: that file is a conffile, and a value
+  # written there by the package would turn every upgrade into a prompt.
+  install -d -m 0700 /etc/openwebui
+  if [ ! -s /etc/openwebui/secret ]; then
+      ( umask 077
+        printf "WEBUI_SECRET_KEY=%s\n" "$(od -An -tx1 -N32 /dev/urandom | tr -d " \n")" \
+          > /etc/openwebui/secret )
+  fi
+  # Packages up to 0.13.3 shipped the fixed placeholder secret below; drop it if
+  # it survived the upgrade because the conffile had local changes.
+  if grep -qx "WEBUI_SECRET_KEY=t0p-s3cr3t" /etc/default/openwebui 2>/dev/null; then
+      sed -i "s|^WEBUI_SECRET_KEY=t0p-s3cr3t$|# placeholder secret removed on upgrade; see /etc/openwebui/secret|" \
+          /etc/default/openwebui
+  fi
+
   systemctl enable openwebui.service
   systemctl start openwebui.service
 else

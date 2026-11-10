@@ -4,6 +4,8 @@ After=network-online.target
 
 [Service]
 Type=simple
+# Generated per-install secret first; /etc/default can override it.
+EnvironmentFile=-/etc/openwebui/secret
 EnvironmentFile=-/etc/default/openwebui
 User=openwebui
 Group=openwebui

@@ -1,7 +1,8 @@
 # Storage location
 DATA_DIR=/var/lib/open-webui
-# Default value
-WEBUI_SECRET_KEY=t0p-s3cr3t
+# WEBUI_SECRET_KEY is generated per installation in /etc/openwebui/secret (see
+# the postinst), so that no secret ships in the package and every instance has
+# its own. A value set here still takes precedence over the generated one.
 # Use proxy for internet access
 #http_proxy=http://proxy:8080
 #https_proxy=http://proxy:8080
