@@ -1,0 +1,17 @@
+[Unit]
+Description=openwebui server
+After=network-online.target
+
+[Service]
+Type=simple
+EnvironmentFile=-/etc/default/openwebui
+User=openwebui
+Group=openwebui
+ExecStart=/opt/open-webui/bin/open-webui serve $OPTIONS
+TimeoutStopSec=5
+Restart=on-failure
+RestartSec=2
+PrivateTmp=false
+
+[Install]
+WantedBy=multi-user.target

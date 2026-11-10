@@ -20,6 +20,42 @@ shopt -s extglob
 sed -i "s|$VIRT|/opt/open-webui|g" !(__pycache__)
 popd
 
+[BUILD DEBIAN TRIXIE]
+DEST=$B_INSTALLDIR/opt/open-webui
+VIRT=$DEST
+mkdir -p $VIRT
+python3 -m venv "$VIRT"
+. $VIRT/bin/activate
+# Slim install, the same configuration upstream builds with USE_SLIM=true: the
+# wheel ships its reduced dependency list (site-packages/requirements-slim.txt)
+# for exactly this case, so install the app itself first and then that list.
+# No torch/CUDA, chromadb, transformers, onnxruntime or playwright - this
+# instance runs Ollama Cloud models only, so none of it is used, and it keeps
+# the package publishable (the full set makes a 2.9 GB .deb).
+# USE_SLIM_DOCKER=true is shipped in B_DEBIAN-TRIXIE/etc/default/openwebui.
+#
+# --ignore-requires-python only bypasses upstream's "< 3.13.0a1" metadata cap
+# (it exists for pydub/audioop, which is not part of the slim set). Verified
+# 2026-11-01: 0.12.5 installs and serves on python 3.13.5. Drop the flag as
+# soon as upstream raises the cap.
+pip3 install --ignore-requires-python --no-deps open-webui==v$B_VERSION
+pip3 install --ignore-requires-python -r "$VIRT"/lib/python*/site-packages/requirements-slim.txt
+# First patched versions of the two CRITICAL advisories that are in the slim
+# set; the build vulnscan gate (SECURITY.md F4) refuses the versions upstream
+# pins. Drop these pins once upstream ships the fixed versions itself.
+#   GHSA-ffc3-869f-jxw9  PyJWT    (fixed 2.14.0)
+#   GHSA-6v38-4h7w-rj9h  Authlib  (fixed 1.9.0)
+pip3 install --ignore-requires-python pyjwt==2.14.0 authlib==1.9.0
+# syft parses requirements*.txt as if the pinned versions were installed, so
+# these wheel-shipped lists make every pin look installed next to the real
+# package. No runtime code reads them.
+rm -f "$VIRT"/lib/python*/site-packages/requirements*.txt
+deactivate
+pushd "$VIRT/bin"
+shopt -s extglob
+sed -i "s|$VIRT|/opt/open-webui|g" !(__pycache__)
+popd
+
 [PKG]
 type=deb
 torepo=y
