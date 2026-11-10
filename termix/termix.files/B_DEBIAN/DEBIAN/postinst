@@ -22,6 +22,25 @@ fi
 chown -R termix:termix /var/lib/termix /var/log/termix
 chmod 750 /var/lib/termix /var/log/termix
 
+# The shipped nginx vhost terminates TLS. Generate a self-signed certificate on
+# first install so nginx starts out of the box; replace it with a real
+# certificate (e.g. from Let's Encrypt) in production.
+if [ ! -e /etc/termix/privkey.pem ]; then
+    mkdir -p /etc/termix
+    cert_cn=$(hostname --fqdn 2>/dev/null || true)
+    [ -n "$cert_cn" ] || cert_cn=localhost
+    if openssl req -newkey rsa:2048 -x509 -nodes -sha256 -days 3650 \
+        -keyout /etc/termix/privkey.pem \
+        -out /etc/termix/fullchain.pem \
+        -subj "/CN=$cert_cn" \
+        -addext "subjectAltName=DNS:$cert_cn"; then
+        chmod 0640 /etc/termix/privkey.pem
+        chmod 0644 /etc/termix/fullchain.pem
+    else
+        echo "Warning: could not generate a self-signed certificate for the termix nginx vhost"
+    fi
+fi
+
 # Enable and start guacd (required for RDP/VNC/Telnet remote desktop)
 if [ -f /lib/systemd/system/guacd.service ]; then
     systemctl enable guacd || true

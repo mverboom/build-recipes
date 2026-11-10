@@ -13,7 +13,7 @@ cd dashy
 git checkout $B_VERSION
 
 # Build the frontend with the full (dev) dependency set.
-# Dashy is served from a sub-directory (https://secure.verboom.net/dashy/), which
+# Dashy is served from a sub-directory (e.g. https://example.com/dashy/), which
 # upstream does not support out of the box (Lissy93/dashy#1036). The patch makes
 # the few hardcoded absolute URLs relative to the Vite base path; the base
 # itself comes from the flag on the build command below. The patch must apply

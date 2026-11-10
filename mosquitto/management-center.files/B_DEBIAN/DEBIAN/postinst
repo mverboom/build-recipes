@@ -16,6 +16,23 @@ if test "$1" = "configure"; then
            mgmtcenter
        usermod -c "Management Center user" mgmtcenter
    fi
+   # Self-signed certificate for the example lighttpd TLS config; replace it
+   # with a real one (e.g. from Let's Encrypt) in production.
+   if ! test -e /etc/management-center/privkey.pem; then
+       cert_cn=$(hostname --fqdn 2>/dev/null || true)
+       [ -n "$cert_cn" ] || cert_cn=localhost
+       if openssl req -newkey rsa:2048 -x509 -nodes -sha256 -days 3650 \
+           -keyout /etc/management-center/privkey.pem \
+           -out /etc/management-center/fullchain.pem \
+           -subj "/CN=$cert_cn" \
+           -addext "subjectAltName=DNS:$cert_cn"; then
+           chmod 0640 /etc/management-center/privkey.pem
+       else
+           echo "Warning: could not generate a self-signed certificate for management-center"
+       fi
+   fi
+   # lighttpd runs as www-data and must be able to read the private key.
+   adduser --quiet www-data mgmtcenter 2>/dev/null || true
    chown -R mgmtcenter:mgmtcenter /etc/management-center
 fi
 systemctl daemon-reload

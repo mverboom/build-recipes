@@ -13,8 +13,11 @@ server {
     listen 443 default_server ssl;
     listen [::]:443 default_server ssl;
 
-    ssl_certificate /etc/le/lnw.verboom.net/nginx/fullchain.pem;
-    ssl_certificate_key /etc/le/lnw.verboom.net/nginx/privkey.pem;
+    # TLS certificate for this vhost. The postinst generates a self-signed
+    # certificate here on first install; replace it with a real one (e.g. from
+    # Let's Encrypt) in production.
+    ssl_certificate     /etc/termix/fullchain.pem;
+    ssl_certificate_key /etc/termix/privkey.pem;
 
     add_header X-Content-Type-Options nosniff always;
 

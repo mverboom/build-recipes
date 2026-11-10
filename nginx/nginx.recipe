@@ -45,7 +45,7 @@ patch -p0 < <(wget -q -O - https://raw.githubusercontent.com/Jas0n99/ngx_force_g
 # those used to clobber the production file: a starting master truncates and rewrites it,
 # a graceful exit unlinks it (ngx_delete_pidfile), and a bare `nginx -t` re-creates it
 # EMPTY (test mode opens CREATE_OR_OPEN and never writes a pid). That is what broke
-# `systemctl reload nginx`/logrotate on proxy.lnw.verboom.net on 2026-09-22. Keeping the
+# `systemctl reload nginx`/logrotate on a production host. Keeping the
 # two paths distinct means ad-hoc instances can never touch production again.
 ./configure --with-openssl=../libressl \
             --with-ld-opt="-L ../libressl/.openssl/lib/" \

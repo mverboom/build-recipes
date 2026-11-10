@@ -4,7 +4,7 @@
 # environment; anything set here is also visible to the jobs.
 
 # Use a docker daemon other than the local socket:
-#DOCKER_HOST=tcp://dockerd.lnw.verboom.net:2375
+#DOCKER_HOST=tcp://docker.example.com:2375
 
 # Keep job work directories somewhere other than the runner's home:
 #HOME=/var/lib/forgejo-runner

@@ -2,7 +2,7 @@
 #
 # PI WEB is deployment-independent: one build works at "/" and at
 # trailing-slash prefixes such as /piweb/. This example serves it at
-# https://secure.verboom.net/piweb/.
+# https://example.com/piweb/.
 #
 # Adapt the auth lines to your Authelia setup (see your other locations).
 # Apply authentication to the WHOLE /piweb/ location - do not create
@@ -14,7 +14,7 @@
 #     '' close;
 # }
 
-# Inside the secure.verboom.net server block:
+# Inside the https://example.com server block:
 
     # Authelia auth for this location (match your existing pattern)
     location = /auth/verify {
