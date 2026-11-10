@@ -1,0 +1,10 @@
+#!/bin/sh
+# The capture library (scap) is versioned independently of sysdig, so take the
+# module version from the driver sources this package installed.
+dver=$(ls -d /usr/src/scap-*/ 2>/dev/null | head -1 |
+       sed -e "s|.*/scap-||" -e "s|/.*||" -e "s|+driver$||")
+[ -n "$dver" ] || exit 0
+rmmod scap || true
+dkms add -m scap -v "$dver"
+dkms build -m scap -v "$dver" && dkms install -m scap -v "$dver"
+modprobe scap
