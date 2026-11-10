@@ -1,13 +1,19 @@
+[INFO]
+arch=amd64
+
 [VERSION]
-B_GITVER https://github.com/freight-team/freight.git
+#ver=$( git ls-remote --tags https://github.com/freight-team/freight | grep -v '{}' | cut -d '/' -f 3 | sort | tail -1 ); echo ${ver/v/}
+B_GITVER https://github.com/freight-team/freight
+
+[REQUIRED]
+make
 
 [BUILD]
-B_GET git https://github.com/freight-team/freight.git freight
-
-cd freight
-make
-make install prefix='' DESTDIR=$B_INSTALLDIR
-
+B_GET git https://github.com/freight-team/freight fr
+cd fr
+git checkout tags/v$B_VERSION
+make -j $(nproc)
+make install DESTDIR=$B_INSTALLDIR prefix=/opt/freight
 
 [PKG]
 type=deb
@@ -16,10 +22,10 @@ torepo=y
 [DEB]
 Package: freight
 Version: B_VERSION
-Section: system
+Section: freight
 Priority: optional
 Architecture: B_ARCH
-Conflicts: NAME
 Maintainer: B_MAIL
-Description: A modern take on the Debian archive.
+Description: Freight custom B_ORG build
 Homepage: https://github.com/freight-team/freight
+

@@ -14,6 +14,9 @@ B_GET git https://github.com/sysadminsmedia/homebox/ homebox
 cd homebox
 git checkout v$B_VERSION
 
+# LNW patch: lazily re-initialize the OIDC provider when unavailable at startup
+patch -p1 < $B_FILES/homebox-oidc-lazy-init.patch
+
 mkdir -p $B_INSTALLDIR/usr/bin
 
 cd frontend

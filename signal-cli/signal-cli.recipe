@@ -40,7 +40,7 @@ Architecture: B_ARCH
 Maintainer: B_MAIL
 Description: signal-cli custom B_ORG build
 Homepage: https://github.com/AsamK/signal-cli
-Depends: openjdk-21-jre-headless | openjdk-25-jre-headless | default-jre-headless
+Depends: openjdk-25-jre-headless
 
 [DEB BOOKWORM]
 Package: signal-cli

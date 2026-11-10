@@ -8,9 +8,18 @@ B_GITVER https://github.com/vrana/adminer/
 php-cli
 
 [BUILD]
-B_GET git -s https://github.com/vrana/adminer adminer
+B_GET git https://github.com/vrana/adminer adminer
 cd adminer
 git checkout v$B_VERSION
+
+# adminer v6.1.0 pins adminer/static/jush to a commit that vrana/jush no
+# longer serves ("upload-pack: not our ref 7253971..."), so the recursive
+# submodule update fails. Initialise the two reachable submodules and pin
+# jush to its latest published tag (v3.2.1, also used by adminer v6.0.2).
+# Revisit if upstream republishes the pinned jush commit or a fixed release.
+git submodule update --init conf/JsShrink conf/PhpShrink
+rm -rf adminer/static/jush
+git clone --depth 1 --branch v3.2.1 https://github.com/vrana/jush adminer/static/jush
 ./compile.php
 ./compile.php editor
 mkdir -p $B_INSTALLDIR/opt/adminer
