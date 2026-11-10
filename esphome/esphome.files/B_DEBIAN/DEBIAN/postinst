@@ -19,21 +19,29 @@ if test "$1" = "configure"; then
    # Add www-data (lighttpd) to esphome group so it can access the unix socket
    adduser --quiet www-data esphome 2>/dev/null || true
    chown -R esphome:esphome /var/lib/esphome /var/lib/esphome-venv
+   # Every package up to and including 2026.10.2 wrote the key to fullchain.pem
+   # and the certificate to privkey.pem, which the example lighttpd config
+   # cannot load. Regenerate if the old files are still in place.
+   if grep -qs "BEGIN .*PRIVATE KEY" /etc/esphome/fullchain.pem; then
+      rm -f /etc/esphome/fullchain.pem /etc/esphome/privkey.pem
+   fi
    if ! test -e /etc/esphome/privkey.pem; then
+      cert_cn=$(hostname --fqdn 2>/dev/null || true)
+      [ -n "$cert_cn" ] || cert_cn=localhost
       openssl req \
        -newkey rsa:2048 \
        -x509 \
        -nodes \
-       -keyout /etc/esphome/fullchain.pem \
-       -new \
-       -out /etc/esphome/privkey.pem \
-       -subj /CN=$(hostname --fqdn) \
-       -reqexts SAN \
-       -extensions SAN \
-       -config <(cat /etc/ssl/openssl.cnf \
-           <(printf '[SAN]\nsubjectAltName=DNS:'$(hostname --fqdn))) \
+       -keyout /etc/esphome/privkey.pem \
+       -out /etc/esphome/fullchain.pem \
+       -subj "/CN=$cert_cn" \
+       -addext "subjectAltName=DNS:$cert_cn" \
        -sha256 \
        -days 3650
+      chmod 0644 /etc/esphome/fullchain.pem
+      # lighttpd runs as www-data, which is a member of the esphome group.
+      chown root:esphome /etc/esphome/privkey.pem
+      chmod 0640 /etc/esphome/privkey.pem
    fi
 fi
 systemctl daemon-reload
