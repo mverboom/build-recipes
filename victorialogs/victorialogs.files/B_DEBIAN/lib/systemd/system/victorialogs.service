@@ -1,0 +1,26 @@
+[Unit]
+Description=VictoriaLogs log database
+Documentation=https://docs.victoriametrics.com/victorialogs/
+After=network.target
+
+[Service]
+Type=simple
+User=victorialogs
+Group=victorialogs
+EnvironmentFile=-/etc/default/victorialogs
+ExecStart=/opt/victorialogs/bin/victoria-logs $DAEMON_OPTS
+Restart=on-failure
+RestartSec=5
+LimitNOFILE=65536
+# Lets the unprivileged victorialogs user bind a privileged syslog port such
+# as UDP 514; harmless when the listener is on the default 9514.
+CapabilityBoundingSet=CAP_NET_BIND_SERVICE
+AmbientCapabilities=CAP_NET_BIND_SERVICE
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectSystem=strict
+ProtectHome=yes
+ReadWritePaths=/var/lib/victorialogs
+
+[Install]
+WantedBy=multi-user.target

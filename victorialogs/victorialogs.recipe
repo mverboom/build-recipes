@@ -1,0 +1,46 @@
+[INFO]
+arch=amd64
+
+[VERSION]
+B_GITVER -r "s/^v//" -e "enterprise" https://github.com/VictoriaMetrics/VictoriaLogs
+
+[REQUIRED]
+golang-B_PF make gcc
+
+[BUILD]
+export GOROOT=/opt/go
+# GOMODCACHE under a dir named vendor so srcguard skips Go module cache Makefiles
+export GOMODCACHE=/tmp/vendor
+export PATH=${PATH}:${GOROOT}/bin
+
+B_GET git https://github.com/VictoriaMetrics/VictoriaLogs VictoriaLogs
+cd VictoriaLogs
+git checkout v$B_VERSION
+
+# Upstream -prod targets build inside Docker; app-local is the plain local
+# go build. CGO_ENABLED=1 is what the -prod builds use, hence gcc in [REQUIRED].
+CGO_ENABLED=1 make victoria-logs vlogscli
+
+mkdir -p $B_INSTALLDIR/opt/victorialogs/bin
+cp bin/victoria-logs bin/vlogscli $B_INSTALLDIR/opt/victorialogs/bin
+B_LINKFILES /opt/victorialogs/bin /usr/bin
+
+[PKG]
+type=deb
+torepo=y
+
+[DEB]
+Package: victorialogs
+Version: B_VERSION
+Section: victorialogs
+Priority: optional
+Architecture: B_ARCH
+Maintainer: B_MAIL
+Description: VictoriaLogs custom B_ORG build
+Homepage: https://docs.victoriametrics.com/victorialogs/
+
+[SECURITY]
+# Upstream ships an RPM spec (package/rpm/victoriametrics-rpm.spec) that curls
+# the release tarball. This recipe builds from source and never uses it, so the
+# srcguard hit is benign. Review on upstream packaging changes.
+srcguard-ignore=VictoriaLogs/package/rpm/victoriametrics-rpm.spec

@@ -1,0 +1,25 @@
+#!/bin/sh
+
+set -e
+
+# Create a victorialogs system group
+if ! getent group victorialogs > /dev/null; then
+    addgroup --quiet --system victorialogs
+fi
+
+# Create a victorialogs system user
+if ! getent passwd victorialogs > /dev/null; then
+    adduser --quiet --system \
+        --ingroup victorialogs \
+        --home /var/lib/victorialogs \
+        --no-create-home \
+        --disabled-password --shell /bin/bash \
+        victorialogs
+    usermod -c "VictoriaLogs daemon" victorialogs
+fi
+
+chown -R victorialogs:victorialogs /var/lib/victorialogs
+
+systemctl enable victorialogs
+systemctl daemon-reload
+systemctl restart victorialogs

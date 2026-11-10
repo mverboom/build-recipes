@@ -1,0 +1,22 @@
+#!/bin/sh
+
+set -e
+
+# The unit file disappears on remove, so the service must not be left behind.
+case "$1" in
+    remove|purge)
+        systemctl stop victorialogs 2>/dev/null || true
+        systemctl disable victorialogs 2>/dev/null || true
+        ;;
+esac
+
+if [ "$1" = "purge" ] ; then
+    if getent passwd victorialogs >/dev/null; then
+        if command -v deluser >/dev/null 2>&1; then
+            deluser --quiet --system victorialogs || echo "Could not remove victorialogs user."
+        fi
+    fi
+    # Log data is the point of a purge; /etc/default/victorialogs is a
+    # conffile and is removed by dpkg itself.
+    rm -rf /var/lib/victorialogs
+fi
